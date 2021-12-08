@@ -30,9 +30,9 @@ Require-Bundle: org.eclipse.ui,
  org.scala-ide.sdt.core,
  org.scala-ide.sdt.debug,
  org.eclipse.jface.text,
- org.scala-lang.scala-library;bundle-version="[2.12.0,2.13.0)",
- org.scala-lang.scala-reflect;bundle-version="[2.12.0,2.13.0)",
- org.scala-lang.scala-compiler;bundle-version="[2.12.0,2.13.0)"
+ org.scala-lang.scala-library;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
+ org.scala-lang.scala-reflect;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
+ org.scala-lang.scala-compiler;bundle-version="[@SCALA_MINOR_VERSION@,2.14)"
 Import-Package: org.osgi.framework,
  org.scalaide.util,
  scala.tools.eclipse.contribution.weaving.jdt

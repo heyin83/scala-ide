@@ -39,7 +39,7 @@
     <zinc.version>1.6.0-M1</zinc.version>
     <sbinary.version>0.5.1</sbinary.version>
     <scala-refactoring.version>0.14.0-SNAPSHOT</scala-refactoring.version>
-    <scalariform.version>0.2.6</scalariform.version>
+    <scalariform.version>0.2.10</scalariform.version>
 
     <!-- plugin versions -->
     <tycho.plugin.version>2.5.0</tycho.plugin.version>
@@ -65,8 +65,8 @@
     <!-- Scala 2.13.x -->
     <scala213.version>2.13.7</scala213.version>
     <scala213.binary.version>2.13</scala213.binary.version>
-    <scala213.scala-xml.version>1.0.6</scala213.scala-xml.version>
-    <scala213.scala-parser-combinators.version>1.0.6</scala213.scala-parser-combinators.version>
+    <scala213.scala-xml.version>2.0.1</scala213.scala-xml.version>
+    <scala213.scala-parser-combinators.version>2.1.0</scala213.scala-parser-combinators.version>
 
     <!-- Scala 2.12.x -->
     <scala212.version>2.12.15</scala212.version>
@@ -302,6 +302,7 @@
                         overwrite="true">
                         <filterset>
                           <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
                         </filterset>
                     </copy>
                     <copy file="${sdt.debug.expression.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
@@ -309,6 +310,7 @@
                         overwrite="true">
                         <filterset>
                           <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
                         </filterset>
                     </copy>
                     <copy file="${sdt.update-site.dir}/resources/site-${version.suffix}.xml"

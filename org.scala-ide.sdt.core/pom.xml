@@ -146,7 +146,7 @@
     <dependency>
       <groupId>org.scalariform</groupId>
       <artifactId>scalariform_${scala.minor.version}</artifactId>
-      <version>0.2.10</version>
+      <version>${scalariform.version}</version>
     </dependency>
 
 
@@ -159,19 +159,19 @@
     <dependency>
         <groupId>net.java.dev.jna</groupId>
         <artifactId>jna-platform</artifactId>
-        <version>5.8.0</version>
+        <version>${jna.version}</version>
     </dependency>
 
     <dependency>
         <groupId>net.java.dev.jna</groupId>
         <artifactId>jna</artifactId>
-        <version>5.8.0</version>
+        <version>${jna.version}</version>
     </dependency>
 
     <dependency>
         <groupId>net.openhft</groupId>
         <artifactId>zero-allocation-hashing</artifactId>
-        <version>0.10.1</version>
+        <version>${zero-allocation-hashing.version}</version>
     </dependency>
   </dependencies>
 
