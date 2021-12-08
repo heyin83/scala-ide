@@ -49,7 +49,7 @@ class ExtractExpressions extends QuickAssist {
       }
     }
 
-    proposals
+    proposals.ToArray
   }
 
   private def createRefactoring(compiler: IScalaPresentationCompiler, file: SourceFile, selectionStart: Int, selectionEnd: Int) =

@@ -200,9 +200,10 @@ object BundledScalaInstallation {
    */
   def detectBundledInstallations(): List[BundledScalaInstallation] = {
     // find the bundles with the right pattern
-    val matchingBundles: List[Bundle] =
-      ScalaPlugin().getBundle().getBundleContext().getBundles().to[List]
+    val matchingBundles =
+      ScalaPlugin().getBundle().getBundleContext().getBundles()
         .filter { b => ScalaBundleJarsRegex.unapplySeq(b.getSymbolicName()).isDefined }
+        .toList
 
     matchingBundles.flatMap(BundledScalaInstallation(_))
   }
@@ -250,7 +251,8 @@ object MultiBundleScalaInstallation {
   private def findBundle(bundleId: String, version: Version): Option[Bundle] = {
     def doesBundleVersionQualifierEncloseVersionQualifier(bundleQualifier: String, qualifier: String) =
       qualifier.intersect(bundleQualifier) == qualifier
-    Option(Platform.getBundles(bundleId, null)).getOrElse(Array()).to[List].find { bundle =>
+    //Option(Platform.getBundles(bundleId, null)).getOrElse(Array[Bundle]()).toList.find { bundle =>
+    Option(Platform.getBundles(bundleId, null)).getOrElse(Array[Bundle]()).find { bundle =>
       val bundleVersion = bundle.getVersion
       bundleVersion.getMajor == version.getMajor &&
         bundleVersion.getMinor == version.getMinor &&
@@ -280,7 +282,7 @@ object MultiBundleScalaInstallation {
 
   def detectInstallations(): List[MultiBundleScalaInstallation] = {
 
-    val scalaLibraryBundles = Platform.getBundles(ScalaLibraryBundleId, null).to[List]
+    val scalaLibraryBundles = Platform.getBundles(ScalaLibraryBundleId, null).toList
 
     scalaLibraryBundles.flatMap(MultiBundleScalaInstallation(_))
   }
@@ -330,7 +332,7 @@ object ScalaInstallation {
       None)
   }
 
-  lazy val customInstallations: Set[LabeledScalaInstallation] = initialScalaInstallations.map(customize(_))(collection.breakOut)
+  lazy val customInstallations: Set[LabeledScalaInstallation] = initialScalaInstallations.view.map(customize(_)).to(Set)
 
   /** Return the Scala installation currently running in Eclipse. */
   lazy val platformInstallation: LabeledScalaInstallation =

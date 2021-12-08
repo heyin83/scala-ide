@@ -55,26 +55,26 @@ trait JavaSig { pc: ScalaPresentationCompiler =>
       if (cls.isTopLevel || cls.isLocalToBlock) pre else cls.owner.tpe_*
 
     private object NeedsSigCollector extends TypeCollector(false) {
-      def traverse(tp: Type): Unit = {
+      def apply(tp: Type): Unit = {
         if (!result) {
           tp match {
             case st: SubType =>
-              traverse(st.supertype)
+              apply(st.supertype)
             case TypeRef(pre, sym, args) =>
-              if (sym == definitions.ArrayClass) args foreach traverse
+              if (sym == definitions.ArrayClass) args foreach apply
               else if (sym.isTypeParameterOrSkolem || sym.isExistentiallyBound || !args.isEmpty) result = true
-              else if (sym.isClass) traverse(rebindInnerClass(pre, sym)) // #2585
-              else if (!sym.isTopLevel) traverse(pre)
+              else if (sym.isClass) apply(rebindInnerClass(pre, sym)) // #2585
+              else if (!sym.isTopLevel) apply(pre)
             case PolyType(_, _) | ExistentialType(_, _) =>
               result = true
             case RefinedType(parents, _) =>
-              parents foreach traverse
+              parents foreach apply
             case ClassInfoType(parents, _, _) =>
-              parents foreach traverse
+              parents foreach apply
             case AnnotatedType(_, atp) =>
-              traverse(atp)
+              apply(atp)
             case _ =>
-              mapOver(tp)
+              foldOver(tp)
           }
         }
       }

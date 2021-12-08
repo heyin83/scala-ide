@@ -51,7 +51,7 @@ class Statistics extends AnyRef with HasLogger {
     ScalaIdeDataStore.validate(ScalaIdeDataStore.statisticsLocation) { file ⇒
       val stats = read(file)
       firstStat = stats.firstStat
-      cache = stats.featureData.map(stat ⇒ stat.feature → stat)(collection.breakOut)
+      cache = stats.featureData.view.map(stat ⇒ stat.feature → stat).to(Map)
     }
   }
 
