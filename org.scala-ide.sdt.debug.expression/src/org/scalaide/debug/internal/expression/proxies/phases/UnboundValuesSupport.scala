@@ -167,10 +167,11 @@ trait UnboundValuesSupport {
           nameManager.registerNameBinding(name, tree)
           super.traverse(tree)
 
+        // TODO: Absent in 2.13
         // named args like: foo(ala = "ola")
-        case AssignOrNamedArg(Ident(name), _) =>
-          nameManager.registerNameBinding(name, scopeManager.findCurrentScopeTree())
-          super.traverse(tree)
+        //case AssignOrNamedArg(Ident(name), _) =>
+        //  nameManager.registerNameBinding(name, scopeManager.findCurrentScopeTree())
+        //  super.traverse(tree)
 
         // for binding in pattern matching like: ala @ Ala(name)
         // and, apparently, for values in for-comprehension

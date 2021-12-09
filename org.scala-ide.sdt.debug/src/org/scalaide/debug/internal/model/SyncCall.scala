@@ -7,7 +7,7 @@ import org.scalaide.logging.HasLogger
 
 object SyncCall extends HasLogger {
   import scala.concurrent.duration._
-  val Timeout = 500 millis
+  val Timeout = 500.millis
 
   def timeout[T](f: => Future[T]): Boolean = {
     import scala.concurrent.TimeoutException

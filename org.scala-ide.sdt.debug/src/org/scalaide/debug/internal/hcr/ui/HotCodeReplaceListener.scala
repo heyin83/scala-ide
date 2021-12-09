@@ -4,10 +4,10 @@
 package org.scalaide.debug.internal.hcr
 package ui
 
-import scala.collection.mutable.Publisher
-import scala.collection.mutable.Subscriber
-
 import org.eclipse.jface.dialogs.MessageDialog
+
+import org.scalaide.core.Publisher
+import org.scalaide.core.Subscriber
 import org.scalaide.debug.internal.preferences.HotCodeReplacePreferences
 import org.scalaide.util.eclipse.SWTUtils
 import org.scalaide.util.ui.DisplayThread

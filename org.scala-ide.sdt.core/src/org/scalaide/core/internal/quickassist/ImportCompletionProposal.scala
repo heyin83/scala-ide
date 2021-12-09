@@ -6,6 +6,7 @@ import org.eclipse.jdt.ui.ISharedImages
 import org.eclipse.jdt.ui.JavaUI
 import org.eclipse.jface.text.IDocument
 import org.eclipse.jface.text.TextUtilities
+import org.scalaide.core.compiler.IScalaPresentationCompiler
 import org.scalaide.core.compiler.IScalaPresentationCompiler.Implicits._
 import org.scalaide.core.internal.statistics.Features.ImportMissingMember
 import org.scalaide.core.quickassist.BasicCompletionProposal
@@ -58,7 +59,7 @@ case class ImportCompletionProposal(importName: String)
              compiler.asyncExec {
                val refactoring = new AddImportStatement { val global = compiler }
                refactoring.addImport(scalaSourceFile.file, importName)
-             } getOption()
+             } getOption(IScalaPresentationCompiler.AskTimeout)
          }) getOrElse Nil
 
       } getOrElse (Nil)

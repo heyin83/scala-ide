@@ -87,7 +87,7 @@ abstract class CompletionTests extends TextEditTests with CompilerSupport {
 
       val completions = new ScalaCompletions()
         .findCompletions(ScalaWordFinder.findWord(doc, caretOffset), caretOffset, unit)
-        .sorted(CompletionProposalOrdering).to[IndexedSeq]
+        .sorted(CompletionProposalOrdering).to(IndexedSeq)
 
       def completionList = completions.map(_.display).mkString("\n")
 

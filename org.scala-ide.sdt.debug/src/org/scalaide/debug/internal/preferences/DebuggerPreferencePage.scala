@@ -3,6 +3,8 @@
  */
 package org.scalaide.debug.internal.preferences
 
+import scala.collection.mutable.ArrayDeque
+
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer
 import org.eclipse.jface.preference.BooleanFieldEditor
 import org.eclipse.jface.preference.FieldEditorPreferencePage
@@ -19,7 +21,7 @@ class DebuggerPreferencePage extends FieldEditorPreferencePage(FieldEditorPrefer
 
   setPreferenceStore(ScalaDebugPlugin.plugin.getPreferenceStore)
 
-  private val groups = scala.collection.mutable.MutableList[Group]()
+  private val groups = ArrayDeque[Group]()
 
   override def createFieldEditors(): Unit = {
     createFiltersSection()

@@ -138,7 +138,7 @@ object SimpleContentProposalProvider extends HasLogger {
         case (_, proposals) =>
           val (content, label) = proposals.last
           new ContentProposal(content, label, null)
-      }(collection.breakOut) // we get only the latest variable with given name (shadowing)
+      }.toList // we get only the latest variable with given name (shadowing)
 
   private def getMembersNamesViaJdi(thisReference: ReferenceType): Seq[(String, String)] =
     thisReference.allMethods().asScala
@@ -148,7 +148,7 @@ object SimpleContentProposalProvider extends HasLogger {
           val returnedType = getReturnedTypeNameViaJdi(m)
           List((name, s"$name: $returnedType"))
         } else Nil
-      }(collection.breakOut)
+      }.toList
 
   private def getReturnedTypeNameViaJdi(method: Method): String =
     try {
@@ -193,7 +193,7 @@ object SimpleContentProposalProvider extends HasLogger {
           List((name, formatVariableLabel(name, symbol)))
         else
           Nil
-    }(collection.breakOut)
+    }.toList
   }
 
   private def getTypeTag[T: ru.TypeTag](obj: T) = ru.typeTag[T]
@@ -218,6 +218,8 @@ object SimpleContentProposalProvider extends HasLogger {
   private[completion] def shouldBeProposal(name: String) = !name.contains("$") && name != "<init>" && name != "<clinit>"
 
   private def getDistinct(proposals: Seq[IContentProposal]): Seq[IContentProposal] =
-    proposals.groupBy(_.getLabel)
-      .flatMap { case (_, proposals) => List(proposals.head) }(collection.breakOut)
+  {
+    val x = proposals.groupBy(_.getLabel)
+    (x.flatMap { case (_, proposals) => List(proposals.head) }).toList
+  }
 }

@@ -74,7 +74,8 @@ trait JavaSig { pc: ScalaPresentationCompiler =>
             case AnnotatedType(_, atp) =>
               apply(atp)
             case _ =>
-              foldOver(tp)
+              //TODO: Absent in 2.13. Do we really need this?
+              //foldOver(tp)
           }
         }
       }

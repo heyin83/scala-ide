@@ -3,8 +3,6 @@
  */
 package org.scalaide.debug.internal.hcr
 
-import scala.collection.mutable.Publisher
-import scala.collection.mutable.Subscriber
 import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
@@ -20,6 +18,9 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 import org.scalaide.core.testsetup.SDTTestUtils
+import org.scalaide.core.Publisher
+import org.scalaide.core.Subscriber
+
 import org.scalaide.core.testsetup.TestProjectSetup
 import org.scalaide.debug.internal.ScalaDebugRunningTest
 import org.scalaide.debug.internal.ScalaDebugTestSession

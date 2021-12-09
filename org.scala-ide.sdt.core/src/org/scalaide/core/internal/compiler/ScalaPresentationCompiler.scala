@@ -106,7 +106,7 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
     }
   }
 
-  override def forScaladoc = true
+  //TODO Absent in 2.13 override def forScaladoc = true
 
   def presentationReporter: ScalaPresentationCompiler.PresentationReporter = reporter match {
     case reporter: ScalaPresentationCompiler.PresentationReporter => reporter

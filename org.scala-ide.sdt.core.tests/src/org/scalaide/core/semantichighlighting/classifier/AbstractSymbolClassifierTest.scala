@@ -31,7 +31,12 @@ class AbstractSymbolClassifierTest {
     checkSymbolInfoClassification(source, locationTemplate, regionTagToSymbolType.mapValues(symbolType => SymbolInfo(symbolType, Nil, deprecated = false, inInterpolatedString = false)))
   }
 
-  protected def checkSymbolInfoClassification(source: String, locationTemplate: String, regionTagToSymbolInfo: Map[String, SymbolInfo], delimiter: Char = '$'): Unit = {
+  protected def checkSymbolInfoClassification(
+    source: String,
+    locationTemplate: String,
+    regionTagToSymbolInfo: scala.collection.MapView[String, SymbolInfo],
+    delimiter: Char = '$'): Unit =
+    {
     val expectedRegionToSymbolNameMap: Map[IRegion, String] = RegionParser.delimitedRegions(locationTemplate, delimiter)
     val expectedRegionsAndSymbols: List[(IRegion, SymbolInfo)] =
       expectedRegionToSymbolNameMap.mapValues(regionTagToSymbolInfo).toList sortBy regionOffset

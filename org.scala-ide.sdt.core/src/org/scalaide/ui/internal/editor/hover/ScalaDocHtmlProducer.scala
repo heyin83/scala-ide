@@ -34,7 +34,7 @@ class ScalaDocHtmlProducer extends HtmlHover {
     case HorizontalRule() => <hr/>
   }
 
-  private def listItemsToHtml(items: Seq[comment.Block]) =
+  private def listItemsToHtml(items: scala.collection.Seq[comment.Block]) =
     items.foldLeft(NodeSeq.Empty) { (xmlList, item) =>
       item match {
         case OrderedList(_, _) | UnorderedList(_) => // html requires sub ULs to be put into the last LI

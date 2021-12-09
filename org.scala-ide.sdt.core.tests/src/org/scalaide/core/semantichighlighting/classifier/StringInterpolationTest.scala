@@ -53,7 +53,7 @@ class StringInterpolationTest extends AbstractSymbolClassifierTest {
           "STR_LOCAL_VAL" -> SymbolInfo(LocalVal, Nil, deprecated = false, inInterpolatedString = true),
           "STR_LOCAL_VAR" -> SymbolInfo(LocalVar, Nil, deprecated = false, inInterpolatedString = true),
           "STR_LAZY_LOCAL_VAL" -> SymbolInfo(LazyLocalVal, Nil, deprecated = false, inInterpolatedString = true)
-          ),
+          ).view,
       '@')
   }
 
@@ -75,7 +75,7 @@ class StringInterpolationTest extends AbstractSymbolClassifierTest {
       Map("STR_VAL" -> SymbolInfo(TemplateVal, Nil, deprecated = false, inInterpolatedString = true),
           "METHOD" -> SymbolInfo(Method, Nil, deprecated = false, inInterpolatedString = true),
           "STR_METH" -> SymbolInfo(Method, Nil, deprecated = false, inInterpolatedString = true),
-          "TO_UPPER" -> SymbolInfo(Method, Nil, deprecated = false, inInterpolatedString = true)),
+          "TO_UPPER" -> SymbolInfo(Method, Nil, deprecated = false, inInterpolatedString = true)).view,
       '@')
   }
 }

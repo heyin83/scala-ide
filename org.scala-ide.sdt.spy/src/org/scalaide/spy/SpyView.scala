@@ -133,8 +133,9 @@ class SpyView extends ViewPart with HasLogger {
                 val frame = new BrowserFrame()
                 frame.setTreeModel(tm)
 
+                //TODO: upgrade to scala 2.13
                 // throw-away lock, since we don't need to wait for the frame
-                frame.createFrame(new Suppress.DeprecatedWarning.Lock())
+                //frame.createFrame(new Suppress.DeprecatedWarning.Lock())
               case Right(ex) =>
                 eclipseLog.warn("Could not retrieve typed tree", ex)
             }

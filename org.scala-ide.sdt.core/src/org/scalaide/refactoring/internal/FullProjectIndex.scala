@@ -14,6 +14,7 @@ import org.eclipse.search.core.text.TextSearchEngine
 import org.eclipse.search.core.text.TextSearchMatchAccess
 import org.eclipse.search.core.text.TextSearchRequestor
 import org.eclipse.search.ui.text.FileTextSearchScope
+import org.scalaide.core.compiler.IScalaPresentationCompiler
 import org.scalaide.core.compiler.IScalaPresentationCompiler.Implicits._
 
 /**
@@ -173,7 +174,7 @@ trait FullProjectIndex extends HasLogger {
         project.presentationCompiler { compiler =>
           compiler.asyncExec {
             refactoring.CompilationUnitIndex(tree)
-          } getOption()
+          } getOption(IScalaPresentationCompiler.AskTimeout)
         }.flatten.toList
       }
     } else Nil

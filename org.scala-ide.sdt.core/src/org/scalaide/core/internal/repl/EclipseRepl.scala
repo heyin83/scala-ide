@@ -147,8 +147,10 @@ object EclipseRepl
   {
     def interpreter(i: Init) = new Interpreter
     {
-      val intp = new scala.tools.nsc.interpreter.IMain(i)
-      intp.initializeSynchronous()
+      val reporter = new scala.tools.nsc.interpreter.shell.ReplReporterImpl(i)
+      val intp = new scala.tools.nsc.interpreter.IMain(i, reporter)
+      //TODO: Absent in 2.13
+      //intp.initializeSynchronous()
 
       def interpret(e: Exec) = {
         val r = intp.interpret(e)

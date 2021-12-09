@@ -8,6 +8,7 @@ import scala.tools.refactoring.implementations
 
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.ltk.core.refactoring.RefactoringStatus
+import org.scalaide.core.compiler.IScalaPresentationCompiler
 import org.scalaide.core.compiler.IScalaPresentationCompiler.Implicits._
 import org.scalaide.core.internal.jdt.model.ScalaSourceFile
 import org.scalaide.core.internal.statistics.Features.GlobalRename
@@ -87,7 +88,7 @@ class GlobalRename extends RefactoringExecutorWithWizard {
 
       refactoring.global.asyncExec {
         refactoring.doesNameCollide(name, selectedSymbol)
-      } getOption() map {
+      } getOption(IScalaPresentationCompiler.AskTimeout) map {
         case Nil => ()
         case collisions =>
           val names = collisions map (s => s.fullName) mkString ", "

@@ -104,12 +104,16 @@ object TextPresentationEditorHighlighter {
   private class ApplyHighlightingTextPresentationChanges(reconciler: Job, positionsTracker: PositionsTracker, preferences: Preferences) extends IPropertyChangeListener with ITextPresentationListener with HasLogger {
 
     private var semanticCategory2style: immutable.Map[SymbolTypes.SymbolType, HighlightingStyle] = {
-      (for (symType <- SymbolTypes.values) yield (symType -> HighlightingStyle(preferences, symType)))(collection.breakOut)
+      var result: Map[SymbolTypes.SymbolType, HighlightingStyle] = Map[SymbolTypes.SymbolType, HighlightingStyle]()
+      for (symType <- SymbolTypes.values) {
+        result += (symType -> HighlightingStyle(preferences, symType))
+      }
+      result
     }
 
     override def propertyChange(event: PropertyChangeEvent): Unit = {
       if (event.getProperty().startsWith(ScalaSyntaxClasses.IDENTIFIER_IN_INTERPOLATED_STRING.baseName + ".")) {
-        val syms: Set[SymbolTypes.SymbolType] = positionsTracker.identifiersInInterpolatedStrings.map(_.kind)(collection.breakOut)
+        val syms: Set[SymbolTypes.SymbolType] = positionsTracker.identifiersInInterpolatedStrings.map(_.kind).view.to(Set)
         invalidateSymTypes(syms.toSeq: _*)
       } else {
         for {

@@ -5,6 +5,7 @@ import scala.reflect.internal.util.RangePosition
 
 import org.eclipse.jface.text.IDocument
 import org.scalaide.core.compiler.InteractiveCompilationUnit
+import org.scalaide.core.compiler.IScalaPresentationCompiler
 import org.scalaide.core.internal.quickassist.RelevanceValues
 import org.scalaide.core.internal.statistics.Features.FixSpellingMistake
 import org.scalaide.core.quickassist.BasicCompletionProposal
@@ -48,7 +49,7 @@ object ChangeCaseProposal {
           val typedTree = typer.typed(tree)
           val tpe = typedTree.tpe.resultType.underlying
           if (tpe.isError) Nil else tpe.members.map(_.nameString).toList.distinct
-        } getOption()
+        } getOption(IScalaPresentationCompiler.AskTimeout)
       }
 
       memberNames.flatten.getOrElse(Nil)
@@ -64,7 +65,7 @@ object ChangeCaseProposal {
         compiler.asyncExec {
           val completed = compiler.askScopeCompletion(new RangePosition(srcFile, offset, offset, offset))
           completed.getOrElse(Nil)().map(_.sym.nameString).distinct
-        } getOption()
+        } getOption(IScalaPresentationCompiler.AskTimeout)
       }
       memberNames.flatten.getOrElse(Nil)
     }

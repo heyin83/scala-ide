@@ -18,7 +18,7 @@ class ScalaJdiEventDispatcherTest {
 
     Thread.sleep(1000)
     running = false
-    Await.ready(tested, 100 millis)
+    Await.ready(tested, 100.millis)
     Assert.assertTrue(probe > 1)
   }
 
@@ -30,7 +30,7 @@ class ScalaJdiEventDispatcherTest {
     val tested = Dispatch(running)(colaborator)
 
     Thread.sleep(1000)
-    Await.ready(tested, 100 millis)
+    Await.ready(tested, 100.millis)
     Assert.assertTrue(probe == 0)
   }
 
@@ -49,7 +49,7 @@ class ScalaJdiEventDispatcherTest {
 
     Thread.sleep(1000)
     running = false
-    Await.ready(tested, 100 millis)
+    Await.ready(tested, 100.millis)
     Assert.assertTrue(probe > 1)
     Assert.assertTrue(recovered == 1)
   }

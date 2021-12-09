@@ -2,6 +2,7 @@ package org.scalaide.core.internal.quickassist
 package createmethod
 
 import org.eclipse.jdt.core.IJavaElement
+import org.scalaide.core.compiler.IScalaPresentationCompiler
 import org.scalaide.core.compiler.IScalaPresentationCompiler.Implicits._
 import org.scalaide.core.compiler.InteractiveCompilationUnit
 import org.scalaide.logging.HasLogger
@@ -36,7 +37,7 @@ class MissingMemberInfo(
               compiler.getJavaElement(tpe.typeSymbol, icu.scalaProject.javaProject).map(_.getParent)
           }
           elements.flatten.toSet[IJavaElement]
-        } getOption()
+        } getOption(IScalaPresentationCompiler.AskTimeout)
       }
     }.flatten
 

@@ -65,7 +65,7 @@ case class ExtendedContext(currentFrame: StackFrame)
           candidateMethod <- thisEntry.referenceType.methods().asScala if isCandidate(candidateMethod)
         } yield NestedMethodImplementation(transformation.nameMap(thisEntry),
             candidateMethod.name(),
-            candidateMethod.arguments().asScala.map(_.name()))
+            candidateMethod.arguments().asScala.map(_.name()).toList)
 
         nestedMethodsImplementations match {
           case Seq(onlyCandidate) =>

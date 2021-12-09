@@ -17,6 +17,6 @@ class DeprecatedMethodTest extends AbstractSymbolClassifierTest {
         @deprecated def $   DEP_METH   $() = 12
         val a = $   DEP_METH   $
       }""",
-      Map("DEP_METH" -> SymbolInfo(Method, Nil, deprecated = true, inInterpolatedString = false)))
+      Map("DEP_METH" -> SymbolInfo(Method, Nil, deprecated = true, inInterpolatedString = false)).view)
   }
 }

@@ -12,7 +12,7 @@ object IDESettings {
 
     List(
       Box("Standard",
-        // TODO: re-enable -Xlint when the changes to Mutable#settings has been stabilised
+        // TODO: re-enable -Xlint when the changes to Mutable#settings has been stabilized
         // in Scala master and some of the PRs with the old code have been through. See #1002253
         List(/*lint, */deprecation, feature, g, optimise, target, unchecked,
              pluginOptions, nospecialization, verbose, explaintypes, nowarn)),
@@ -20,7 +20,9 @@ object IDESettings {
       List(checkInit, elidebelow,
              Xexperimental, future,
              //TODO: absent in 2.13 XlogImplicits,
-             noassertions, nouescape, plugin, disable,
+             noassertions,
+             //TODO: absent in 2.13 nouescape,
+             plugin, disable,
              require, pluginsDir, fatalWarnings)),
       Box("Presentation Compiler",
         List(YpresentationDebug, YpresentationVerbose, YpresentationLog, YpresentationReplay, YpresentationDelay)))

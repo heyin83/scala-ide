@@ -146,10 +146,10 @@ class ScalaStackFrame private (val thread: ScalaThread, @volatile private var st
 
   private lazy val variables: Seq[ScalaVariable] = jdiSynchronized {
     (safeStackFrameCalls(Nil) or wrapJDIException("Exception while retrieving stack frame's visible variables")) {
-      import scala.collection.JavaConverters._
+      import scala.jdk.javaapi.CollectionConverters
       val visibleVariables = {
         (Exception.handling(classOf[AbsentInformationException]) by (_ => Seq.empty)) {
-          stackFrame.visibleVariables.asScala.map(new ScalaLocalVariable(_, this))
+          CollectionConverters.asScala(stackFrame.visibleVariables).map(new ScalaLocalVariable(_, this)).toList
         }
       }
 

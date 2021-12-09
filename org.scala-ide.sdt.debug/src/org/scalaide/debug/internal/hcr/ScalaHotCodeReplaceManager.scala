@@ -5,7 +5,6 @@ package org.scalaide.debug.internal.hcr
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-import scala.collection.mutable.Publisher
 import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
@@ -15,6 +14,8 @@ import org.eclipse.core.resources.IResourceChangeListener
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.debug.core.DebugEvent
 import org.eclipse.debug.core.DebugPlugin
+
+import org.scalaide.core.Publisher
 import org.scalaide.debug.internal.model.ScalaDebugTarget
 import org.scalaide.debug.internal.preferences.HotCodeReplacePreferences
 import org.scalaide.logging.HasLogger
@@ -206,10 +207,10 @@ private[internal] trait HotCodeReplaceExecutor extends Publisher[HCRResult] with
 
   private def getTypesToBytes(changedClasses: Seq[ClassFileResource]): Map[ReferenceType, Array[Byte]] =
     changedClasses.flatMap { changedClass =>
-      val classes: Seq[ReferenceType] = classesByName(changedClass.fullyQualifiedName).asScala
+      val classes: Seq[ReferenceType] = classesByName(changedClass.fullyQualifiedName).asScala.toList
       val bytes = org.eclipse.jdt.internal.core.util.Util.getResourceContentsAsByteArray(changedClass.classFile)
       classes.map(_ -> bytes)
-    }(collection.breakOut)
+    }.toMap
 
   private def classesByName(name: String) = debugTarget.virtualMachine.classesByName(name)
 

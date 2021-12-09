@@ -4,6 +4,8 @@
 package org.scalaide.debug.internal.expression
 package features
 
+import scala.language.postfixOps
+
 import org.junit.Ignore
 import org.junit.Test
 import org.scalaide.debug.internal.expression.BaseIntegrationTest

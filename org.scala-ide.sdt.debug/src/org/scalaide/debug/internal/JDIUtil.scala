@@ -17,7 +17,7 @@ object JDIUtil {
     import scala.collection.JavaConverters._
 
     try {
-      method.allLineLocations.asScala.map(_.lineNumber)
+      method.allLineLocations.asScala.map(_.lineNumber).toList
     } catch {
       case _: AbsentInformationException =>
         Nil
@@ -36,7 +36,7 @@ object JDIUtil {
         } catch {
           case _: AbsentInformationException =>
             Nil
-        })
+        }).toList
   }
 
   import scala.util.control.Exception
