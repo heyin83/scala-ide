@@ -67,6 +67,7 @@
     <scala213.binary.version>2.13</scala213.binary.version>
     <scala213.scala-xml.version>2.0.1</scala213.scala-xml.version>
     <scala213.scala-parser-combinators.version>2.1.0</scala213.scala-parser-combinators.version>
+    <scala213.scala-parallel-collections.version>1.0.4</scala213.scala-parallel-collections.version>
 
     <!-- Scala 2.12.x -->
     <scala212.version>2.12.15</scala212.version>
@@ -107,6 +108,7 @@
         <scala.short.version>213</scala.short.version>
         <scala.minor.version>2.13</scala.minor.version>
         <version.suffix>2_13</version.suffix>
+        <scala-parallel-collections.version>${scala213.scala-parallel-collections.version}</scala-parallel-collections.version>
       </properties>
     </profile>
 
@@ -292,6 +294,7 @@
                           <filter token="SCALA_VERSION" value="${scala.version}"/>
                           <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
                           <filter token="SCALA_IDE_VERSION" value="${version}"/>
+                          <filter token="SCALA_PARALLEL_COLLECTIONS_VERSION" value="${scala-parallel-collections.version}"/>
                           <filter token="FILE_TREE_VIEWS_VERSION" value="${file-tree-views.version}"/>
                           <filter token="JNA_VERSION" value="${jna.version}"/>
                           <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
@@ -330,6 +333,7 @@
                           <filter token="SCALA_VERSION" value="${scala.version}"/>
                           <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
                           <filter token="SCALA_IDE_VERSION" value="${version}"/>
+                          <filter token="SCALA_PARALLEL_COLLECTIONS_VERSION" value="${scala-parallel-collections.version}"/>
                           <filter token="FILE_TREE_VIEWS_VERSION" value="${file-tree-views.version}"/>
                           <filter token="JNA_VERSION" value="${jna.version}"/>
                           <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>

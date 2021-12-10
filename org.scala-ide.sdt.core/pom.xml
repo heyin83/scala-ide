@@ -132,6 +132,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.scala-lang.modules</groupId>
+      <artifactId>scala-parallel-collections_${scala213.binary.version}</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.scala-ide</groupId>
       <artifactId>org.scala-refactoring.library</artifactId>
       <version>4.7.1-SNAPSHOT</version>
@@ -148,7 +154,6 @@
       <artifactId>scalariform_${scala.minor.version}</artifactId>
       <version>${scalariform.version}</version>
     </dependency>
-
 
     <dependency>
         <groupId>com.swoval</groupId>
@@ -360,6 +365,23 @@
                   <groupId>org.scala-lang</groupId>
                   <artifactId>scalap</artifactId>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.scala-lang</groupId>
+                  <artifactId>scalap</artifactId>
+                  <classifier>sources</classifier>
+                </artifactItem>
+
+               <artifactItem>
+                 <groupId>org.scala-lang.modules</groupId>
+                 <artifactId>scala-parallel-collections_${scala213.binary.version}</artifactId>
+               </artifactItem>
+
+               <artifactItem>
+                 <groupId>org.scala-lang.modules</groupId>
+                 <artifactId>scala-parallel-collections_${scala213.binary.version}</artifactId>
+                 <classifier>sources</classifier>
+               </artifactItem>
+
               </artifactItems>
             </configuration>
           </execution>
