@@ -173,6 +173,8 @@
         <zinc.source.feature.dir>org.scala-ide.zinc/org.scala-ide.zinc.source.feature</zinc.source.feature.dir>
         <scala212.feature.dir>org.scala-ide.scala212.build/org.scala-ide.scala212.feature</scala212.feature.dir>
         <scala212.source.feature.dir>org.scala-ide.scala212.build/org.scala-ide.scala212.source.feature</scala212.source.feature.dir>
+        <scala213.feature.dir>org.scala-ide.scala213.build/org.scala-ide.scala213.feature</scala213.feature.dir>
+        <scala213.source.feature.dir>org.scala-ide.scala213.build/org.scala-ide.scala213.source.feature</scala213.source.feature.dir>
         <sdt.core.dir>org.scala-ide.sdt.core</sdt.core.dir>
         <sdt.debug.dir>org.scala-ide.sdt.debug</sdt.debug.dir>
         <sdt.debug.expression.dir>org.scala-ide.sdt.debug.expression</sdt.debug.expression.dir>
@@ -264,6 +266,40 @@
                   <resources>
                     <resource>
                       <directory>${scala212.source.feature.dir}/resources</directory>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                  <overwrite>true</overwrite>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-resources-scala213-feature</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${scala213.feature.dir}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${scala213.feature.dir}/resources</directory>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                  <overwrite>true</overwrite>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-resources-scala213-source-feature</id>
+                <phase>validate</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${scala213.source.feature.dir}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${scala213.source.feature.dir}/resources</directory>
                       <filtering>true</filtering>
                     </resource>
                   </resources>

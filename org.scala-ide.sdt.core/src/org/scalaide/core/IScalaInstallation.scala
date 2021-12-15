@@ -5,7 +5,7 @@ import scala.tools.nsc.settings.ScalaVersion
 import org.eclipse.jdt.core.IClasspathEntry
 
 /**
- * This trait represents a handle on a Scala compiler module, and its component jars.
+ * This trait represents a handle on a Scala module, and its component jars.
  * e.g. scala-compiler, scala-library, scala-reflect, scala-xml ...
  * Immutable.
  */
@@ -60,9 +60,9 @@ trait IScalaInstallation {
 
 
 /**
- * This trait symbolises a Scala Installation Choice.
+ * This trait symbolizes a Scala Installation Choice.
  * Commonly implemented as a case class with several utility methods.
- * The marker consitutes the choice, it can be :
+ * The marker constitutes the choice, it can be :
  * - either a Scala version, in which case the Scala Installation to be used will be
  *   the latest available bundle with the same binary-compatible version (same major, minor) as the one specified
  * - either an Int representing a hash, which points to the hash of an available Scala Installation.
