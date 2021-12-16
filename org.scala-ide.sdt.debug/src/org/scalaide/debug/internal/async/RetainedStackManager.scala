@@ -123,7 +123,7 @@ class RetainedStackManager(debugTarget: ScalaDebugTarget) extends HasLogger {
   private val programPoints = {
     val app = ScalaDebugPlugin.plugin.getPreferenceStore.getString(AsyncDebuggerPreferencePage.AsyncProgramPoints)
     app.split(AsyncDebuggerPreferencePage.DataDelimiter).map(_.split(",")).map {
-      case Array(className, methodName, paramIdx) ⇒ AsyncProgramPoint(className, methodName, paramIdx.toInt)
+      case Array(className, methodName, paramIdx) => AsyncProgramPoint(className, methodName, paramIdx.toInt)
     }.toList
   }
 
@@ -133,7 +133,7 @@ class RetainedStackManager(debugTarget: ScalaDebugTarget) extends HasLogger {
 
   def start(): Unit = if (debugTarget.getLaunch.getLaunchConfiguration.getAttribute(LaunchWithAsyncDebugger, false)) {
     programPoints foreach {
-      case app @ AsyncProgramPoint(clazz, _, _) ⇒
+      case app @ AsyncProgramPoint(clazz, _, _) =>
         val refType = debugTarget.virtualMachine.classesByName(clazz).asScala
         if (!refType.isEmpty)
           installMethodBreakpoint(refType(0), app)

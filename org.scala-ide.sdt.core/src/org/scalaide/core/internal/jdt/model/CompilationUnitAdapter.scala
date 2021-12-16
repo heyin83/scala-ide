@@ -181,7 +181,7 @@ class CompilationUnitAdapter(classFile : ScalaClassFile) extends Openable(classF
   def getPrimary() : ICompilationUnit = this
   def getOwner() : WorkingCopyOwner = DefaultWorkingCopyOwner.PRIMARY
   def getPackageDeclaration(name : String) : IPackageDeclaration = throw new UnsupportedOperationException
-  def getPackageDeclarations() : Array[IPackageDeclaration] = Array(new CompilationUnitAdapter.ScalaPackageDeclaration(classFile.getPackage))
+  def getPackageDeclarations() : Array[IPackageDeclaration] = Array(new CompilationUnitAdapter.ScalaPackageDeclaration(classFile.getPackage()))
   def getType(name : String) : IType = if (name == classFile.getTypeName()) classFile.getType() else throw new UnsupportedOperationException
   def getTypes() : Array[IType] = Array(classFile.getType())
   def getWorkingCopy(monitor : IProgressMonitor) : ICompilationUnit = classFile.getWorkingCopy(null, monitor)

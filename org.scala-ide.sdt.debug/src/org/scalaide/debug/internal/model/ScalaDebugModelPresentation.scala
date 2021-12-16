@@ -180,7 +180,7 @@ class ScalaDebugModelPresentation extends IDebugModelPresentation with IInstruct
    * TODO: support for missing line numbers
    */
   def getScalaStackFrameText(stackFrame: ScalaStackFrame): String = {
-    "%s line: %s".format(stackFrame.getMethodFullName, {
+    "%s line: %s".format(stackFrame.getMethodFullName(), {
       val lineNumber = stackFrame.getLineNumber
       if (lineNumber == -1) {
         "not available"

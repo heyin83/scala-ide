@@ -58,9 +58,9 @@ abstract class ScalaVariable(target: ScalaDebugTarget) extends ScalaDebugElement
 
 class ScalaThisVariable(underlying: ObjectReference, stackFrame: ScalaStackFrame) extends ScalaVariable(stackFrame.getDebugTarget) {
 
-  override protected def doGetName: String = "this"
-  override protected def doGetReferenceTypeName: String = underlying.referenceType.name
-  override protected def doGetValue: IValue = new ScalaObjectReference(underlying, getDebugTarget)
+  override protected def doGetName(): String = "this"
+  override protected def doGetReferenceTypeName(): String = underlying.referenceType.name
+  override protected def doGetValue(): IValue = new ScalaObjectReference(underlying, getDebugTarget)
 }
 
 class ScalaLocalVariable(underlying: LocalVariable, stackFrame: ScalaStackFrame) extends ScalaVariable(stackFrame.getDebugTarget) {
@@ -69,7 +69,7 @@ class ScalaLocalVariable(underlying: LocalVariable, stackFrame: ScalaStackFrame)
   override protected def doGetReferenceTypeName(): String = underlying.typeName
 
   // fetching the value for local variables cannot be delayed because the underlying stack frame element may become invalid at any time
-  override protected def doGetValue: IValue = ScalaValue(stackFrame.stackFrame.getValue(underlying), getDebugTarget)
+  override protected def doGetValue(): IValue = ScalaValue(stackFrame.stackFrame.getValue(underlying), getDebugTarget)
 }
 
 class ScalaArrayElementVariable(index: Int, arrayReference: ScalaArrayReference) extends ScalaVariable(arrayReference.getDebugTarget) {

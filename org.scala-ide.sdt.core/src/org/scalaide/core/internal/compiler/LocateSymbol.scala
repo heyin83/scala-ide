@@ -72,7 +72,7 @@ trait LocateSymbol { self: ScalaPresentationCompiler =>
       } else
         findPath()
 
-    findSourceFile.fold(findClassFile()) { f =>
+    findSourceFile().fold(findClassFile()) { f =>
       Option(SourceFileProviderRegistry.getProvider(f)).flatMap(_.createFrom(f))
     }
   }

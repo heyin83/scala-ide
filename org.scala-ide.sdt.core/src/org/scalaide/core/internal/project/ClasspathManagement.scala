@@ -312,7 +312,7 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
             if folder.findMember(new Path("scala/Predef.scala")) ne null
             if folder.getProject != underlying // only consider a source library if it comes from a different project
             dependentPrj <- ScalaPlugin().asScalaProject(folder.getProject)
-            (srcPath, binFolder) <- dependentPrj.sourceOutputFolders
+            (srcPath, binFolder) <- dependentPrj.sourceOutputFolders()
             if srcPath.getProjectRelativePath == folder.getProjectRelativePath
           } {
             fragmentRoots += ScalaLibrary(binFolder.getLocation, getVersionNumber(fragmentRoot), isProject = true)
@@ -375,9 +375,9 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
     val scalaVersion = ScalaPlugin().scalaVersion.unparse
     val mode = getCompatibilityMode
     val expectedVersion = mode match {
-      case Same ⇒ scalaVersion
-      case Previous ⇒ previousShortString(ScalaPlugin().scalaVersion)
-      case Subsequent ⇒ subsequentShortString(ScalaPlugin().scalaVersion)
+      case Same => scalaVersion
+      case Previous => previousShortString(ScalaPlugin().scalaVersion)
+      case Subsequent => subsequentShortString(ScalaPlugin().scalaVersion)
     }
 
     def noLibFound =
@@ -419,14 +419,14 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
         ClasspathErrorMarker(IMarker.SEVERITY_WARNING, moreThanOneLibraryError(fragmentRoots.map(_.location), compatible = true), SdtConstants.ClasspathProblemMarkerId) :: Nil
 
     fragmentRoots match {
-      case Seq() ⇒
+      case Seq() =>
         noLibFound
-      case Seq(library) ⇒
+      case Seq(library) =>
         if (library.isProject)
           Nil
         else
           singleLibFound(library)
-      case _ ⇒
+      case _ =>
         multipleLibsFound
     }
   }
@@ -491,11 +491,11 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
 
   private def validateBinaryVersionsOnClasspath(): Seq[ClasspathErrorMarker] = {
     scalaClasspath.userCp.foldLeft(List[ClasspathErrorMarker]()) {
-      case (errors, entry) if entry ne null ⇒ entry.lastSegment() match {
-        case VersionInFile(version, _) if !ScalaPlugin().isCompatibleVersion(version, this) ⇒
+      case (errors, entry) if entry ne null => entry.lastSegment() match {
+        case VersionInFile(version, _) if !ScalaPlugin().isCompatibleVersion(version, this) =>
           val msg = s"${entry.lastSegment()} of ${underlying.getName()} build path is cross-compiled with an incompatible version of Scala (${version.unparse}). In case this report is mistaken, this check can be disabled in the compiler preference page."
           ClasspathErrorMarker(IMarker.SEVERITY_ERROR, msg, SdtConstants.ScalaVersionProblemMarkerId) :: errors
-        case _ ⇒
+        case _ =>
           // ignore libraries that aren't cross compiled/are compatible
           errors
       }
@@ -527,12 +527,12 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
 
     plugins.foldLeft(List[ClasspathErrorMarker]()) {
       // plugins cross compiled with full Scala version
-      case (errors, p @ VersionInFile(version, true)) if version != installation.version ⇒
+      case (errors, p @ VersionInFile(version, true)) if version != installation.version =>
         error(version, p) :: errors
       // plugins cross compiled with binary Scala version
-      case (errors, p @ VersionInFile(version, false)) if !CompilerUtils.isBinarySame(version, installation.version) ⇒
+      case (errors, p @ VersionInFile(version, false)) if !CompilerUtils.isBinarySame(version, installation.version) =>
         error(version, p) :: errors
-      case (errors, _) ⇒
+      case (errors, _) =>
         errors
     }
   }

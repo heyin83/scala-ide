@@ -11,11 +11,11 @@ trait SourcePathFinder {
 
   def apply(project: IScalaProject, className: String): Option[String] = {
     import org.scalaide.core.internal.builder.zinc.`package`.fileConverter
-    val analyses = (project.buildManager.latestAnalysis, sourceFolders(project)) ::
+    val analyses = (project.buildManager().latestAnalysis, sourceFolders(project)) ::
       project.transitiveDependencies.toList.collect {
         case project if IScalaPlugin().asScalaProject(project).isDefined =>
           val sproject = IScalaPlugin().getScalaProject(project)
-          (sproject.buildManager.latestAnalysis, sourceFolders(sproject))
+          (sproject.buildManager().latestAnalysis, sourceFolders(sproject))
       }
     //TODO upgrade to scala 2.12.15
     analyses.collect {

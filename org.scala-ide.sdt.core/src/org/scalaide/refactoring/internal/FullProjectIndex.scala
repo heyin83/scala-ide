@@ -51,7 +51,7 @@ trait FullProjectIndex extends HasLogger {
 
     def allProjectSourceFiles: Seq[String] = {
       if (hints.isEmpty) {
-        project.allSourceFiles.map(_.getFullPath.toString).toSeq
+        project.allSourceFiles().map(_.getFullPath.toString).toSeq
       } else {
         val searchInProject = Array[IResource](project.javaProject.getResource)
         val scope = FileTextSearchScope.newSearchScope(searchInProject, Array("*.scala"), false /*ignore derived resources*/)

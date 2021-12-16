@@ -1,7 +1,6 @@
 package org.scalaide.refactoring.internal
 package move
 
-import scala.language.reflectiveCalls
 import scala.tools.refactoring.analysis.GlobalIndexes
 import scala.tools.refactoring.common.NewFileChange
 import scala.tools.refactoring.common.TextChange
@@ -42,9 +41,9 @@ class MoveClass extends RefactoringExecutorWithWizard {
     def refactoringParameters = refactoring.RefactoringParameters(target.getElementName, moveSingleImpl)
 
     def setMoveSingleImpl(moveSingle: Boolean): Unit = {
-      if(moveSingle && preparationResult.isRight) {
+      if(moveSingle && preparationResult().isRight) {
         // the function is never called if we don't have a value:
-        moveSingleImpl = preparationResult.right.get
+        moveSingleImpl = preparationResult().right.get
       } else {
         moveSingleImpl = None
       }
@@ -94,14 +93,14 @@ class MoveClass extends RefactoringExecutorWithWizard {
 
           // Otherwise, create a new file with the changes's content.
           case newFile :: _ =>
-            val pth = target.getPath.append(preparationResult.right.get.get.name.toString + ".scala")
+            val pth = target.getPath.append(preparationResult().right.get.get.name.toString + ".scala")
             add(new CreateFileChange(pth, newFile.text, file.getResource.asInstanceOf[IFile].getCharset))
         }
       }
     }
 
     override def getPages = {
-      val selectedImpl = preparationResult.right.toOption flatMap (_.map(_.name.toString))
+      val selectedImpl = preparationResult().right.toOption flatMap (_.map(_.name.toString))
       List(new ui.MoveClassRefactoringConfigurationPage(file.getResource(), selectedImpl, target_=, setMoveSingleImpl))
     }
 
@@ -122,7 +121,7 @@ class MoveClass extends RefactoringExecutorWithWizard {
       // the changes contain either a NewFileChange or we need to move the current file.
 
       val (textChanges, newFileChanges) = {
-        (performRefactoring() :\ (List[TextChange]() → List[NewFileChange]())) {
+        (performRefactoring() :\ (List[TextChange]() -> List[NewFileChange]())) {
           case (change: TextChange, (textChanges, newFiles)) =>
             (change :: textChanges, newFiles)
           case (change: NewFileChange, (textChanges, newFilesChanges)) =>

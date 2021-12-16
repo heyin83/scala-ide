@@ -54,7 +54,7 @@ object ScalaIdeDataStore {
    * represents `location` if the path is valid. The return value of `f` is
    * returned in this case, otherwise `f` is not called and `None` is returned.
    */
-  def validate[A](location: String)(f: File ⇒ A): Option[A] = {
+  def validate[A](location: String)(f: File => A): Option[A] = {
     EclipseUtils.withSafeRunner(s"Error while trying to access data store file '$location'") {
       f(validateFile(location))
     }

@@ -13,9 +13,9 @@ object ScalaSourceLookupParticipant extends AbstractSourceLookupParticipant {
   def getSourceName(obj: AnyRef): String = {
     obj match {
       case stackFrame: ScalaStackFrame =>
-        stackFrame.getSourcePath
+        stackFrame.getSourcePath()
       case sf: AsyncStackFrame =>
-        sf.getSourcePath
+        sf.getSourcePath()
       case _ =>
         null
     }

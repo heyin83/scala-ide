@@ -155,13 +155,13 @@ private[internal] trait HotCodeReplaceExecutor extends Publisher[HCRResult] with
   private def waitForBarrier(): Unit = {
     if (doHotCodeReplaceBarrier.getAndSet(true)) {
       while (doHotCodeReplaceBarrier.get) {}
-      waitForBarrier
+      waitForBarrier()
     }
   }
 
   private def doHotCodeReplace(launchName: String, typesToReplace: Seq[ClassFileResource]): Unit = {
     logger.debug(s"Performing Hot Code Replace for debug configuration '$launchName'")
-    waitForBarrier
+    waitForBarrier()
     debugTarget.isPerformingHotCodeReplace.getAndSet(true)
     // FIXME We need the automatic semantic dropping frames BEFORE HCR to prevent VM crashes.
     // We should drop possibly affected frames in this place (remember to wait for the end of such

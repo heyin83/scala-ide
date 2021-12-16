@@ -126,7 +126,7 @@ class JUnit4TestFinder extends ITestFinder with ISearchMethods with HasLogger {
 
   private[core] def filteredTestResources(prj: IScalaProject, element: IJavaElement, progress: IProgressMonitor): Seq[IResource] = {
     val candidates = element match {
-      case _: IJavaProject => prj.allSourceFiles.toSeq
+      case _: IJavaProject => prj.allSourceFiles().toSeq
       case _               => Seq(element.getResource)
     }
     progress.worked(1)

@@ -39,17 +39,17 @@ object ExtensionCreators {
 
   /** Represents a Save Action that depends on [[DocumentSupport]]. */
   type DocumentSaveAction =
-    Document ⇒ SaveAction with DocumentSupport
+    Document => SaveAction with DocumentSupport
 
   /** Represents a Save Action that depends on [[CompilerSupport]]. */
   type CompilerSaveAction = (
       IScalaPresentationCompiler, IScalaPresentationCompiler#Tree,
       SourceFile, Int, Int
-    ) ⇒ SaveAction with CompilerSupport
+    ) => SaveAction with CompilerSupport
 
   /** Represents an Auto Edit. */
   type AutoEdit =
-    (Document, TextChange) ⇒ org.scalaide.extensions.AutoEdit
+    (Document, TextChange) => org.scalaide.extensions.AutoEdit
 }
 
 /**
@@ -173,7 +173,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
   private val classLoader = new AbstractFileClassLoader(outputDir, this.getClass.getClassLoader)
 
   private val settings = {
-    val s = new Settings(err ⇒ logger.error(err))
+    val s = new Settings(err => logger.error(err))
     s.outputDirs.setSingleOutput(outputDir)
     s.usejavacp.value = true
 
@@ -193,12 +193,12 @@ object ExtensionCompiler extends AnyRef with HasLogger {
      */
     def devBundles = {
       import SdtConstants._
-      val refactoringBundle = bundles.find(_.getSymbolicName == ScalaRefactoringPluginId).map(FileLocator.getBundleFile).map(ref ⇒ s"${ref}${File.separator}bin")
+      val refactoringBundle = bundles.find(_.getSymbolicName == ScalaRefactoringPluginId).map(FileLocator.getBundleFile).map(ref => s"${ref}${File.separator}bin")
 
       val pluginIds = Seq(AspectsPluginId, PluginId, DebuggerPluginId, ExpressionEvaluatorPluginId, ScalaRefactoringPluginId)
-      val devBundles = pluginIds flatMap (id ⇒ bundles.find(_.getSymbolicName == id))
+      val devBundles = pluginIds flatMap (id => bundles.find(_.getSymbolicName == id))
 
-      refactoringBundle.toSeq ++ devBundles.map(FileLocator.getBundleFile).map(ref ⇒ s"${ref}${File.separator}target${File.separator}classes")
+      refactoringBundle.toSeq ++ devBundles.map(FileLocator.getBundleFile).map(ref => s"${ref}${File.separator}target${File.separator}classes")
     }
 
     /*
@@ -235,7 +235,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
     val srcFiles = srcs map (new BatchSourceFile("<memory>", _))
     val run = new compiler.Run
 
-    compiler ask { () ⇒ run.compileSources(srcFiles.toList) }
+    compiler ask { () => run.compileSources(srcFiles.toList) }
 
     if (reporter.hasErrors || reporter.hasWarnings)
       throw new IllegalStateException(reporter.infos.mkString("Errors occurred during compilation of extension wrapper:\n", "\n", ""))
@@ -254,7 +254,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
    * function that can access an instantiation of `className` through
    * reflection.
    */
-  private case class Uncompiled(src: String, className: String, fn: (Class[_], Any) ⇒ Any) extends CreatorState
+  private case class Uncompiled(src: String, className: String, fn: (Class[_], Any) => Any) extends CreatorState
 
   /**
    * Represents an extension creator that has already been compiled and is
@@ -262,7 +262,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
    * function that can access an instantiation of `className` through
    * reflection.
    */
-  private case class Cached(cls: Class[_], fn: (Class[_], Any) ⇒ Any) extends CreatorState
+  private case class Cached(cls: Class[_], fn: (Class[_], Any) => Any) extends CreatorState
 
   private def load(fullyQualifiedName: String): CreatorState = {
     val pkg = "org.scalaide.core.internal.generated"
@@ -278,7 +278,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
     }
 
     val interfaces = try allInterfacesOf(classLoader.loadClass(fullyQualifiedName)) catch {
-      case e: ClassNotFoundException ⇒ throw new IllegalArgumentException(s"Extension '$fullyQualifiedName' doesn't exist.", e)
+      case e: ClassNotFoundException => throw new IllegalArgumentException(s"Extension '$fullyQualifiedName' doesn't exist.", e)
     }
     val isDocumentSaveAction = Set(classOf[SaveAction], classOf[DocumentSupport]) forall interfaces.contains
     val isCompilerSaveAction = Set(classOf[SaveAction], classOf[CompilerSupport]) forall interfaces.contains
@@ -287,9 +287,9 @@ object ExtensionCompiler extends AnyRef with HasLogger {
     import GeneratorData._
 
     def mkDocumentSaveAction = {
-      val fn = (cls: Class[_], obj: Any) ⇒ {
+      val fn = (cls: Class[_], obj: Any) => {
         val m = cls.getMethod("create", classOf[Document])
-        (doc: Document) ⇒
+        (doc: Document) =>
           m.invoke(obj, doc)
       }
       if (isCached)
@@ -299,9 +299,9 @@ object ExtensionCompiler extends AnyRef with HasLogger {
     }
 
     def mkCompilerSaveAction = {
-      val fn = (cls: Class[_], obj: Any) ⇒ {
+      val fn = (cls: Class[_], obj: Any) => {
         val m = cls.getMethod("create", classOf[IScalaPresentationCompiler], classOf[IScalaPresentationCompiler#Tree], classOf[SourceFile], classOf[Int], classOf[Int])
-        (c: IScalaPresentationCompiler, t: IScalaPresentationCompiler#Tree, src: SourceFile, selStart: Int, selEnd: Int) ⇒
+        (c: IScalaPresentationCompiler, t: IScalaPresentationCompiler#Tree, src: SourceFile, selStart: Int, selEnd: Int) =>
           m.invoke(obj, c, t, src, Integer.valueOf(selStart), Integer.valueOf(selEnd))
       }
       if (isCached)
@@ -311,9 +311,9 @@ object ExtensionCompiler extends AnyRef with HasLogger {
     }
 
     def mkAutoEdit = {
-      val fn = (cls: Class[_], obj: Any) ⇒ {
+      val fn = (cls: Class[_], obj: Any) => {
         val m = cls.getMethod("create", classOf[Document], classOf[TextChange])
-        (doc: Document, change: TextChange) ⇒
+        (doc: Document, change: TextChange) =>
           m.invoke(obj, doc, change)
       }
       if (isCached)
@@ -349,7 +349,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
    */
   def loadExtension[A](fullyQualifiedName: String): Try[A] = Try {
     load(fullyQualifiedName) match {
-      case Uncompiled(src, className, fn) ⇒
+      case Uncompiled(src, className, fn) =>
         compile(Seq(src))
         val cls = classLoader.loadClass(className)
         val obj = cls.newInstance()
@@ -357,7 +357,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
         logger.debug(s"Compiling Scala IDE extension '$fullyQualifiedName' was successful.")
         res
 
-      case Cached(cls, fn) ⇒
+      case Cached(cls, fn) =>
         val obj = cls.newInstance()
         val res = fn(cls, obj).asInstanceOf[A]
         logger.debug(s"Loading cached Scala IDE extension '$fullyQualifiedName' was successful.")
@@ -372,9 +372,9 @@ object ExtensionCompiler extends AnyRef with HasLogger {
    */
   def savelyLoadExtension[A](fullyQualifiedName: String): Option[A] = {
     loadExtension[A](fullyQualifiedName) match {
-      case Success(ext) ⇒
+      case Success(ext) =>
         Some(ext)
-      case Failure(f) ⇒
+      case Failure(f) =>
         logger.error(s"An error occurred while loading Scala IDE extension '$fullyQualifiedName'.", f)
         None
     }
@@ -401,8 +401,8 @@ object ExtensionGenerator extends App {
 
   import GeneratorData._
 
-  private def gen(exts: Seq[String], generator: (String, String, String) ⇒ String) =
-    exts foreach { ext ⇒
+  private def gen(exts: Seq[String], generator: (String, String, String) => String) =
+    exts foreach { ext =>
       val pkg = "org.scalaide.core.internal.generated"
       val creatorName = s"${ext.split('.').last}Creator"
       val src = generator(ext, creatorName, pkg).trim

@@ -41,7 +41,7 @@ trait CompilerSupport
    */
   final def transformFile(trans: Transformation[Tree, Tree]): Seq[Change] =
     refactor(trans(abstractFileToTree(sourceFile.file)).toList) map {
-      case scala.tools.refactoring.common.TextChange(_, from, to, text) ⇒
+      case scala.tools.refactoring.common.TextChange(_, from, to, text) =>
         TextChange(from, to, text)
     }
 }

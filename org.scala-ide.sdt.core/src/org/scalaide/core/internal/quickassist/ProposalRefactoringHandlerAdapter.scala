@@ -23,7 +23,7 @@ abstract class ProposalRefactoringHandlerAdapter(
       case r: Rename => r.getRenameRefactoring
       case r: RefactoringExecutor => r
     }
-    ra.createScalaIdeRefactoringForCurrentEditorAndSelection exists {
+    ra.createScalaIdeRefactoringForCurrentEditorAndSelection() exists {
       (refactoring) => !refactoring.checkInitialConditions(new NullProgressMonitor).hasWarning
     }
   }

@@ -1,6 +1,6 @@
 package org.scalaide.core.internal.jdt.model
 
-import java.util.{ HashMap ⇒ JHashMap }
+import java.util.{ HashMap => JHashMap }
 
 import scala.tools.eclipse.contribution.weaving.jdt.IScalaSourceFile
 import scala.tools.nsc.interactive.Response
@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.WorkingCopyOwner
 import org.eclipse.jdt.core.compiler.CharOperation
 import org.eclipse.jdt.core.compiler.IProblem
 import org.eclipse.jdt.core.dom.CompilationUnit
-import org.eclipse.jdt.internal.core.{ CompilationUnit ⇒ JDTCompilationUnit }
+import org.eclipse.jdt.internal.core.{ CompilationUnit => JDTCompilationUnit }
 import org.eclipse.jdt.internal.core.OpenableElementInfo
 import org.eclipse.jdt.internal.core.PackageFragment
 import org.eclipse.jdt.internal.core.util.HandleFactory
@@ -61,8 +61,8 @@ object ScalaSourceFile {
       val unusedScope = null
       val source = handleFactory.get().createOpenable(path, unusedScope)
       source match {
-        case ssf: ScalaSourceFile ⇒ Some(ssf)
-        case _                    ⇒ None
+        case ssf: ScalaSourceFile => Some(ssf)
+        case _                    => None
       }
     }
   }
@@ -131,10 +131,10 @@ class ScalaSourceFile(fragment: PackageFragment, elementName: String, workingCop
     codeSelect(this, offset, length, workingCopyOwner)
 
   override lazy val file: AbstractFile = {
-    val res = try { getCorrespondingResource } catch { case _: JavaModelException ⇒ null }
+    val res = try { getCorrespondingResource } catch { case _: JavaModelException => null }
     res match {
-      case f: IFile ⇒ new EclipseFile(f)
-      case _        ⇒ new VirtualFile(getElementName, getPath.toString)
+      case f: IFile => new EclipseFile(f)
+      case _        => new VirtualFile(getElementName, getPath.toString)
     }
   }
 
@@ -156,7 +156,7 @@ class ScalaSourceFile(fragment: PackageFragment, elementName: String, workingCop
   }
 
   /** Makes sure {{{this}}} source is not in the ignore buffer of the compiler and ask the compiler to reload it. */
-  final def forceReload(): Unit = scalaProject.presentationCompiler { compiler ⇒
+  final def forceReload(): Unit = scalaProject.presentationCompiler { compiler =>
     compiler.askToDoFirst(this)
     reload()
   }

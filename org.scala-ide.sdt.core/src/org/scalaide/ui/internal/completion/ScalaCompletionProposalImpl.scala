@@ -121,7 +121,7 @@ class ScalaCompletionProposalImpl(proposal: CompletionProposal)
     val showOnlyTooltips = context == CompletionContext.NewContext || context == CompletionContext.ApplyContext
 
     if (!showOnlyTooltips) {
-      val overwrite = !insertCompletion ^ ((stateMask & SWT.CTRL) != 0)
+      val overwrite = !insertCompletion() ^ ((stateMask & SWT.CTRL) != 0)
       val d = viewer.getDocument()
 
       EditorUtils.withScalaFileAndSelection { (scalaSourceFile, _) =>
@@ -274,7 +274,7 @@ class ScalaCompletionProposalImpl(proposal: CompletionProposal)
     val wordLen = ScalaWordFinder.identLenAtOffset(viewer.getDocument(), modelCaret)
     val length = startPos + wordLen - modelCaret
 
-    new StyleRange(modelCaret, length, getForegroundColor, getBackgroundColor)
+    new StyleRange(modelCaret, length, getForegroundColor(), getBackgroundColor())
   }
 
   private object presListener extends ITextPresentationListener {

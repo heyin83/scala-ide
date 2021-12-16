@@ -39,7 +39,6 @@ package scala.tools.nsc.ast {
 
     import u._
     import scala.tools.nsc._
-    import scala.compat.Platform.EOL
 
     def brutallyResetAttrs(x: Tree, leaveAlone: Tree => Boolean = null): Tree = new ResetAttrs(brutally = true, leaveAlone).transform(x)
 
@@ -161,8 +160,8 @@ package scala.tools.nsc.ast {
         new MarkLocals().traverse(x)
 
         if (debug) {
-          assert(locals.size == orderedLocals.size)
-          val msg = orderedLocals.toList filter { _ != NoSymbol } map { " " + _ } mkString EOL
+          assert(locals.size == orderedLocals.size, "locals.size == orderedLocals.size")
+          val msg = orderedLocals.toList filter { _ != NoSymbol } map { " " + _ } mkString java.lang.System.lineSeparator()
           trace("locals (%d total): %n".format(orderedLocals.size))(msg)
         }
 

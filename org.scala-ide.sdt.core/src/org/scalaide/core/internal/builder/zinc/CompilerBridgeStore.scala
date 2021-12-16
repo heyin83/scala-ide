@@ -3,19 +3,15 @@ package org.scalaide.core.internal.builder.zinc
 import java.util.function.Supplier
 
 import scala.collection.mutable.ListBuffer
-import scala.tools.nsc.settings.ScalaVersion
-import scala.tools.nsc.settings.SpecificScalaVersion
 import scala.util.Properties
 
 import org.eclipse.core.runtime.IPath
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.SubMonitor
 import org.scalaide.core.IScalaInstallation
-import org.scalaide.core.SdtConstants
 import org.scalaide.core.internal.ScalaPlugin
 import org.scalaide.core.internal.project.ScalaInstallation.scalaInstanceForInstallation
 import org.scalaide.logging.HasLogger
-import org.scalaide.util.eclipse.EclipseUtils
 import org.scalaide.util.eclipse.EclipseUtils.RichPath
 import org.scalaide.util.eclipse.FileUtils
 import org.scalaide.util.eclipse.OSGiUtils
@@ -44,21 +40,7 @@ class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
   // raw stats
   private var hits, misses = 0
 
-  private lazy val compilerBridgeSrc = {
-    lazy val defaultPath = OSGiUtils.getBundlePath(plugin.zincCompilerBridgeBundle).flatMap(EclipseUtils.computeSourcePath(SdtConstants.ZincCompilerBridgePluginId, _))
-    @volatile var path_2_10: Option[IPath] = None
-    (scalaVersion: ScalaVersion) => synchronized {
-      scalaVersion match {
-        case SpecificScalaVersion(2, 10, _, _) =>
-          if (path_2_10.isEmpty)
-            path_2_10 = OSGiUtils.getBundlePath(plugin.zincCompilerBridgeBundle).flatMap(EclipseUtils.computeSourcePath(SdtConstants.ZincCompilerBridgePluginId, _, scalaVersion))
-          path_2_10
-        case _ =>
-          defaultPath
-      }
-    }
-  }
-
+  private lazy val compilerBridgeSrc = OSGiUtils.getBundlePath(plugin.zincCompilerBridgeBundle)
   private lazy val zincFullJar = OSGiUtils.getBundlePath(plugin.zincCompilerBundle)
 
   /** Return the location of a compiler-bridge.jar
@@ -115,7 +97,7 @@ class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
     val monitor = SubMonitor.convert(pm, name, 2)
     monitor.subTask(name)
 
-    (compilerBridgeSrc(installation.version), zincFullJar) match {
+    (compilerBridgeSrc, zincFullJar) match {
       case (Some(compilerBridge), Some(zincInterface)) =>
         val log = new SbtLogger
         cacheDir(installation).toFile.mkdirs()

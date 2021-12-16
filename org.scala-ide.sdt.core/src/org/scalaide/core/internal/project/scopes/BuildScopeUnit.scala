@@ -48,11 +48,11 @@ class BuildScopeUnit(val scope: CompileScope, val owningProject: IScalaProject, 
     isAssignedScopeThisScope || isUnassignedToAnyScopeAndValidSourcePath
   }
 
-  private def addThemToClasspath = owningProject.sourceOutputFolders.collect {
+  private def addThemToClasspath = owningProject.sourceOutputFolders().collect {
     case (src, out) if !managesSrcFolder(src) => out.getLocation
   }
 
-  private def srcOutputs = owningProject.sourceOutputFolders.collect {
+  private def srcOutputs = owningProject.sourceOutputFolders().collect {
     case entry @ (src, _) if managesSrcFolder(src) => entry
   }
 
@@ -95,7 +95,7 @@ class BuildScopeUnit(val scope: CompileScope, val owningProject: IScalaProject, 
     delegate.latestAnalysis
 
   override def buildManagerOf(outputFile: File): Option[EclipseBuildManager] =
-    owningProject.sourceOutputFolders collectFirst {
+    owningProject.sourceOutputFolders() collectFirst {
       case (sourceFolder, outputFolder) if outputFolder.getLocation.toFile == outputFile &&
         managesSrcFolder(sourceFolder) => this
     }
@@ -108,7 +108,7 @@ private case class ScopeFilesToCompile(toCompile: Set[IFile] => Set[IFile], owni
   private var run: Set[IFile] => Set[IFile] = once
   private def once(sources: Set[IFile]): Set[IFile] = {
     run = forever
-    toCompile(owningProject.allSourceFiles)
+    toCompile(owningProject.allSourceFiles())
   }
   private def forever(sources: Set[IFile]): Set[IFile] = toCompile(sources) ++ getValidJavaSourcesOfThisScope
 
@@ -116,7 +116,7 @@ private case class ScopeFilesToCompile(toCompile: Set[IFile] => Set[IFile], owni
 
   private def getValidJavaSourcesOfThisScope: Set[IFile] = {
     val Dot = 1
-    toCompile(owningProject.allSourceFiles
+    toCompile(owningProject.allSourceFiles()
       .filter { _.getLocation.getFileExtension == SdtConstants.JavaFileExtn.drop(Dot) })
   }
 }

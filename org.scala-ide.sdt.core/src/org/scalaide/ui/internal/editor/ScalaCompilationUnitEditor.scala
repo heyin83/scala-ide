@@ -82,7 +82,7 @@ trait ScalaCompilationUnitEditor extends JavaEditor with ScalaEditor {
 
   override protected final def installSemanticHighlighting(): Unit = { /* Never install the Java semantic highlighting engine on a Scala Editor*/ }
 
-  private def isScalaSemanticHighlightingEnabled: Boolean = semanticHighlightingPreferences.isEnabled
+  private def isScalaSemanticHighlightingEnabled: Boolean = semanticHighlightingPreferences.isEnabled()
 
   override def dispose(): Unit = {
     super.dispose()

@@ -18,8 +18,6 @@ abstract class ClassParameterDrivenIdeRefactoring(feature: Feature, name: String
 
   val refactoring: ClassParameterDrivenSourceGeneration
 
-  import refactoring.global.ValDef
-
   private[source] var selectedClassParamNames: List[String] = Nil
   private[source] var callSuper = false
   private[source] var keepExistingEqualityMethods = true
@@ -27,7 +25,7 @@ abstract class ClassParameterDrivenIdeRefactoring(feature: Feature, name: String
   def refactoringParameters: refactoring.RefactoringParameters =
     refactoring.RefactoringParameters(callSuper, selectByNames(selectedClassParamNames), keepExistingEqualityMethods)
 
-  override def getPages: List[RefactoringWizardPage] = preparationResult match {
+  override def getPages: List[RefactoringWizardPage] = preparationResult() match {
     case Left(_) => Nil
     case Right(prepResult) => configPage(prepResult)::Nil
   }

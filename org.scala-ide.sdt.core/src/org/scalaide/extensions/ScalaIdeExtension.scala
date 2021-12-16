@@ -109,10 +109,10 @@ trait ExtensionSetting extends HasLogger {
       if (str.isEmpty())
         Seq()
       else
-        Commons.split(str, '\n').map { line ⇒
+        Commons.split(str, '\n').map { line =>
           Commons.split(line, '=') match {
-            case Seq(k, v) ⇒ (k, v)
-            case Seq(k) ⇒ (k, "true")
+            case Seq(k, v) => (k, v)
+            case Seq(k) => (k, "true")
           }
         }
     }

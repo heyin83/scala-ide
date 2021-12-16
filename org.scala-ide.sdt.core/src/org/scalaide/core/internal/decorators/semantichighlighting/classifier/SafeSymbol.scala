@@ -83,7 +83,7 @@ private[classifier] trait SafeSymbol extends CompilerAccess with EnrichedTrees {
       // wrap it in 'ask'
       if (originalSym.isEmpty && hasSourceCodeRepresentation(tpeTree)) {
         val tpeSym = global.asyncExec(Option(t.symbol)).getOption().flatten.toList
-        tpeSym.zip(List(tpeTree.namePosition))
+        tpeSym.zip(List(tpeTree.namePosition()))
       } else originalSym
 
     case Import(expr, selectors) =>
@@ -110,7 +110,7 @@ private[classifier] trait SafeSymbol extends CompilerAccess with EnrichedTrees {
       else (tpe :: args).flatMap(safeSymbol)
 
     case tpe @ SelectFromTypeTree(qualifier, _) =>
-      global.asyncExec(tpe.symbol -> tpe.namePosition).getOption().toList ::: safeSymbol(qualifier)
+      global.asyncExec(tpe.symbol -> tpe.namePosition()).getOption().toList ::: safeSymbol(qualifier)
 
     case CompoundTypeTree(Template(parents, _, body)) =>
       (if (isStructuralType(parents)) body else parents).flatMap(safeSymbol)
@@ -123,7 +123,7 @@ private[classifier] trait SafeSymbol extends CompilerAccess with EnrichedTrees {
         case AppliedTypeTree(_, args) if isViewBound(args) =>
           safeSymbol(args(1))
         case AppliedTypeTree(tpe, args) if isContextBound(args) =>
-          global.asyncExec(tpe.symbol -> tpe.namePosition).getOption().toList
+          global.asyncExec(tpe.symbol -> tpe.namePosition()).getOption().toList
         case tpt =>
           safeSymbol(tpt)
       }
@@ -135,7 +135,7 @@ private[classifier] trait SafeSymbol extends CompilerAccess with EnrichedTrees {
       Nil
 
     case tpe @ Select(qualifier, _) =>
-      val tpeSym = if (hasSourceCodeRepresentation(tpe)) global.asyncExec(tpe.symbol -> tpe.namePosition).getOption().toList else Nil
+      val tpeSym = if (hasSourceCodeRepresentation(tpe)) global.asyncExec(tpe.symbol -> tpe.namePosition()).getOption().toList else Nil
       val qualiSym = if(hasSourceCodeRepresentation(qualifier)) safeSymbol(qualifier) else Nil
       tpeSym ::: qualiSym
 
@@ -144,7 +144,7 @@ private[classifier] trait SafeSymbol extends CompilerAccess with EnrichedTrees {
 
     case _ =>
       if (!hasSourceCodeRepresentation(t) || t.symbol == null) Nil
-      else List(t.symbol → t.namePosition)
+      else List(t.symbol → t.namePosition())
   }
 
   private def isViewBound(args: List[Tree]): Boolean =

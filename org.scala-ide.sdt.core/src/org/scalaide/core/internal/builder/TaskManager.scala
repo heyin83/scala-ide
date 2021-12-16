@@ -46,7 +46,7 @@ object TaskManager {
     for {
       iFile <- files
       scalaFile <- ScalaSourceFile.createFromPath(iFile.getFullPath.toOSString)
-      sourceFile = scalaFile.lastSourceMap.sourceFile
+      sourceFile = scalaFile.lastSourceMap().sourceFile
       Comment(msg, pos) <- extractComments(sourceFile, iFile.getContents, iFile.getCharset)
       if pos.isDefined
       task <- taskScanner.extractTasks(msg, pos)

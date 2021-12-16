@@ -178,7 +178,7 @@ trait ScalaMatchLocator { self: ScalaPresentationCompiler =>
         }
 
         if (hit) {
-          getJavaElement(enclosingDeclaration, scu.scalaProject.javaProject).foreach { element =>
+          getJavaElement(enclosingDeclaration(), scu.scalaProject.javaProject).foreach { element =>
             val accuracy = SearchMatch.A_ACCURATE
             val (offset, length) =
               if (tree.isDef) (tree.pos.start + 4, tree.symbol.name.length)
@@ -216,7 +216,7 @@ trait ScalaMatchLocator { self: ScalaPresentationCompiler =>
 
       if (noPosition || (nameNoMatch && varNoMatch) || qualifierNoMatch) return
 
-      getJavaElement(enclosingDeclaration, scu.scalaProject.javaProject).foreach { enclosingElement =>
+      getJavaElement(enclosingDeclaration(), scu.scalaProject.javaProject).foreach { enclosingElement =>
         val accuracy = SearchMatch.A_ACCURATE
         val offset = s.pos.start
         val length = s.pos.end - offset
@@ -278,10 +278,10 @@ trait ScalaMatchLocator { self: ScalaPresentationCompiler =>
 
     def reportAnnotations(sym: Symbol): Unit = {
       sym.annotations foreach {
-        case annot @ AnnotationInfo(atp, args, _) if annot.pos.isDefined ⇒
+        case annot @ AnnotationInfo(atp, args, _) if annot.pos.isDefined =>
           reportTypeReference(atp, annot.pos)
           traverseTrees(args)
-        case _ ⇒
+        case _ =>
       }
     }
 
@@ -315,7 +315,7 @@ trait ScalaMatchLocator { self: ScalaPresentationCompiler =>
       if (tpe eq null) return
       val patternFullyQualifiedName = fullyQualifiedName(qualification(pattern), simpleName(pattern))
       if(pattern.matchesName(patternFullyQualifiedName, javaTypeName(tpe.typeSymbol).toCharArray)) {
-        getJavaElement(enclosingDeclaration, scu.scalaProject.javaProject).foreach { enclosingElement =>
+        getJavaElement(enclosingDeclaration(), scu.scalaProject.javaProject).foreach { enclosingElement =>
           val accuracy = SearchMatch.A_ACCURATE
           val offset = refPos.start
           val length = refPos.end - offset

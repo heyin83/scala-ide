@@ -82,15 +82,15 @@ class XmlTagScanner(val preferenceStore: IPreferenceStore) extends AbstractScala
         getToken(XML_ATTRIBUTE_EQUALS)
       case ' ' | '\r' | '\n' | '\t' =>
         accept()
-        getWhitespace
+        getWhitespace()
         Token.WHITESPACE
       case _ if wasAfterTagStart =>
         accept()
-        getXmlName
+        getXmlName()
         getToken(XML_TAG_NAME)
       case _ =>
         accept()
-        getXmlName
+        getXmlName()
         getToken(XML_ATTRIBUTE_NAME)
     }
     tokenOffset = start
@@ -104,7 +104,7 @@ class XmlTagScanner(val preferenceStore: IPreferenceStore) extends AbstractScala
       case ' ' | '\r' | '\n' | '\t' | EOF | '\'' | '\"' | '>' | '/' | '<' | '=' =>
       case _ =>
         accept()
-        getXmlName
+        getXmlName()
     }
 
   @tailrec
@@ -112,7 +112,7 @@ class XmlTagScanner(val preferenceStore: IPreferenceStore) extends AbstractScala
     (ch: @switch) match {
       case ' ' | '\r' | '\n' | '\t' =>
         accept()
-        getWhitespace
+        getWhitespace()
       case _ =>
     }
 

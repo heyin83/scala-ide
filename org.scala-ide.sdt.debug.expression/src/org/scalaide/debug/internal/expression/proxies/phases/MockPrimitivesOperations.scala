@@ -4,8 +4,6 @@
 package org.scalaide.debug.internal.expression
 package proxies.phases
 
-import Names.Debugger
-
 import scala.reflect.NameTransformer
 import scala.reflect.runtime.universe
 

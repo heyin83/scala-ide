@@ -28,7 +28,7 @@ trait JDTBuilderFacade {
     StateUtils.tagAsStructurallyChanged(newState)
     StateUtils.resetStructurallyChangedTypes(newState)
     modelManager.setLastBuiltState(project, newState)
-    JDTUtils.refreshPackageExplorer
+    JDTUtils.refreshPackageExplorer()
   }
 
   protected def ensureProject(): Unit = {

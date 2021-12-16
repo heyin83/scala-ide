@@ -47,7 +47,7 @@ trait SocketConnectorScala extends IVMConnector {
    * Return the default arguments for this connector.
    */
   override val getDefaultArguments: JMap[String, Connector.Argument] = {
-    val args = connector.defaultArguments()
+    val args = connector().defaultArguments()
     // set a default value for port, otherwise an NPE is thrown. This is required by launcher UI
     import scala.collection.JavaConverters._
     args.asScala.get(PortKey) match {
@@ -66,7 +66,7 @@ trait SocketConnectorScala extends IVMConnector {
     // convert to a usable type
     val p = params.asScala
 
-    val arguments= connector.defaultArguments()
+    val arguments= connector().defaultArguments()
 
     // set the values from the params to the the connector arguments
     arguments.asScala.foreach {

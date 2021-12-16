@@ -403,9 +403,9 @@ abstract class ScalaDebugTarget private (
    */
   private def clearAsyncDebugView(): Unit = DisplayThread.asyncExec {
     for {
-      w ← Option(PlatformUI.getWorkbench.getActiveWorkbenchWindow)
-      p ← Option(w.getActivePage)
-      view ← Option(p.findView("org.scala-ide.sdt.debug.asyncView"))
+      w <- Option(PlatformUI.getWorkbench.getActiveWorkbenchWindow)
+      p <- Option(w.getActivePage)
+      view <- Option(p.findView("org.scala-ide.sdt.debug.asyncView"))
     } {
       view.asInstanceOf[AsyncDebugView].clearDebugView()
     }

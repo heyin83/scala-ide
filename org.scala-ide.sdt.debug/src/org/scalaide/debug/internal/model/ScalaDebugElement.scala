@@ -119,11 +119,11 @@ trait HasMethodInvocation {
 
       methods.size match {
         case 0 =>
-          throw new IllegalArgumentException("Method '%s(..)' doesn't exist for '%s'".format(methodName, classType.name()))
+          throw new IllegalArgumentException("Method '%s(..)' doesn't exist for '%s'".format(methodName, classType().name()))
         case 1 =>
           ScalaValue(jdiInvokeMethod(methods.get(0), thread, args.map(_.underlying): _*), getDebugTarget)
         case _ =>
-          throw new IllegalArgumentException("More than on method '%s(..)' for '%s': %s".format(methodName, classType.name(), methods))
+          throw new IllegalArgumentException("More than on method '%s(..)' for '%s': %s".format(methodName, classType().name(), methods))
       }
     }
   }

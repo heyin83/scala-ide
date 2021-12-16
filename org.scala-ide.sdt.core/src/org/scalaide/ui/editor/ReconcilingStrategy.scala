@@ -24,7 +24,7 @@ class ReconcilingStrategy(sourceEditor: SourceCodeEditor, documentListener: IDoc
 
   override def reconcile(partition: IRegion): Unit = {
     for (doc <- document) {
-      val errors = sourceEditor.getInteractiveCompilationUnit.forceReconcile()
+      val errors = sourceEditor.getInteractiveCompilationUnit().forceReconcile()
       sourceEditor.updateErrorAnnotations(errors)
     }
   }

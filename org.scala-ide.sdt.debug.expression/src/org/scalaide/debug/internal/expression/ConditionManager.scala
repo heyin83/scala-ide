@@ -12,8 +12,6 @@ import org.scalaide.debug.internal.expression.proxies.primitives.BooleanJdiProxy
 
 import com.sun.jdi.Location
 
-import ExpressionEvaluator.JdiExpression
-
 /**
  * Evaluates conditions for conditional breakpoints.
  */

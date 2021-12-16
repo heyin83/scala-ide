@@ -101,7 +101,7 @@ class MoveClassRefactoringConfigurationPage(
       var subsequentSelection = false
       def selectionChanged(event: SelectionChangedEvent): Unit = {
         if (subsequentSelection) {
-          validatePage
+          validatePage()
         } else {
           // Don't validate the page on the first selection to
           // prevent showing an error message at the start.
@@ -146,12 +146,12 @@ class MoveClassRefactoringConfigurationPage(
   }
 
   protected override def performFinish = {
-    initializeRefactoring
+    initializeRefactoring()
     super.performFinish
   }
 
   override def getNextPage = {
-    initializeRefactoring
+    initializeRefactoring()
     super.getNextPage
   }
 

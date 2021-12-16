@@ -18,9 +18,9 @@ trait JumpOverBacktick extends AutoEdit {
 
   override def perform() = {
     check(textChange) {
-      case Add(start, "`") ⇒
+      case Add(start, "`") =>
         lookupChar(0) {
-          case '`' ⇒
+          case '`' =>
             Add(start, "") withCursorPos start + 1
         }
     }

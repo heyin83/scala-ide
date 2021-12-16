@@ -21,7 +21,7 @@ trait ScalaJavaMapper extends InternalCompilerServices with ScalaAnnotationHelpe
    *  If the symbol exists in several projects, it returns one of them.
    */
   def getJavaElement(sym: Symbol, _projects: IJavaProject*): Option[IJavaElement] = {
-    assert(sym ne null)
+    assert(sym ne null, "symbol is null")
     if (sym == NoSymbol) return None
 
     val projects: Seq[IJavaProject] = if (_projects.isEmpty) JavaModelManager.getJavaModelManager.getJavaModel.getJavaProjects.toSeq else _projects

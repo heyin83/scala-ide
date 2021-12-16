@@ -25,7 +25,7 @@ import org.scalaide.util.internal.eclipse.AnnotationUtils._
 trait MarkOccurrencesEditorExtension extends ScalaCompilationUnitEditor {
 
   // needs to be lazy because [[getInteractiveCompilationUnit]] succeeds only after the editor is fully loaded
-  private lazy val occurrencesFinder = new ScalaOccurrencesFinder(getInteractiveCompilationUnit)
+  private lazy val occurrencesFinder = new ScalaOccurrencesFinder(getInteractiveCompilationUnit())
 
   private var occurrenceAnnotations: Set[Annotation] = Set()
   private var occurencesFinderInstalled = false
@@ -70,7 +70,7 @@ trait MarkOccurrencesEditorExtension extends ScalaCompilationUnitEditor {
   private def requireOccurrencesUpdate(selection: ITextSelection): Unit = {
     def spawnNewJob(lastModified: Long) = {
       runningJob = EclipseUtils.scheduleJob("Updating occurrence annotations", priority = Job.DECORATE) { monitor =>
-        Option(getInteractiveCompilationUnit) foreach { cu =>
+        Option(getInteractiveCompilationUnit()) foreach { cu =>
           val fileName = cu.file.name
           Utils.debugTimed(s"""Time elapsed for "updateOccurrences" in source $fileName""") {
             performOccurrencesUpdate(selection, lastModified)
@@ -86,7 +86,7 @@ trait MarkOccurrencesEditorExtension extends ScalaCompilationUnitEditor {
         && EditorUtils.isActiveEditor(this))
       sourceViewer.getDocument match {
         // don't spawn a new job when another one is already running
-        case document: IDocumentExtension4 if runningJob == null || runningJob.getState == Job.NONE ⇒
+        case document: IDocumentExtension4 if runningJob == null || runningJob.getState == Job.NONE =>
           spawnNewJob(document.getModificationStamp)
         case _ =>
       }

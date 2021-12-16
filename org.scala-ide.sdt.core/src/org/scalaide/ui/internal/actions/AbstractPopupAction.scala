@@ -29,7 +29,7 @@ trait AbstractPopupAction extends AbstractHandler with IObjectActionDelegate {
   def performAction(project: IProject): Unit
 
   override def execute(event: ExecutionEvent): AnyRef = {
-    EditorUtils.resourceOfActiveEditor flatMap (r ⇒ Option(r.getProject)) foreach performAction
+    EditorUtils.resourceOfActiveEditor flatMap (r => Option(r.getProject)) foreach performAction
     null
   }
 

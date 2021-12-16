@@ -33,7 +33,7 @@ final class QuickAssistHandler extends AbstractHandler {
       val p = new QuickAssistProcessor(input, event.getCommand.getId)
       val a = new QuickAssistAssistant
       a.setQuickAssistProcessor(p)
-      a.install(editor.getViewer)
+      a.install(editor.getViewer())
       a.showPossibleQuickAssists()
     }
     null

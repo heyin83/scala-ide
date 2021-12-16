@@ -161,7 +161,7 @@ trait InteractiveCompilationUnit {
    */
   def initialReconcile(): Response[Unit] = {
     val reloaded = scalaProject.presentationCompiler { compiler =>
-      compiler.askReload(this, sourceMap(getContents).sourceFile)
+      compiler.askReload(this, sourceMap(getContents()).sourceFile)
     } getOrElse {
       val dummy = new Response[Unit]
       dummy.set(())

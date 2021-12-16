@@ -23,9 +23,9 @@ import com.sun.jdi.event.Event
 class BreakpointEventHandler extends DebugEventHandler {
 
   override def handleEvent(event: Event, context: DebugContext) = (event, context) match {
-    case (event: BreakpointEvent, BreakpointContext(breakpoint: JavaLineBreakpoint, debugTarget)) ⇒
+    case (event: BreakpointEvent, BreakpointContext(breakpoint: JavaLineBreakpoint, debugTarget)) =>
       handleBreakpointEvent(event, breakpoint, debugTarget)
-    case _ ⇒
+    case _ =>
       NoCommand
   }
 

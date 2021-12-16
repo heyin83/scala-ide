@@ -27,7 +27,7 @@ import xsbti.compile.IncOptions
 object ResidentCompiler {
   def apply(project: IScalaProject, compilationOutputFolder: File, extraLibsToCompile: Option[IPath],
             monitor: SubMonitor = SubMonitor.convert(new NullProgressMonitor)) = {
-    val installation = project.effectiveScalaInstallation
+    val installation = project.effectiveScalaInstallation()
     val comps = compilers(installation, monitor)
     comps.toOption.map { comps => new ResidentCompiler(project, comps, compilationOutputFolder, extraLibsToCompile) }
   }
@@ -51,7 +51,7 @@ class ResidentCompiler private (project: IScalaProject, comps: Compilers, compil
       Locator.NoClass
   }
   private val classpath: Array[Path] = (libs ++ project.scalaClasspath.userCp.map(_.toFile.toPath())).toArray
-  private val scalacOpts = (project.effectiveScalaInstallation.version match {
+  private val scalacOpts = (project.effectiveScalaInstallation().version match {
     case SpecificScalaVersion(2, 10, _, _) =>
       project.scalacArguments.filterNot(opt => opt == "-Xsource:2.10" || opt == "-Ymacro-expand:none")
     case _ => project.scalacArguments

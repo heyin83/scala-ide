@@ -2,9 +2,6 @@ package org.scalaide.debug.internal.model
 
 import java.util.concurrent.ConcurrentHashMap
 
-import scala.collection.JavaConverters.asScalaBufferConverter
-
-import scala.collection.JavaConverters.mapAsScalaConcurrentMapConverter
 import scala.concurrent.Future
 
 import org.scalaide.debug.internal.JdiEventReceiver
@@ -16,14 +13,6 @@ import com.sun.jdi.Location
 import com.sun.jdi.Method
 import com.sun.jdi.ReferenceType
 import com.sun.jdi.event.ClassPrepareEvent
-
-import ScalaDebugCache.HiddenTypes
-import ScalaDebugCache.extractOuterTypeName
-import ScalaDebugCache.prefStore
-
-import ScalaDebugCache.HiddenTypes
-import ScalaDebugCache.extractOuterTypeName
-import ScalaDebugCache.prefStore
 
 object ScalaDebugCache {
   private final val OuterTypeNameRegex = """([^\$]*)(\$.*)?""".r

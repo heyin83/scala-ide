@@ -40,7 +40,7 @@ class JavaEclipseCompiler(p: IProject, monitor: SubMonitor) extends JavaCompiler
     if (allSourceFiles.exists(FileUtils.hasBuildErrors(_)))
       depends.toArray
     else {
-      ensureProject
+      ensureProject()
       // refresh output directories, since SBT removes classfiles that the Eclipse
       // Java compiler expects to find
       for (folder <- scalaProject.outputFolders) {

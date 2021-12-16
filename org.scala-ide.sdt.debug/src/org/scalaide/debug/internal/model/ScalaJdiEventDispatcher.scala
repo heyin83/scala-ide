@@ -2,8 +2,6 @@ package org.scalaide.debug.internal.model
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
-import scala.collection.JavaConverters.asScalaIteratorConverter
-import scala.collection.JavaConverters.mapAsScalaConcurrentMapConverter
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.util.Success

@@ -1,6 +1,5 @@
 package org.scalaide.core.internal.jdt.search
 
-import java.{ util => ju }
 import scala.collection.mutable.ArrayBuffer
 import scala.tools.nsc.symtab.Flags
 import org.eclipse.jdt.core.compiler.CharOperation
@@ -244,19 +243,19 @@ class ScalaSelectionEngine(nameEnvironment: SearchableEnvironment, requestor: Sc
 
       cont()
 
-      if (!ssr.hasSelection) {
+      if (!ssr.hasSelection()) {
         // only reaches here if no selection could be derived from the parsed tree
         // thus use the selected source and perform a textual type search
 
         nameEnvironment.findTypes(selectedIdentifier, false, false, IJavaSearchConstants.TYPE, this)
 
         // accept qualified types only if no unqualified type was accepted
-        if (!ssr.hasSelection) {
+        if (!ssr.hasSelection()) {
           def acceptTypes(accepted: ArrayBuffer[(Array[Char], Array[Char], Int)]): Unit = {
             if (!accepted.isEmpty) {
               for (t <- accepted)
                 requestor.acceptType(t._1, t._2, t._3, false, null, actualSelectionStart, actualSelectionEnd)
-              accepted.clear
+              accepted.clear()
             }
           }
 

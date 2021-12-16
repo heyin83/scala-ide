@@ -80,7 +80,7 @@ class ExpressionResultTreeView(parent: Composite) {
    * Shows tree view which allows us to drill down fields of specified object reference
    */
   def reloadWithResult(value: ScalaValue, rootLabel: String): Unit = withVisualizedExceptions {
-    val treeViewModel = TreeViewModel(Some(value → rootLabel))
+    val treeViewModel = TreeViewModel(Some(value -> rootLabel))
     treeViewer.setInput(treeViewModel)
     tree.setVisible(true)
     errorText.setVisible(false)
@@ -358,7 +358,7 @@ object ExpressionResultTreeView extends HasLogger {
 
     override def createChildren() =
       additionalMessageNodeLabel.map(PlainTextNode(_, parent = Some(this), onlyMessage = true)).toSeq ++
-      createRealChildren
+      createRealChildren()
 
     private def createRealChildren() = fieldsToShow.map(createChildrenForField).sortBy(_.label)
 

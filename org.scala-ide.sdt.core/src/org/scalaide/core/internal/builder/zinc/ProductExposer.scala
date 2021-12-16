@@ -44,7 +44,7 @@ private[zinc] object ProductExposer extends HasLogger {
       .exists(_.getAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO) == IMarker.SEVERITY_ERROR)
     if (shouldHide) {
       val scalaProject = IScalaPlugin().getScalaProject(project)
-      scalaProject.allSourceFiles.filter {
+      scalaProject.allSourceFiles().filter {
         _.getFileExtension == SdtConstants.JavaFileExtn.drop(Dot)
       }.map { f =>
         packageAndClassPrefix(project, f.getFullPath)

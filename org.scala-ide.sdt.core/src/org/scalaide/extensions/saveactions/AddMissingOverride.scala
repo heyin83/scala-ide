@@ -39,10 +39,10 @@ trait AddMissingOverride extends SaveAction with CompilerSupport {
     def canOverride(sym: Symbol) = sym.isOverridingSymbol && !sym.isOverride && !sym.isAbstractOverride
 
     val symbolWithoutOverride = filter {
-      case d: ValOrDefDef if overridesJavaField(d.symbol) ⇒
+      case d: ValOrDefDef if overridesJavaField(d.symbol) =>
         false
 
-      case d: ValDef if d.mods.positions.contains(Tokens.VAR) && !overridesVar(d.symbol) ⇒
+      case d: ValDef if d.mods.positions.contains(Tokens.VAR) && !overridesVar(d.symbol) =>
         false
 
       case d: MemberDef =>

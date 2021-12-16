@@ -88,7 +88,7 @@ abstract class AstTransformer[+Tpe <: TypecheckRelation]
 
     def unapply(tree: Tree): Option[(Tree, Tree)] = tree match {
       case Apply(Select(Ident(TermName(`contextParamName`)), TermName(`newInstance`)), List(className, argList)) =>
-        Some(className → argList)
+        Some(className -> argList)
       case _ => None
     }
   }

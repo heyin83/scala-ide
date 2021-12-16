@@ -34,7 +34,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
       val throwsAnnotations = sym.annotations.filter(_.atp.typeSymbol == definitions.ThrowsClass)
 
       val typeNames = throwsAnnotations collect {
-        case AnnotationInfo(_, List(Literal(Constant(typeName: Type))), _) ⇒
+        case AnnotationInfo(_, List(Literal(Constant(typeName: Type))), _) =>
           javaTypeNameMono(typeName).toCharArray
       }
 
@@ -168,7 +168,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
               !conflictsInCommonParent(m.name) &&
               !conflictsIn(companionClassOf(module), m.name)
 
-          assert(module.isModuleClass)
+          assert(module.isModuleClass, "module is not class")
 
           for (m <- module.info.nonPrivateMembers; if shouldForward(m))
             addForwarder(classElem, classElemInfo, module, m)
@@ -344,7 +344,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
 
       var currentImportContainer: Option[(ImportContainer, ImportContainerInfo)] = None
 
-      override def resetImportContainer: Unit = currentImportContainer = None
+      override def resetImportContainer(): Unit = currentImportContainer = None
 
       override def addImport(i: Import): Owner = {
         i.symbol.initialize // make sure the import tree is attributed
@@ -920,7 +920,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
         val (newBuilder, children) = {
           tree match {
             case _: Import =>
-            case _ => builder.resetImportContainer
+            case _ => builder.resetImportContainer()
           }
 
           tree match {

@@ -104,7 +104,7 @@ package object zinc {
                 }
               },
               cpOptions,
-              _ ⇒ (),
+              _ => (),
               None),
             javaCompilerConstructor())
       }

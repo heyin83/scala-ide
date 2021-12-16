@@ -4,7 +4,6 @@ package createmethod
 import org.eclipse.jdt.core.IJavaElement
 import org.scalaide.core.compiler.IScalaPresentationCompiler
 import org.scalaide.core.compiler.IScalaPresentationCompiler.Implicits._
-import org.scalaide.core.compiler.InteractiveCompilationUnit
 import org.scalaide.logging.HasLogger
 import org.scalaide.util.internal.scalariform.ArgPosition
 import org.scalaide.util.internal.scalariform.MethodCallInfo

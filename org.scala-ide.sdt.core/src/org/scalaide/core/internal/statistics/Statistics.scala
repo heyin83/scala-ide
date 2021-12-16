@@ -25,7 +25,7 @@ class Statistics extends AnyRef with HasLogger {
 
   private var firstStat = NoStat
   private var cache = Map[Feature, FeatureData]()
-  private val jsonArgs = Map[String, AnyRef](JsonWriter.PRETTY_PRINT → "true").asJava
+  private val jsonArgs = Map[String, AnyRef](JsonWriter.PRETTY_PRINT -> "true").asJava
 
   readStats()
 
@@ -41,17 +41,17 @@ class Statistics extends AnyRef with HasLogger {
   def incUsageCounter(feature: Feature, numToInc: Int = 1): Unit = {
     if (numToInc > 0) {
       val stat = cache.getOrElse(feature, FeatureData(feature, 0, System.currentTimeMillis))
-      cache += feature → stat.copy(nrOfUses = stat.nrOfUses + numToInc, lastUsed = System.currentTimeMillis)
+      cache += feature -> stat.copy(nrOfUses = stat.nrOfUses + numToInc, lastUsed = System.currentTimeMillis)
 
       writeStats()
     }
   }
 
   private def readStats(): Unit = {
-    ScalaIdeDataStore.validate(ScalaIdeDataStore.statisticsLocation) { file ⇒
+    ScalaIdeDataStore.validate(ScalaIdeDataStore.statisticsLocation) { file =>
       val stats = read(file)
       firstStat = stats.firstStat
-      cache = stats.featureData.view.map(stat ⇒ stat.feature → stat).to(Map)
+      cache = stats.featureData.view.map(stat => stat.feature -> stat).to(Map)
     }
   }
 
@@ -59,7 +59,7 @@ class Statistics extends AnyRef with HasLogger {
     if (firstStat == NoStat) firstStat = System.currentTimeMillis
     val stats = StatData(firstStat, cache.map(_._2).toArray)
 
-    ScalaIdeDataStore.validate(ScalaIdeDataStore.statisticsLocation) { file ⇒
+    ScalaIdeDataStore.validate(ScalaIdeDataStore.statisticsLocation) { file =>
       write(file, stats)
     }
   }
@@ -73,7 +73,7 @@ class Statistics extends AnyRef with HasLogger {
     val json = io.Source.fromFile(file).mkString
     try JsonReader.jsonToJava(json).asInstanceOf[StatData] catch {
       // the file is corrupted for whatever reason
-      case e: JsonIoException ⇒
+      case e: JsonIoException =>
         logger.error(s"Statistics file `$file` is corrupted. A new one is being created. Corrupted content was:\n$json", e)
         StatData(NoStat, Array())
     }

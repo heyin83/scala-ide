@@ -34,8 +34,6 @@ import com.sun.jdi.event.Event
 import com.sun.jdi.request.BreakpointRequest
 import com.sun.jdi.request.EventRequest
 
-import BreakpointSupportSubordinate.createBreakpointRequest
-import BreakpointSupportSubordinate.handleEvent
 import RichBreakpoint.richBreakpoint
 
 private[debug] object BreakpointSupport {
@@ -138,14 +136,14 @@ class BreakpointSupportSubordinate private (
   }
 
   private def handleJdiEventCommands(cmds: Set[JdiEventCommand]): PartialFunction[Event, StaySuspended] = {
-    case event: BreakpointEvent if cmds(SuspendExecution) ⇒
+    case event: BreakpointEvent if cmds(SuspendExecution) =>
       // JDI event triggered when a breakpoint is hit
       breakpointHit(event.location, event.thread)
       true
   }
 
   private def defaultCommands(event: Event): JdiEventCommand = event match {
-    case _: BreakpointEvent ⇒ SuspendExecution
+    case _: BreakpointEvent => SuspendExecution
   }
 
   override protected def innerHandle = {

@@ -64,11 +64,11 @@ class ScalaPlugin extends IScalaPlugin with PluginLogConfigurator with IResource
   * 2.8.1 and 2.9.0 aren't.
   */
   def isCompatibleVersion(version: ScalaVersion, project: ScalaProject): Boolean = project.getCompatibilityMode match {
-    case Same ⇒
+    case Same =>
       isBinarySame(ScalaVersion.current, version) // don't treat 2 unknown versions as equal
-    case Previous ⇒
+    case Previous =>
       isBinaryPrevious(ScalaVersion.current, version)
-    case Subsequent ⇒
+    case Subsequent =>
       isBinarySubsequent(ScalaVersion.current, version)
   }
 
@@ -97,7 +97,7 @@ class ScalaPlugin extends IScalaPlugin with PluginLogConfigurator with IResource
 
     if (!headlessMode) {
       PlatformUI.getWorkbench.getEditorRegistry.setDefaultEditor("*.scala", SdtConstants.EditorId)
-      diagnostic.StartupDiagnostics.run
+      diagnostic.StartupDiagnostics.run()
 
       new RegistryExtender().perform()
     }

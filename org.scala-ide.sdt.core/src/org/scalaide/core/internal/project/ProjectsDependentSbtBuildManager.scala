@@ -24,7 +24,7 @@ class ProjectsDependentSbtBuildManager(project: IScalaProject, settings: Setting
     extends EclipseSbtBuildManager(project, settings) {
   private def areTransitiveDependenciesBuilt = {
     val projectsInError =
-      project.transitiveDependencies.filter(p => IScalaPlugin().getScalaProject(p).buildManager.hasErrors)
+      project.transitiveDependencies.filter(p => IScalaPlugin().getScalaProject(p).buildManager().hasErrors)
 
     val stopBuildOnErrorsProperty = SettingConverterUtil.convertNameToProperty(ScalaPluginSettings.stopBuildOnErrors.name)
     val stopBuildOnErrors = project.storage.getBoolean(stopBuildOnErrorsProperty)
@@ -45,7 +45,7 @@ class ProjectsDependentSbtBuildManager(project: IScalaProject, settings: Setting
     }
   }
 
-  override def buildManagerOf(outputFile: File): Option[EclipseBuildManager] = project.sourceOutputFolders.collectFirst {
+  override def buildManagerOf(outputFile: File): Option[EclipseBuildManager] = project.sourceOutputFolders().collectFirst {
     case (_, outputFolder) if outputFolder.getLocation.toFile == outputFile => this
   }
 }

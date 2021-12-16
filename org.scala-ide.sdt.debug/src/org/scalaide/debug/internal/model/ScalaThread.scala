@@ -80,7 +80,7 @@ abstract class ScalaThread private (target: ScalaDebugTarget, val threadRef: Thr
   }
 
   def stepMessageOut(): Unit = {
-    (new StepMessageOut(getDebugTarget, this)).step
+    (new StepMessageOut(getDebugTarget, this)).step()
   }
 
   // Members declared in org.eclipse.debug.core.model.ISuspendResume
@@ -237,7 +237,7 @@ abstract class ScalaThread private (target: ScalaDebugTarget, val threadRef: Thr
    */
   def dispose(): Unit = {
     stackFrames.getAndSet(Nil)
-    subordinate.terminatedFromScala
+    subordinate.terminatedFromScala()
   }
 
   /*

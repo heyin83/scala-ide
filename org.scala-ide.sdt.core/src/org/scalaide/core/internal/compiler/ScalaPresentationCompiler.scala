@@ -1,6 +1,5 @@
 package org.scalaide.core.internal.compiler
 
-import scala.concurrent.duration.DurationInt
 import scala.reflect.internal.util.BatchSourceFile
 import scala.reflect.internal.util.Position
 import scala.reflect.internal.util.RangePosition
@@ -44,7 +43,6 @@ import org.scalaide.logging.HasLogger
 import org.scalaide.ui.internal.editor.hover.ScalaDocHtmlProducer
 import org.scalaide.ui.internal.jdt.model.ScalaOverrideIndicatorBuilder
 import org.scalaide.util.ScalaWordFinder
-import org.scalaide.util.eclipse.RegionUtils.RichRegion
 
 import scalariform.lexer.ScalaLexer
 import scalariform.lexer.ScalaLexerException
@@ -72,7 +70,7 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
   override lazy val analyzer: AnalyzerType = new {
     val global: ScalaPresentationCompiler.this.type = ScalaPresentationCompiler.this
   } with InteractiveScaladocAnalyzer with CommentPreservingTypers {
-    // Copy pasted from the overriden method to change the line marked with the 'Modified' comment.
+    // Copy pasted from the overridden method to change the line marked with the 'Modified' comment.
     // Fixes https://www.assembla.com/spaces/scala-ide/tickets/1002325#/activity/ticket:
     // TODO if this fix proves to eliminate the symptoms in the IDE, roll it back into the
     //      compiler.
@@ -119,7 +117,7 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
     for {
       f <- managedFiles.collect { case ef: EclipseFile => ef }
       icu <- SourceFileProviderRegistry.getProvider(f.workspacePath).createFrom(f.workspacePath)
-      if icu.exists
+      if icu.exists()
     } yield icu
   }
 
@@ -460,7 +458,7 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
       findDeclaration(sym, javaProject) map {
         case (f, pos) =>
           val symbolLen = sym.name.decodedName.length
-          val targetRegion = (new Region(pos, symbolLen)).map(f.lastSourceMap.originalPos)
+          val targetRegion = (new Region(pos, symbolLen)).map(f.lastSourceMap().originalPos)
           new ScalaHyperlink(openableOrUnit = f,
               region = targetRegion,
               label = label(sym),

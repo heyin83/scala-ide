@@ -37,7 +37,6 @@ class SymbolClassification(protected val sourceFile: SourceFile, val global: ISc
   import SymbolClassification._
   import global.Symbol
   import global.Position
-  import global.NoSymbol
 
   def compilationUnitOfFile(f: AbstractFile) = global.unitOfFile.get(f)
 

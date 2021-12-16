@@ -24,7 +24,7 @@ trait JdiClassLoader {
     val classObj = classByName("java.lang.Class")
     val byName = methodOn(classObj, "forName", arity = 1)
     val classMirror = jvm.mirrorOf(name)
-    classObj.invokeMethod(currentThread, byName, List(classMirror))
+    classObj.invokeMethod(currentThread(), byName, List(classMirror))
   }
 
   /**
@@ -41,7 +41,7 @@ trait JdiClassLoader {
     val methodName = "defineClass"
 
     // obtain class loader from this class for top stackframe
-    val classLoaderRef = currentFrame.thisObject.referenceType.classLoader
+    val classLoaderRef = currentFrame().thisObject.referenceType.classLoader
     val defineClassMethod = classLoaderRef.referenceType.methodsByName(methodName, methodSignature).asScala.head
 
     // encode with base64
@@ -54,10 +54,10 @@ trait JdiClassLoader {
     val parseMetod = methodOn(dateTypeConverterClazzReference, "parseBase64Binary", arity = 1)
 
     // encoded
-    val remoteByteArray = dateTypeConverterClazzReference.invokeMethod(currentThread, parseMetod, List(remoteByteStrings))
+    val remoteByteArray = dateTypeConverterClazzReference.invokeMethod(currentThread(), parseMetod, List(remoteByteStrings))
 
     // load the class
     val args = List(remoteByteArray, jvm.mirrorOf(0), jvm.mirrorOf(code.length))
-    classLoaderRef.invokeMethod(currentThread, defineClassMethod, args).asInstanceOf[ClassObjectReference]
+    classLoaderRef.invokeMethod(currentThread(), defineClassMethod, args).asInstanceOf[ClassObjectReference]
   }
 }

@@ -65,7 +65,7 @@ class ScalaSourceFileEditor
     with ScalaCompilationUnitEditor
     with MarkOccurrencesEditorExtension
     with OutlinePageEditorExtension
-    with HasLogger { self ⇒
+    with HasLogger { self =>
 
   import ScalaSourceFileEditor._
 
@@ -152,7 +152,7 @@ class ScalaSourceFileEditor
 
     val openAction = new Action {
       private def scalaCompilationUnit: Option[ScalaCompilationUnit] =
-        Option(getInteractiveCompilationUnit) map (ScalaCompilationUnit.castFrom)
+        Option(getInteractiveCompilationUnit()) map (ScalaCompilationUnit.castFrom)
 
       override def run(): Unit = {
         scalaCompilationUnit foreach { scu =>

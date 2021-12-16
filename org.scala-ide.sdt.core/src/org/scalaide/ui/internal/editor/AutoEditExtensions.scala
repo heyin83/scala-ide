@@ -38,8 +38,8 @@ object AutoEditExtensions extends AnyRef with HasLogger {
    */
   private val autoEdits = {
     AutoEdits.autoEditData flatMap {
-      case (fqn, setting) ⇒
-        ExtensionCompiler.savelyLoadExtension[ExtensionCreators.AutoEdit](fqn).map(setting → _)
+      case (fqn, setting) =>
+        ExtensionCompiler.savelyLoadExtension[ExtensionCreators.AutoEdit](fqn).map(setting -> _)
     }
   }
 

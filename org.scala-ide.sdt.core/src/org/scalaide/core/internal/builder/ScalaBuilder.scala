@@ -36,7 +36,7 @@ class ScalaBuilder extends IncrementalProjectBuilder with JDTBuilderFacade with 
 
     ensureProject()
     scalaJavaBuilder.clean(monitor)
-    JDTUtils.refreshPackageExplorer
+    JDTUtils.refreshPackageExplorer()
   }
 
   override def build(kind: Int, ignored: ju.Map[String, String], monitor: IProgressMonitor): Array[IProject] = {
@@ -80,7 +80,7 @@ class ScalaBuilder extends IncrementalProjectBuilder with JDTBuilderFacade with 
             }
           })
           // Only for sbt which is able to track external dependencies properly
-          if (project.buildManager.canTrackDependencies) {
+          if (project.buildManager().canTrackDependencies) {
             def hasChanges(prj: IProject): Boolean = {
               val delta = getDelta(prj)
               delta == null || delta.getKind != IResourceDelta.NO_CHANGE

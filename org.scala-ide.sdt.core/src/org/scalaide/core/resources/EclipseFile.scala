@@ -84,9 +84,9 @@ abstract class EclipseResource[+R <: IResource] extends AbstractFile {
 
   def lastModified: Long = underlying.getLocalTimeStamp
 
-  def delete: Unit = underlying.delete(true, null)
+  def delete(): Unit = underlying.delete(true, null)
 
-  def create: Unit = {}
+  def create(): Unit = {}
 
   def absolute = this
 

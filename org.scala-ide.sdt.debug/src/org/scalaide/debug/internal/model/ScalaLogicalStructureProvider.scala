@@ -186,7 +186,7 @@ object AkkaActorLogicalStructure extends ILogicalStructureType with HasLogger {
   def enclosingActor(obj: ScalaObjectReference): Option[ScalaObjectReference] = {
     obj.wrapJDIException("Exception while computing logical structures for actor") {
       def walkOuterPath(obj: ScalaObjectReference): Option[ScalaObjectReference] = {
-        if (implements(obj.classType, "akka.actor.Actor")) Some(obj)
+        if (implements(obj.classType(), "akka.actor.Actor")) Some(obj)
         else (for {
           _ <- Option(obj.referenceType().fieldByName("$outer"))
           outerField = obj.fieldValue("$outer").asInstanceOf[ScalaObjectReference]

@@ -14,7 +14,7 @@ object EventHandlerMapping {
   def mappings: Seq[EventHandlerMapping] = {
     val elems = EclipseUtils.configElementsForExtension(EventHandlerId)
 
-    elems flatMap { e ⇒
+    elems flatMap { e =>
       EclipseUtils.withSafeRunner(s"Error while trying to retrieve information from extension '$EventHandlerId'") {
         EventHandlerMapping(
           e.getAttribute("id"),
@@ -43,7 +43,7 @@ case class EventHandlerMapping
    * If an error occurs in the passed function, `None` is returned, otherwise
    * the result of the function.
    */
-  def withInstance[A](f: DebugEventHandler ⇒ A): Option[A] = {
+  def withInstance[A](f: DebugEventHandler => A): Option[A] = {
     EclipseUtils.withSafeRunner(s"Error while executing debug event handler '$name'") {
       f(unsafeInstanceAccess)
     }

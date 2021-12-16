@@ -72,7 +72,7 @@ class SbtScopesBuildManager(val owningProject: IScalaProject, managerSettings: S
   private def findProjectsInError(scopeUnit: BuildScopeUnit) = {
     def hasErrors(project: IProject, scope: CompileScope): Boolean =
       IScalaPlugin().asScalaProject(project).map {
-        _.buildManager match {
+        _.buildManager() match {
           case manager: SbtScopesBuildManager => manager.hasErrors(scope)
           case manager: EclipseBuildManager => manager.hasErrors
         }
@@ -93,7 +93,7 @@ class SbtScopesBuildManager(val owningProject: IScalaProject, managerSettings: S
       val errorProjects = scopeWithError.projectsInError.map(_.getName).toSet.mkString(", ")
       val rootErrors = scopeWithError.projectsInError.flatMap { project =>
         val foundErrors = IScalaPlugin().asScalaProject(project).toList.flatMap {
-          _.buildManager.buildErrors
+          _.buildManager().buildErrors
         }
         foundErrors
       }.toSet[IMarker].map {

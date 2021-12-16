@@ -23,7 +23,7 @@ class AsyncDebuggerPreferencePage extends FieldEditors {
   }
 
   def createEditors(control: Composite): Unit = {
-    fieldEditors += addNewFieldEditorWrappedInComposite(parent = control) { parent ⇒
+    fieldEditors += addNewFieldEditorWrappedInComposite(parent = control) { parent =>
       new ListEditor(FadingPackages, "Define all package names that should be faded:", parent) {
 
         getDownButton.setVisible(false)
@@ -58,13 +58,13 @@ class AsyncDebuggerPreferencePage extends FieldEditors {
       }
     }
 
-    fieldEditors += addNewFieldEditorWrappedInComposite(parent = control) { parent ⇒
+    fieldEditors += addNewFieldEditorWrappedInComposite(parent = control) { parent =>
       new ColorFieldEditor(FadingColor, "Color of faded packages:", parent) {
         allEnableDisableControls += getColorSelector.getButton
       }
     }
 
-    fieldEditors += addNewFieldEditorWrappedInComposite(parent = control) { parent ⇒
+    fieldEditors += addNewFieldEditorWrappedInComposite(parent = control) { parent =>
       new ListEditor(AsyncProgramPoints, "Define the Async Program Points (entry points for the \"jump to next message\" functionality):", parent) {
 
         getDownButton.setVisible(false)

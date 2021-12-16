@@ -5,7 +5,6 @@ import scala.tools.refactoring.MultiStageRefactoring
 import scala.tools.refactoring.ParameterlessRefactoring
 import scala.tools.refactoring.common.Change
 import scala.tools.refactoring.common.InteractiveScalaCompiler
-import scala.tools.refactoring.common.TextChange
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.IStatus

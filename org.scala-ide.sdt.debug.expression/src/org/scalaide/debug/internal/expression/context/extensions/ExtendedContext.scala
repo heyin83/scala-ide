@@ -6,9 +6,6 @@ package context.extensions
 
 import scala.reflect.runtime.universe
 
-import org.scalaide.debug.internal.expression.Names.Debugger.contextParamName
-import org.scalaide.debug.internal.expression.Names.Debugger.objectOrStaticCallProxyMethodName
-import org.scalaide.debug.internal.expression.Names.Debugger.valueProxyMethodName
 import org.scalaide.debug.internal.expression.context.NestedMethodDeclaration
 import org.scalaide.debug.internal.expression.context.NestedMethodImplementation
 import org.scalaide.logging.HasLogger

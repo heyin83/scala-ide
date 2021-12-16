@@ -196,12 +196,12 @@ class AsyncDebugView extends AbstractDebugView with IDebugContextListener with H
     val pcl = new IPropertyChangeListener {
       override def propertyChange(event: PropertyChangeEvent) = {
         event.getProperty match {
-          case AsyncDebuggerPreferencePage.FadingColor ⇒
+          case AsyncDebuggerPreferencePage.FadingColor =>
             if (fadingColor != null)
               fadingColor.dispose()
             fadingColor = loadFadingColor
 
-          case AsyncDebuggerPreferencePage.FadingPackages ⇒
+          case AsyncDebuggerPreferencePage.FadingPackages =>
             fadingPackages = loadFadingPackages
         }
       }

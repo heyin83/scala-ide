@@ -179,9 +179,9 @@ class ScalaStackFrame private (val thread: ScalaThread, @volatile private var st
       sourcePath(className).getOrElse {
         className.split('.').init match {
           case Array() =>
-            getSourceName
+            getSourceName()
           case packageSegments =>
-            packageSegments.mkString("", "/", "/") + getSourceName
+            packageSegments.mkString("", "/", "/") + getSourceName()
         }
       }
     }

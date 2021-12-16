@@ -76,7 +76,7 @@ trait ScalaCompilationUnit extends Openable
   }
 
   override def lastSourceMap(): ISourceMap = sourceFileLock.synchronized {
-    if (cachedSourceInfo == null) sourceMap(getContents)
+    if (cachedSourceInfo == null) sourceMap(getContents())
     else cachedSourceInfo
   }
 
@@ -89,7 +89,7 @@ trait ScalaCompilationUnit extends Openable
 
   override def bufferChanged(e : BufferChangedEvent): Unit = {
     if (!e.getBuffer.isClosed)
-      scalaProject.presentationCompiler(_.scheduleReload(this, sourceMap(getContents).sourceFile))
+      scalaProject.presentationCompiler(_.scheduleReload(this, sourceMap(getContents()).sourceFile))
 
     super.bufferChanged(e)
   }

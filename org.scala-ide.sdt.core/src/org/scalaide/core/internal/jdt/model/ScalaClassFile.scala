@@ -79,7 +79,7 @@ class ScalaClassFile(parent: PackageFragment, name: String, sourceFile: String)
   def getContents() = Option(getSourceMapper) flatMap
     { mapper => Option(mapper.findSource(getType, getSourceFileName)) } getOrElse Array.empty
 
-  override lazy val file: AbstractFile = new VirtualFile(getSourceFileName, getSourceFilePath)
+  override lazy val file: AbstractFile = new VirtualFile(getSourceFileName, getSourceFilePath())
 
   def getSourceFileName() = sourceFile
 
@@ -92,8 +92,8 @@ class ScalaClassFile(parent: PackageFragment, name: String, sourceFile: String)
   def getPackage(): PackageFragment = parent
 
   def getPackageName(): Array[Array[Char]] = {
-    if (getPackage == null) CharOperation.NO_CHAR_CHAR
-    else Util.toCharArrays(getPackage.names)
+    if (getPackage() == null) CharOperation.NO_CHAR_CHAR
+    else Util.toCharArrays(getPackage().names)
   }
 
   lazy val allTypes: Seq[IType] = {
@@ -143,7 +143,7 @@ class ScalaClassFile(parent: PackageFragment, name: String, sourceFile: String)
     if ((underlyingResource ne null) && !underlyingResource.isAccessible) newDoesNotExistStatus() else JavaModelStatus.VERIFIED_OK
   }
 
-  override def currentProblems: List[ScalaCompilationProblem] = Nil
+  override def currentProblems(): List[ScalaCompilationProblem] = Nil
 
   def closeBuffer0() = super.closeBuffer()
   def closing0(info: AnyRef) = super.closing(info)

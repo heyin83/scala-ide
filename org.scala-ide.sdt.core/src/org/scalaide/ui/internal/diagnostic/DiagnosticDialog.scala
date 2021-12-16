@@ -90,7 +90,7 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
     }
 
     override def saveToStore(): Unit = {
-      updateValue
+      updateValue()
       if (value && !getStoredValue) {
         val currentExcluded: Array[String] = PreferenceConstants.getExcludedCompletionProposalCategories
         PreferenceConstants.setExcludedCompletionProposalCategories(
@@ -123,7 +123,7 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
     var value: Int = prefStore.getInt(keyName)
     var textWidget: Text = null // can't be initialized in the constructor because widget won't have been created yet
     def saveToStore(): Unit = {
-      updateValue
+      updateValue()
       prefStore.setValue(keyName, value)
     }
     def updateWidget(): Unit = { textWidget.setText(value.toString) }
@@ -142,7 +142,7 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
     var checkbox: Button = null // can't be initialized in the constructor because widget won't have been created yet
 
     def saveToStore(): Unit = {
-      updateValue
+      updateValue()
       prefStore.setValue(keyName, value) // code duplication is due to overloading in IPreferenceStore.setValue
     }
     def updateWidget(): Unit = { checkbox.setSelection(value) }
@@ -190,11 +190,11 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
       override def widgetSelected(e: SelectionEvent): Unit = {
         if (scalaSettingsButton.getSelection) {
           updating = true
-          widgetDataList foreach { _.setToRecommended }
+          widgetDataList foreach { _.setToRecommended() }
           updating = false
         } else {
           updating = true
-          widgetDataList foreach { _.updateWidget }
+          widgetDataList foreach { _.updateWidget() }
           updating = false
         }
         doEnableDisable()
@@ -267,13 +267,13 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
     errorMessageField.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL))
     errorMessageField.setBackground(errorMessageField.getDisplay.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND))
 
-    widgetDataList foreach { _.updateWidget }
+    widgetDataList foreach { _.updateWidget() }
 
     // IMPORTANT: add the listeners AFTER updating the widgets. Otherwise, the listeners will be triggered when setting the
     // widget's initial values
     val selectionListener = new SelectionAdapter {
       override def widgetSelected(e: SelectionEvent): Unit = {
-        e.getSource.asInstanceOf[Control].getData.asInstanceOf[WidgetData].updateValue
+        e.getSource.asInstanceOf[Control].getData.asInstanceOf[WidgetData].updateValue()
         refreshRadioButtons()
         doEnableDisable()
       }
@@ -285,8 +285,8 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
     delayText.addModifyListener(new ModifyListener {
       def modifyText(e: ModifyEvent): Unit = {
         verifyNumber(delayText.getText)
-        activationDelayData.updateValue
-        refreshRadioButtons
+        activationDelayData.updateValue()
+        refreshRadioButtons()
       }
     })
 
@@ -359,7 +359,7 @@ class DiagnosticDialog(configurer: WeavingStateConfigurer, shell: Shell) extends
   }
 
   override def okPressed: Unit = {
-    widgetDataList foreach { _.saveToStore }
+    widgetDataList foreach { _.saveToStore() }
     val doEnableWeaving = weavingButton.getSelection && !configurer.isWeaving
     super.okPressed
     if (doEnableWeaving)

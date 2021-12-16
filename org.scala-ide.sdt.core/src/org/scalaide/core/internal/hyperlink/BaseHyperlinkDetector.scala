@@ -4,7 +4,6 @@ import org.eclipse.jface.text.IRegion
 import org.eclipse.jface.text.ITextViewer
 import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector
 import org.eclipse.jface.text.hyperlink.IHyperlink
-import org.eclipse.ui.texteditor.ITextEditor
 import org.scalaide.core.compiler.InteractiveCompilationUnit
 import org.scalaide.util.eclipse.EditorUtils
 import scala.concurrent.ExecutionContext.Implicits._

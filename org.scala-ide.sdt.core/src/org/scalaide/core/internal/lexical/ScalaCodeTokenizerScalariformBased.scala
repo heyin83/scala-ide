@@ -5,7 +5,6 @@ import org.scalaide.ui.syntax.ScalaSyntaxClasses
 import org.scalaide.ui.syntax.ScalariformToSyntaxClass
 import scala.annotation.tailrec
 import scalariform.ScalaVersion
-import scalariform.lexer.{ Token => ScalariformToken }
 import scalariform.lexer.Tokens._
 import scalariform.lexer.{Token => ScalariformToken}
 import org.scalaide.core.lexical.ScalaCodeTokenizer

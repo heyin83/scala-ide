@@ -50,7 +50,7 @@ private[context] trait JdiVariableContext
 
   /** See [[org.scalaide.debug.internal.expression.context.VariableContext]] */
   override def thisPackage: Option[String] = {
-    val current = currentFrame
+    val current = currentFrame()
     Option(current.thisObject).map {
       _.`type`.signature
     }.orElse {

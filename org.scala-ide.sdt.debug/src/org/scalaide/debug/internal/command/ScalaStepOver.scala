@@ -2,9 +2,7 @@ package org.scalaide.debug.internal.command
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-import scala.Option.option2Iterable
 import scala.Range
-import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 

@@ -48,7 +48,7 @@ class LocalRename extends RefactoringExecutor {
 
     createScalaIdeRefactoringForCurrentEditorAndSelection() map {
       case refactoring: RenameScalaIdeRefactoring =>
-        refactoring.preparationResult.fold(_ => (new GlobalRename).perform(), _ => runInlineRename(refactoring))
+        refactoring.preparationResult().fold(_ => (new GlobalRename).perform(), _ => runInlineRename(refactoring))
     }
   }
 }

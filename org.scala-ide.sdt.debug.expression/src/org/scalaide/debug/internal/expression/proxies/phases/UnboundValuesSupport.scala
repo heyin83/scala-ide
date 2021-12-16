@@ -133,7 +133,7 @@ trait UnboundValuesSupport {
      * Collects unbound variables in the tree.
      */
     final def findUnboundVariables(): Set[UnboundVariable] =
-      findUnboundValues.keySet
+      findUnboundValues().keySet
 
     /**
      * Collects unbound values (name, type) in the tree.

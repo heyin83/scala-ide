@@ -130,7 +130,7 @@ object ConstantPool {
   /** Get the constant pool out of a Java class file. */
   def fromFile(classFile: File): ConstantPool = {
     val file = AbstractFile.getFile(classFile)
-    val reader = new AbstractFileReader(file)
+    val reader = new AbstractFileReader(file.toByteArray)
 
     def parseHeader(): Unit = {
       if (!(reader.nextInt == 0xCAFEBABE))

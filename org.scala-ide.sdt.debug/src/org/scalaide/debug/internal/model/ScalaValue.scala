@@ -3,7 +3,6 @@
  */
 package org.scalaide.debug.internal.model
 
-import scala.collection.JavaConverters.asScalaBufferConverter
 import org.eclipse.core.runtime.IStatus
 import org.eclipse.core.runtime.Status
 import org.eclipse.debug.core.DebugException
@@ -162,13 +161,13 @@ class ScalaObjectReference(override val underlying: ObjectReference, target: Sca
   protected override def doGetReferenceTypeName(): String = underlying.referenceType.name
 
   protected override def doGetValueString(): String = {
-    val refTypeSignature = getReferenceType.signature
+    val refTypeSignature = getReferenceType().signature
     val name = ScalaStackFrame.getSimpleName(refTypeSignature)
 
     if (BOXED_PRIMITIVE_TYPES.contains(refTypeSignature))
-      s"$name $getBoxedPrimitiveValue (id=${underlying.uniqueID})"
+      s"$name ${getBoxedPrimitiveValue()} (id=${underlying.uniqueID})"
     else if (refTypeSignature == BOXED_CHAR_TYPE)
-      s"$name '$getBoxedPrimitiveValue' (id=${underlying.uniqueID})"
+      s"$name '${getBoxedPrimitiveValue()}' (id=${underlying.uniqueID})"
     else
       s"$name (id=${underlying.uniqueID})"
   }
@@ -178,15 +177,15 @@ class ScalaObjectReference(override val underlying: ObjectReference, target: Sca
 
   protected override def doGetVariables(): Array[IVariable] = {
     import scala.collection.JavaConverters._
-    referenceType.allFields.asScala.map(new ScalaFieldVariable(_, this)).filter(isVisible).sortBy(_.getName).toArray
+    referenceType().allFields.asScala.map(new ScalaFieldVariable(_, this)).filter(isVisible).sortBy(_.getName).toArray
   }
-  protected override def doHasVariables(): Boolean = !referenceType.allFields.isEmpty
+  protected override def doHasVariables(): Boolean = !referenceType().allFields.isEmpty
 
-  protected override def getReferenceType: ReferenceType = underlying.referenceType()
+  protected override def getReferenceType(): ReferenceType = underlying.referenceType()
 
   protected override def getJdiFieldValue(field: Field): Value = underlying.getValue(field)
 
-  protected[model] override def classType: ClassType = referenceType.asInstanceOf[ClassType]
+  protected[model] override def classType(): ClassType = referenceType().asInstanceOf[ClassType]
 
   override protected[model] def jdiInvokeMethod(method: Method, thread: ScalaThread, args: Value*): Value = {
     if (thread == null) {

@@ -174,13 +174,13 @@ trait MethodSignatureRefactoringConfigurationPageGenerator {
 
       firstBtn addMouseListener { () =>
         paramsWithSeparators = handleFirstBtn(selection, paramsWithSeparators)
-        updateParamsAndSeparators
+        updateParamsAndSeparators()
         setBtnStatesForSelection(selection)
       }
 
       secondBtn addMouseListener { () =>
         paramsWithSeparators = handleSecondBtn(selection, paramsWithSeparators)
-        updateParamsAndSeparators
+        updateParamsAndSeparators()
         setBtnStatesForSelection(selection)
       }
 
@@ -408,7 +408,7 @@ trait MethodSignatureRefactoringConfigurationPageGenerator {
     }
 
     private[method] def updateTable(): Unit = {
-      viewer.setInput(methodProvider.apply)
+      viewer.setInput(methodProvider.apply())
       viewer.refresh()
     }
   }

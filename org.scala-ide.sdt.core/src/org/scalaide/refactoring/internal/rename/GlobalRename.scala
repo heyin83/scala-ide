@@ -1,7 +1,6 @@
 package org.scalaide.refactoring.internal
 package rename
 
-import scala.language.reflectiveCalls
 import scala.tools.refactoring.analysis.GlobalIndexes
 import scala.tools.refactoring.analysis.NameValidation
 import scala.tools.refactoring.implementations
@@ -59,7 +58,7 @@ class GlobalRename extends RefactoringExecutorWithWizard {
 
       if(!status.hasError) {
 
-        val selectedSymbol = preparationResult.right.get.selectedTree.symbol // only reachable if it's a Right value
+        val selectedSymbol = preparationResult().right.get.selectedTree.symbol // only reachable if it's a Right value
 
         name = selectedSymbol match {
           case sym if sym.isSetter => sym.getterIn(sym.owner).nameString

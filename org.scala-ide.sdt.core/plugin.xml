@@ -1907,9 +1907,6 @@
     <participant
           class="org.scalaide.ui.internal.editor.decorators.implicits.ImplicitHighlightingParticipant">
     </participant>
-    <!--participant
-          class="org.scalaide.ui.internal.editor.decorators.custom.MutableCollectionCallHighlightingParticipant">
-    </participant-->
     <participant
           class="org.scalaide.ui.internal.editor.decorators.bynameparams.CallByNameParamAtCreationHighlightingParticipant">
     </participant>

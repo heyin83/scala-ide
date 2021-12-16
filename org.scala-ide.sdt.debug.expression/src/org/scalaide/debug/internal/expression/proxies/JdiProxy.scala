@@ -3,8 +3,6 @@
  */
 package org.scalaide.debug.internal.expression.proxies
 
-import scala.language.dynamics
-
 import scala.reflect.ClassTag
 import scala.reflect.classTag
 
@@ -137,5 +135,5 @@ object ObjectJdiProxy {
     new ObjectJdiProxy(proxyContext, __value)
 
   def unapply(proxy: ObjectJdiProxy): Option[(JdiContext, ObjectReference)] =
-    Some(proxy.__context → proxy.__value)
+    Some(proxy.__context -> proxy.__value)
 }

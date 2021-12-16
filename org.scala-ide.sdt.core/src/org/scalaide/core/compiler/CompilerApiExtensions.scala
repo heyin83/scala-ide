@@ -66,7 +66,7 @@ trait CompilerApiExtensions extends Global { self =>
     while (scanner.token != Tokens.EOF) {
       startOffset += scanner.offset
       token += scanner.token
-      scanner.nextToken
+      scanner.nextToken()
       endOffset += scanner.lastOffset
     }
 

@@ -47,8 +47,8 @@ class SbtInputs(
       Optional.empty[CompileAnalysis]
     else {
       val analysis = allProjects.collectFirst {
-        case project if project.buildManager.buildManagerOf(f).nonEmpty =>
-          project.buildManager.buildManagerOf(f).get.latestAnalysis
+        case project if project.buildManager().buildManagerOf(f).nonEmpty =>
+          project.buildManager().buildManagerOf(f).get.latestAnalysis
       }
       analysis.map { analysis =>
         Optional.ofNullable(analysis)
@@ -78,14 +78,14 @@ class SbtInputs(
 
   def classpath = (project.scalaClasspath.jdkPaths ++ project.scalaClasspath.userCp ++ addToClasspath ++ outputFolders)
     .distinct
-    .map { cp ⇒
-      val location = Option(cp.toFile).flatMap(f ⇒ Option(f.getAbsoluteFile))
+    .map { cp =>
+      val location = Option(cp.toFile).flatMap(f => Option(f.getAbsoluteFile))
       location getOrElse (throw new IllegalStateException(s"The classpath location `$cp` is invalid."))
     }.toArray
 
   def sources = sourceFiles.toArray
 
-  private def srcOutDirs = (if (srcOutputs.nonEmpty) srcOutputs else project.sourceOutputFolders).map {
+  private def srcOutDirs = (if (srcOutputs.nonEmpty) srcOutputs else project.sourceOutputFolders()).map {
     case (src, out) => (Option(src.getLocation).map(_.toFile()), Option(out.getLocation).map(_.toFile()))
   }.collect {
     case (Some(src), Some(out)) => (src, out)

@@ -41,7 +41,7 @@ trait CloseBacktick extends AutoEdit {
     }
 
     check(textChange) {
-      case TextChange(start, end, "`") ⇒
+      case TextChange(start, end, "`") =>
         if (autoClosingRequired(end))
           Some(TextChange(start, end, "``") withLinkedModel (start + 2, singleLinkedPos(start + 1)))
         else

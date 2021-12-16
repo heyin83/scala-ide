@@ -207,7 +207,7 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
       ScalaProject.exportedDependenciesForProjects(directDependencies.toSet).toSeq
     else Nil
 
-  def exportedDependencies: Seq[IProject] =
+  def exportedDependencies(): Seq[IProject] =
     if (underlying.isOpen)
       ScalaProject.dependenciesForProject(underlying)
         .map(EclipseUtils.projectFromPath).toSeq
@@ -223,12 +223,12 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
   }
 
   def outputFolders: Seq[IPath] =
-    sourceOutputFolders.map(_._2.getFullPath()).toSeq
+    sourceOutputFolders().map(_._2.getFullPath()).toSeq
 
   def outputFolderLocations: Seq[IPath] =
-    sourceOutputFolders.map(_._2.getLocation()).toSeq
+    sourceOutputFolders().map(_._2.getLocation()).toSeq
 
-  def sourceOutputFolders: Seq[(IContainer, IContainer)] = {
+  def sourceOutputFolders(): Seq[(IContainer, IContainer)] = {
     val cpes = resolvedClasspath
     for {
       cpe <- cpes if cpe.getEntryKind == IClasspathEntry.CPE_SOURCE
@@ -270,7 +270,7 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
 
   def allFilesInSourceDirs(): Set[IFile] = {
     /* Cache it for the duration of this call */
-    lazy val currentSourceOutputFolders = sourceOutputFolders
+    lazy val currentSourceOutputFolders = sourceOutputFolders()
 
     /* Return the inclusion patterns of `entry` as an Array[Array[Char]], ready for consumption
      * by the JDT.
@@ -382,7 +382,7 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
   }
 
   private def refreshOutputFolders(): Unit = {
-    sourceOutputFolders foreach {
+    sourceOutputFolders() foreach {
       case (_, binFolder) =>
         binFolder.refreshLocal(IResource.DEPTH_INFINITE, null)
         // make sure the folder is marked as Derived, so we don't see classfiles in Open Resource
@@ -476,7 +476,7 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
     // if the workspace project doesn't exist, it is a virtual project used by Eclipse.
     // As such the source folders don't exist.
     if (underlying.exists())
-      for ((src, dst) <- sourceOutputFolders)
+      for ((src, dst) <- sourceOutputFolders())
         settings.outputDirs.add(EclipseResource(src), EclipseResource(dst))
 
     for (enc <- encoding)
@@ -560,7 +560,7 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
     true
   }
 
-  def buildManager: EclipseBuildManager = {
+  def buildManager(): EclipseBuildManager = {
     if (buildManager0 == null) {
       val settings = ScalaPresentationCompiler.defaultScalaSettings(msg => settingsError(IMarker.SEVERITY_ERROR, msg, null))
       clearSettingsErrors()
@@ -586,19 +586,19 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
 
   /* If true, then it means that all source files have to be reloaded */
   def prepareBuild(): Boolean = if (!hasBeenBuilt)
-    buildManager.invalidateAfterLoad
+    buildManager().invalidateAfterLoad
   else false
 
   def build(addedOrUpdated: Set[IFile], removed: Set[IFile], monitor: SubMonitor): Unit = {
     hasBeenBuilt = true
 
     clearBuildProblemMarker()
-    buildManager.build(addedOrUpdated, removed, monitor)
+    buildManager().build(addedOrUpdated, removed, monitor)
     refreshOutputFolders()
 
     // Already performs saving the dependencies
 
-    if (!buildManager.hasErrors) {
+    if (!buildManager().hasErrors) {
       // reset presentation compilers of projects that depend on this one
       // since the output directory now contains the up-to-date version of this project
       // note: ScalaBuilder resets the presentation compiler when a referred project
@@ -624,8 +624,8 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
     clearAllBuildProblemMarkers()
     resetClasspathCheck()
 
-    if (buildManager != null)
-      buildManager.clean(monitor)
+    if (buildManager() != null)
+      buildManager().clean(monitor)
     cleanOutputFolders
     logger.info("Resetting compilers due to Project.clean")
     resetCompilers // reset them only after the output directory is emptied

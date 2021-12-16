@@ -40,7 +40,7 @@ abstract class IndexedIdeRefactoring(feature: Feature, refactoringName: String, 
     val status = super.checkInitialConditions(pm)
 
     if (!status.hasError) {
-      val (index, cleanupIndex) = buildFullProjectIndex(pm, indexHints)
+      val (index, cleanupIndex) = buildFullProjectIndex(pm, indexHints())
       refactoring.index = index
       // will be called after the refactoring has finished
       cleanup = cleanupIndex

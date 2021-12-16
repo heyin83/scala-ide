@@ -31,7 +31,7 @@ abstract class MethodSignatureIdeRefactoring(feature: Feature, refactoringName: 
   var refactoringParameters: MSRefactoringParameters
 
   // The selected DefDef that will be refactored
-  private[method] def defdefOrError: Either[refactoring.PreparationError, refactoring.global.DefDef] = preparationResult.right.map(_.defdef)
+  private[method] def defdefOrError: Either[refactoring.PreparationError, refactoring.global.DefDef] = preparationResult().right.map(_.defdef)
 
   private[method] def mkConfigPage(defdef: refactoring.global.DefDef, paramsObs: refactoring.RefactoringParameters => Unit): UserInputWizardPage
 
