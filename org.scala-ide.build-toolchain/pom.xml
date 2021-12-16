@@ -25,15 +25,6 @@
     <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
   </properties>
 
-  <!-- repository containing the sbt packages -->
-  <!--repositories>
-    <repository>
-      <id>bintray.com</id>
-      <name>bintray repo</name>
-      <url>https://dl.bintray.com/sbt/maven-releases/</url>
-    </repository>
-  </repositories-->
-
   <build>
     <plugins>
       <plugin>
@@ -59,8 +50,6 @@
 
   <modules>
     <module>../org.scala-ide.zinc.library</module>
-    <module>../org.scala-ide.zinc.library.source</module>
-    <module>../org.scala-ide.zinc.compiler.bridge</module>
     <module>../org.scala-ide.zinc.compiler.bridge.source</module>
   </modules>
 </project>
