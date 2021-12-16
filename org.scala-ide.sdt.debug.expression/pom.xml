@@ -43,6 +43,37 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <!-- copy the jar dependencies -->
+          <execution>
+            <id>copy basic</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>javax.xml.bind</groupId>
+                  <artifactId>jaxb-api</artifactId>
+                  <destFileName>jaxb-api.jar</destFileName>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>javax.xml.bind</groupId>
+                  <artifactId>jaxb-api</artifactId>
+                 <destFileName>jaxb-api-sources.jar</destFileName>
+                 <classifier>sources</classifier>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Scalastyle -->
       <plugin>
         <groupId>org.scalastyle</groupId>

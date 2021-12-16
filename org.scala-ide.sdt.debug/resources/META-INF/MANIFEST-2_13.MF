@@ -40,7 +40,6 @@ Require-Bundle: org.eclipse.core.expressions,
  org.scala-lang.scala-library;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
  org.scala-lang.scala-compiler;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
  org.scala-lang.scala-reflect;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
- scalariform,
  org.junit,
  org.eclipse.ui.browser,
  org.scala-ide.sdt.core,
@@ -83,4 +82,3 @@ Export-Package: com.googlecode.concurrentlinkedhashmap,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: target/lib/concurrentlinkedhashmap-lru-1.4.2.jar,
  .
-

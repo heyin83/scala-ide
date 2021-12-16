@@ -18,7 +18,7 @@
   </scm>
 
   <modules>
-    <module>../org.scala-refactoring.library</module>
+    <module>../org.scala-refactoring</module>
     <module>../org.scala-ide.sdt.aspects</module>
     <module>../org.scala-ide.sdt.core</module>
     <module>../org.scala-ide.sdt.core.tests</module>
@@ -68,12 +68,6 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository>
-    <repository>
-      <id>scala-refactoring</id>
-      <name>Scala Refactoring p2 repository</name>
-      <layout>p2</layout>
-      <url>file:../org.scala-ide.p2-update-site/org.scala-ide.p2-update-site.update-site/target/site</url>
     </repository>
     <repository>
       <id>zinc</id>

@@ -47,9 +47,7 @@ Require-Bundle: org.eclipse.core.expressions,
  org.scala-lang.scala-library;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
  org.scala-lang.scala-reflect;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
  org.scala-lang.scala-compiler;bundle-version="[@SCALA_MINOR_VERSION@,2.14)",
- org.scala-lang.modules.scala-xml;bundle-version="[2.0.1,2.0.10]",
- org.scala-refactoring.library,
- scalariform
+ org.scala-lang.modules.scala-xml;bundle-version="[2.0.1,2.0.10]"
 Import-Package: org.eclipse.osgi.service.datalocation,
  org.eclipse.core.runtime,
  org.eclipse.core.runtime.content,
@@ -168,7 +166,6 @@ Export-Package: org.scalaide.core,
  org.scalaide.util.eclipse,
  org.scalaide.util.internal,
  org.scalaide.util.internal.eclipse,
- org.scalaide.util.internal.scalariform,
  org.scalaide.util.internal.ui,
  org.scalaide.util.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
@@ -195,4 +192,6 @@ Bundle-ClassPath: .,
  target/lib/jna-platform-@JNA_VERSION@.jar,
  target/lib/jna-@JNA_VERSION@.jar,
  target/lib/zero-allocation-hashing-@ZERO_ALLOCATION_VERSION@.jar,
- target/lib/scala-parallel-collections_@SCALA_MINOR_VERSION@-@SCALA_PARALLEL_COLLECTIONS_VERSION@.jar
+ target/lib/scala-parallel-collections_@SCALA_MINOR_VERSION@-@SCALA_PARALLEL_COLLECTIONS_VERSION@.jar,
+ target/lib/scalariform_@SCALA_MINOR_VERSION@-@SCALARIFORM_VERSION@.jar,
+ target/lib/org.scala-refactoring.jar

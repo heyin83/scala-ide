@@ -327,6 +327,7 @@
                           <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
                           <filter token="ZINC_VERSION" value="${zinc.version}"/>
                           <filter token="SBINARY_VERSION" value="${sbinary.version}"/>
+                          <filter token="SCALARIFORM_VERSION" value="${scalariform.version}"/>
                           <filter token="SCALA_VERSION" value="${scala.version}"/>
                           <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
                           <filter token="SCALA_IDE_VERSION" value="${version}"/>
@@ -366,6 +367,7 @@
                           <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
                           <filter token="ZINC_VERSION" value="${zinc.version}"/>
                           <filter token="SBINARY_VERSION" value="${sbinary.version}"/>
+                          <filter token="SCALARIFORM_VERSION" value="${scalariform.version}"/>
                           <filter token="SCALA_VERSION" value="${scala.version}"/>
                           <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
                           <filter token="SCALA_IDE_VERSION" value="${version}"/>

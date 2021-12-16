@@ -26,7 +26,6 @@
       <modules>
         <module>../org.scala-ide.scala212.build</module>
         <module>../org.scala-ide.scala213.build</module>
-        <module>../org.scala-ide.p2-update-site</module>
       </modules>
     </profile>
   </profiles>

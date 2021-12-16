@@ -36,4 +36,5 @@ Require-Bundle: org.eclipse.ui,
 Import-Package: org.osgi.framework,
  org.scalaide.util,
  scala.tools.eclipse.contribution.weaving.jdt
-
+Bundle-ClassPath: .,
+ target/lib/jaxb-api.jar

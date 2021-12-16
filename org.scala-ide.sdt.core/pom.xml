@@ -139,7 +139,7 @@
 
     <dependency>
       <groupId>org.scala-ide</groupId>
-      <artifactId>org.scala-refactoring.library</artifactId>
+      <artifactId>org.scala-refactoring</artifactId>
       <version>4.7.1-SNAPSHOT</version>
     </dependency>
 
@@ -375,10 +375,31 @@
                  <groupId>org.scala-lang.modules</groupId>
                  <artifactId>scala-parallel-collections_${scala213.binary.version}</artifactId>
                </artifactItem>
-
                <artifactItem>
                  <groupId>org.scala-lang.modules</groupId>
                  <artifactId>scala-parallel-collections_${scala213.binary.version}</artifactId>
+                 <classifier>sources</classifier>
+               </artifactItem>
+
+               <artifactItem>
+                 <groupId>org.scalariform</groupId>
+                 <artifactId>scalariform_${scala.minor.version}</artifactId>
+               </artifactItem>
+               <artifactItem>
+                 <groupId>org.scalariform</groupId>
+                 <artifactId>scalariform_${scala.minor.version}</artifactId>
+                 <classifier>sources</classifier>
+               </artifactItem>
+
+               <artifactItem>
+                 <groupId>org.scala-ide</groupId>
+                 <artifactId>org.scala-refactoring</artifactId>
+                 <destFileName>org.scala-refactoring.jar</destFileName>
+               </artifactItem>
+               <artifactItem>
+                 <groupId>org.scala-ide</groupId>
+                 <artifactId>org.scala-refactoring</artifactId>
+                 <destFileName>org.scala-refactoring-source.jar</destFileName>
                  <classifier>sources</classifier>
                </artifactItem>
 

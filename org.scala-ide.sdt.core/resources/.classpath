@@ -20,6 +20,8 @@
         <classpathentry kind="lib" path="target/lib/util-relation_@SCALA_MINOR_VERSION@-@ZINC_VERSION@.jar" sourcepath="target/lib/util-relation_@SCALA_MINOR_VERSION@-@ZINC_VERSION@-sources.jar"/>
         <classpathentry kind="lib" path="target/lib/io_@SCALA_MINOR_VERSION@-@ZINC_VERSION@.jar" sourcepath="target/lib/io_@SCALA_MINOR_VERSION@-@ZINC_VERSION@-sources.jar"/>
         <classpathentry kind="lib" path="target/lib/sbinary_@SCALA_MINOR_VERSION@-@SBINARY_VERSION@.jar" sourcepath="target/lib/sbinary_@SCALA_MINOR_VERSION@-@SBINARY_VERSION@-sources.jar"/>
+        <classpathentry kind="lib" path="target/lib/scalariform_@SCALA_MINOR_VERSION@-@SCALARIFORM_VERSION@.jar" sourcepath="target/lib/scalariform_@SCALA_MINOR_VERSION@-@SCALARIFORM_VERSION@-sources.jar"/>
+        <classpathentry kind="lib" path="target/lib/org.scala-refactoring.jar" sourcepath="target/lib/org.scala-refactoring-sources.jar"/>
         <classpathentry kind="lib" path="target/lib/scalap-@SCALA_VERSION@.jar" sourcepath="target/lib/scalap-@SCALA_VERSION@-sources.jar"/>
         <classpathentry kind="lib" path="target/lib/scala-parallel-collections_@SCALA_MINOR_VERSION@-@SCALA_PARALLEL_COLLECTIONS_VERSION@.jar" sourcepath="target/lib/scala-parallel-collections_@SCALA_MINOR_VERSION@-@SCALA_PARALLEL_COLLECTIONS_VERSION@-sources.jar"/>
         <classpathentry kind="lib" path="target/lib/file-tree-views-@FILE_TREE_VIEWS_VERSION@.jar" sourcepath="target/lib/file-tree-views-@FILE_TREE_VIEWS_VERSION@-sources.jar"/>
