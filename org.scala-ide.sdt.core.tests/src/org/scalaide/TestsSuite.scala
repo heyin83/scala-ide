@@ -66,8 +66,6 @@ import org.scalaide.util.eclipse.RegionUtilsTest
 import org.scalaide.util.internal.eclipse.TextSelectionTest
 import org.scalaide.core.sbtbuilder.CompilerBridgeStoreTest
 import org.scalaide.ui.internal.preferences.StringListMapperTest
-import org.scalaide.core.sbtbuilder.Scala210Compilation
-import org.scalaide.core.sbtbuilder.Scala211Compilation
 import org.scalaide.core.sbtbuilder.SourcePathFinderTest
 import org.scalaide.core.scalaelements.ScalaElementsNameTest
 import org.scalaide.core.compiler.ResidentCompilerTest
@@ -140,10 +138,8 @@ import org.scalaide.core.internal.jdt.model.ScalaClassFileDescriberTest
     classOf[CompilerBridgeStoreTest],
     classOf[ScalacNotUnderstandJavaTest],
     classOf[ScalaJavaDepTwoScopesTest],
-    classOf[Scala210Compilation],
     classOf[SourcePathFinderTest],
     classOf[ScalaElementsNameTest],
-    classOf[Scala211Compilation],
     classOf[ResidentCompilerTest],
     classOf[ScalaClassFileDescriberTest]
 ))

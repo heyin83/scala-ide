@@ -240,10 +240,11 @@ object MultiBundleScalaInstallation {
 
   val ScalaLibraryBundleId = "org.scala-lang.scala-library"
   val ScalaCompilerBundleId = "org.scala-lang.scala-compiler"
-  val ScalaSwingBundleId = "org.scala-lang.scala-swing"
   val ScalaReflectBundleId = "org.scala-lang.scala-reflect"
   val ScalaXmlBundleId = "org.scala-lang.modules.scala-xml"
+  val ScalaCollectionParallelBundleId = "org.scala-lang.modules.scala-parallel-collections";
   val ScalaParserCombinatorsBundleId = "org.scala-lang.modules.scala-parser-combinators"
+  val ScalaSwingBundleId = "org.scala-lang.scala-swing"
 
   private def bundlePath(bundle: Bundle) =
     Path.fromOSString(FileLocator.getBundleFile(bundle).getAbsolutePath())
@@ -251,7 +252,6 @@ object MultiBundleScalaInstallation {
   private def findBundle(bundleId: String, version: Version): Option[Bundle] = {
     def doesBundleVersionQualifierEncloseVersionQualifier(bundleQualifier: String, qualifier: String) =
       qualifier.intersect(bundleQualifier) == qualifier
-    //Option(Platform.getBundles(bundleId, null)).getOrElse(Array[Bundle]()).toList.find { bundle =>
     Option(Platform.getBundles(bundleId, null)).getOrElse(Array[Bundle]()).find { bundle =>
       val bundleVersion = bundle.getVersion
       bundleVersion.getMajor == version.getMajor &&

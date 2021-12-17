@@ -434,9 +434,8 @@ class CompilerSettings extends PropertyPage with IWorkbenchPreferencePage with E
   }
 
   def choicesOfScalaInstallations(): Array[Array[String]] = (
+    Array("Latest 2.13 bundle (dynamic)", "2.13") ::
     Array("Latest 2.12 bundle (dynamic)", "2.12") ::
-    Array("Latest 2.11 bundle (dynamic)", "2.11") ::
-    Array("Latest 2.10 bundle (dynamic)", "2.10") ::
     ScalaInstallation.availableInstallations.map { si => Array(labeler.getDecoration(si), ScalaInstallationChoice(si).toString()) }
   ).toArray
 
