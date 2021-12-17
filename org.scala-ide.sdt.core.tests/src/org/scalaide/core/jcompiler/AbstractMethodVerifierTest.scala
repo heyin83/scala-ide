@@ -88,69 +88,69 @@ class AbstractMethodVerifierTest {
 
   @Test
   def javaClassExtendingScalaClassWithConcreteMethodsInSuperTrait_NoErrorIsReportedInJavaEditor_t1000594_pos(): Unit = {
-    whenOpening("t1000594_pos/C.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000594_pos/C.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def javaClassExtendingScalaClassWithDeferredMethodsInSuperTrait_ErrorsAreReportedInJavaEditor_t1000594_neg(): Unit = {
-    whenOpening("t1000594_neg/C.java").verifyThat(one).error.is.reported
+    whenOpening("t1000594_neg/C.java").verifyThat(one).error.is.reported()
   }
 
   @Test
   def javaClassExtendingScalaClassWithDeferredMethodsInSuperTrait_ErrorsAreReportedInJavaEditor_t1000607(): Unit = {
-    whenOpening("t1000607/C.java").verifyThat(one).error.is.reported
+    whenOpening("t1000607/C.java").verifyThat(one).error.is.reported()
   }
 
   @Test
   def javaClassExtendingPureScalaInterface_JavaEditorShouldReportErrorsForUnimplementedDeferredMethod_t1000670(): Unit = {
-    whenOpening("t1000670/JFoo.java").verifyThat(one).error.is.reported
+    whenOpening("t1000670/JFoo.java").verifyThat(one).error.is.reported()
   }
 
   @Test
   def javaClassExtendingAbstractScalaClassWithMixedDeferredAndConcreteMembersWithSameSignature_JavaEditorShouldNotReportErrorsForUnimplementedDeferredMethod_t1000670_1(): Unit = {
-    whenOpening("t1000670_1/JFoo.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000670_1/JFoo.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def javaClassExtendingAbstractScalaClassWithMixedDeferredAndConcreteMembersWithSameSignature_JavaEditorShouldNotReportErrorsForUnimplementedDeferredMethod_t1000670_2(): Unit = {
-    whenOpening("t1000670_2/JFoo.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000670_2/JFoo.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def scalaMethodVerifierProvider_isNotExecutedOnJavaSources_t1000660(): Unit = {
     val expectedProblem = "Pb(400) The type ScalaTest must implement the inherited abstract method Runnable.run()"
 
-    whenOpening("t1000660/ScalaTest.java").verifyThat(expectedProblem).is.reported
+    whenOpening("t1000660/ScalaTest.java").verifyThat(expectedProblem).is.reported()
   }
 
   @Test
   def t1000741(): Unit = {
-    whenOpening("t1000741/FooImpl.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000741/FooImpl.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def protectedScalaEntitiesNeedToBeExposedToJDTAsPublic_t1000751(): Unit = {
-    whenOpening("t1000751/J.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000751/J.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def scalaAnyRefNeedToBeMappedIntoJavaLangObject_ToBeCorrectlyExposedToJDT_1000752(): Unit = {
-    whenOpening("t1000752/J.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000752/J.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def scalaArrayNeedToBeMappedIntoJavaArray_ToBeCorrectlyExposedToJDT_t1000752_1(): Unit = {
-    whenOpening("t1000752_1/J.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000752_1/J.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def simplifiedExampleFromAkkaSources_ThatWasCausingWrongErrorsToBeReportedInTheJavaEditor_t1000752_2(): Unit = {
-    whenOpening("t1000752_2/JavaAPITestActor.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000752_2/JavaAPITestActor.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
   def wideningAccessModifiersOfInherithedMethod_t1000752_3(): Unit = {
-    whenOpening("t1000752_3/J.java").verifyThat(no).errors.are.reported
+    whenOpening("t1000752_3/J.java").verifyThat(no).errors.are.reported()
   }
 
   @Test
@@ -161,6 +161,6 @@ class AbstractMethodVerifierTest {
                                "Pb(400) The type FooImpl must implement the inherited abstract method Foo.obj4(String)",
                                "Pb(400) The type FooImpl must implement the inherited abstract method Foo.obj1()"
                            )
-    whenOpening("abstract_members/FooImpl.java").verifyThat(expectedProblems).is.reported
+    whenOpening("abstract_members/FooImpl.java").verifyThat(expectedProblems).is.reported()
   }
 }

@@ -140,7 +140,7 @@ class MultiLineStringAutoIndentStrategy(partitioning: String, prefStore: IPrefer
         }
 
         if (isStripMarginEnabled && containsFirstLineStripMargin)
-          handleFirstStripMarginLine
+          handleFirstStripMarginLine()
         else
           copyIndentOfPreviousLine("  ")
       }
@@ -151,9 +151,9 @@ class MultiLineStringAutoIndentStrategy(partitioning: String, prefStore: IPrefer
       }
 
       if (isFirstLine)
-        handleFirstLine
+        handleFirstLine()
       else if (isStripMarginEnabled && containsStripMargin(end))
-        handleStripMarginLine
+        handleStripMarginLine()
       else
         copyIndentOfPreviousLine("")
     }

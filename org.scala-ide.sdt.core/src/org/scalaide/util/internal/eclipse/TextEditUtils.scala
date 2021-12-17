@@ -30,7 +30,7 @@ object TextEditUtils {
   /** Creates a `TextFileChange` which always contains a `MultiTextEdit`. */
   def createTextFileChange(file: IFile, fileChanges: List[TextChange], leaveDirty: Boolean): TextFileChange = {
     try checkedCreateTextFileChange(file, fileChanges, leaveDirty) catch {
-      case e: MalformedTreeException ⇒
+      case e: MalformedTreeException =>
         throw new IllegalStateException(s"""|Couldn't create text file change, see root cause.
                                             |The following changes were expected to be created: $fileChanges.
                                             |Document was:
@@ -77,7 +77,7 @@ object TextEditUtils {
       leaveDirty: Boolean = false): Option[ITextSelection] = {
 
     try checkedApplyChangesToFile(document, textSelection, file, changes, leaveDirty) catch {
-      case e: MalformedTreeException ⇒
+      case e: MalformedTreeException =>
         val sel = s"start=${textSelection.getOffset}, length=${textSelection.getLength}, text=${textSelection.getText}"
         throw new IllegalStateException(s"""|Couldn't perform text file change, see root cause.
                                             |The selection was: $sel.

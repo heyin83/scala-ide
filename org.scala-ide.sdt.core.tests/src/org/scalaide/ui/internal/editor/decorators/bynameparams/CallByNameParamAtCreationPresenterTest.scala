@@ -7,7 +7,6 @@ import org.junit.Test
 import org.scalaide.CompilerSupportTests
 import org.scalaide.core.semantichighlighting.classifier.RegionParser
 import org.scalaide.core.semantichighlighting.classifier.RegionParser.EmbeddedSubstr
-import CallByNameParamAtCreationPresenterTest.mkScalaCompilationUnit
 import org.scalaide.core.FlakyTest
 
 object CallByNameParamAtCreationPresenterTest extends CompilerSupportTests

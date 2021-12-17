@@ -11,8 +11,6 @@ import org.eclipse.text.edits.TextEdit
 import org.eclipse.jface.text.TypedRegion
 import scala.annotation.tailrec
 import org.eclipse.jface.text.ITypedRegion
-import java.lang.Math.max
-import java.lang.Math.min
 import org.scalaide.core.text.Document
 import scala.collection.mutable.ListBuffer
 

@@ -14,16 +14,16 @@ object SaveActions {
   val SaveActionTimeoutId: String = "org.scalaide.extensions.SaveAction.Timeout"
 
   val documentSaveActionsData: Seq[(String, SaveActionSetting)] = Seq(
-    fullyQualifiedName[RemoveTrailingWhitespace] → RemoveTrailingWhitespaceSetting,
-    fullyQualifiedName[AddNewLineAtEndOfFile] → AddNewLineAtEndOfFileSetting,
-    fullyQualifiedName[AutoFormatting] → AutoFormattingSetting,
-    fullyQualifiedName[RemoveDuplicatedEmptyLines] → RemoveDuplicatedEmptyLinesSetting,
-    fullyQualifiedName[TabToSpaceConverter] → TabToSpaceConverterSetting
+    fullyQualifiedName[RemoveTrailingWhitespace] -> RemoveTrailingWhitespaceSetting,
+    fullyQualifiedName[AddNewLineAtEndOfFile] -> AddNewLineAtEndOfFileSetting,
+    fullyQualifiedName[AutoFormatting] -> AutoFormattingSetting,
+    fullyQualifiedName[RemoveDuplicatedEmptyLines] -> RemoveDuplicatedEmptyLinesSetting,
+    fullyQualifiedName[TabToSpaceConverter] -> TabToSpaceConverterSetting
   )
 
   val compilerSaveActionsData: Seq[(String, SaveActionSetting)] = Seq(
-    fullyQualifiedName[AddMissingOverride] → AddMissingOverrideSetting,
-    fullyQualifiedName[AddReturnTypeToPublicSymbols] → AddReturnTypeToPublicSymbolsSetting
+    fullyQualifiedName[AddMissingOverride] -> AddMissingOverrideSetting,
+    fullyQualifiedName[AddReturnTypeToPublicSymbols] -> AddReturnTypeToPublicSymbolsSetting
   )
 
   /**

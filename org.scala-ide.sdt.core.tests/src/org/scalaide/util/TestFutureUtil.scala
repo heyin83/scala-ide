@@ -16,7 +16,7 @@ object TestFutureUtil {
     withal(Await.result(future, timeout))
 
   def tryAsResult[T](future: => Future[T]): Future[Try[T]] = {
-    val p = Promise[Try[T]]
+    val p = Promise[Try[T]]()
     future onComplete { t =>
       p success(t);
     }

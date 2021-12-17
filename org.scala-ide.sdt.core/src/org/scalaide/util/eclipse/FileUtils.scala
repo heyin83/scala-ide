@@ -1,18 +1,15 @@
 package org.scalaide.util.eclipse
 
 import java.io.ByteArrayInputStream
-import java.io.File
 
 import scala.tools.nsc.io.AbstractFile
 import scala.util.Try
 
-import org.eclipse.core.internal.resources.ResourceException
 import org.eclipse.core.resources.IContainer
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IMarker
 import org.eclipse.core.resources.IResource
-import org.eclipse.core.runtime.IPath
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.Path
 import org.scalaide.core.resources.EclipseResource

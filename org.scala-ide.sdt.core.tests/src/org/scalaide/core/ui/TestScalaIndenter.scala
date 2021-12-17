@@ -35,7 +35,7 @@ class TestScalaIndenter {
   }
 
   class MockPreferenceProvider extends PreferenceProvider {
-    def updateCache : Unit = {
+    def updateCache() : Unit = {
       // Nothing to do - we rely on someone setting up this cache
     }
   }

@@ -69,12 +69,6 @@
     <scala213.scala-parser-combinators.version>2.1.0</scala213.scala-parser-combinators.version>
     <scala213.scala-parallel-collections.version>1.0.4</scala213.scala-parallel-collections.version>
 
-    <!-- Scala 2.12.x -->
-    <scala212.version>2.12.15</scala212.version>
-    <scala212.binary.version>2.12</scala212.binary.version>
-    <scala212.scala-xml.version>1.0.6</scala212.scala-xml.version>
-    <scala212.scala-parser-combinators.version>1.0.6</scala212.scala-parser-combinators.version>
-
     <!-- dependencies repos, can be overwritten by profiles -->
     <eclipse.codename>Select an Eclipse profile</eclipse.codename>
     <repo.eclipse>Select an Eclipse profile</repo.eclipse>
@@ -106,16 +100,6 @@
         <scala.minor.version>2.13</scala.minor.version>
         <version.suffix>2_13</version.suffix>
         <scala-parallel-collections.version>${scala213.scala-parallel-collections.version}</scala-parallel-collections.version>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>scala-2.12.x</id>
-      <properties>
-        <scala.version>${scala212.version}</scala.version>
-        <scala.short.version>212</scala.short.version>
-        <scala.minor.version>2.12</scala.minor.version>
-        <version.suffix>2_12</version.suffix>
       </properties>
     </profile>
 
@@ -168,11 +152,10 @@
       <properties>
         <zinc.feature.dir>org.scala-ide.zinc/org.scala-ide.zinc.feature</zinc.feature.dir>
         <zinc.source.feature.dir>org.scala-ide.zinc/org.scala-ide.zinc.source.feature</zinc.source.feature.dir>
-        <scala212.feature.dir>org.scala-ide.scala212.build/org.scala-ide.scala212.feature</scala212.feature.dir>
-        <scala212.source.feature.dir>org.scala-ide.scala212.build/org.scala-ide.scala212.source.feature</scala212.source.feature.dir>
         <scala213.feature.dir>org.scala-ide.scala213.build/org.scala-ide.scala213.feature</scala213.feature.dir>
         <scala213.source.feature.dir>org.scala-ide.scala213.build/org.scala-ide.scala213.source.feature</scala213.source.feature.dir>
         <sdt.core.dir>org.scala-ide.sdt.core</sdt.core.dir>
+        <sdt.core.tests.dir>org.scala-ide.sdt.core.tests</sdt.core.tests.dir>
         <sdt.debug.dir>org.scala-ide.sdt.debug</sdt.debug.dir>
         <sdt.debug.expression.dir>org.scala-ide.sdt.debug.expression</sdt.debug.expression.dir>
         <sdt.update-site.dir>org.scala-ide.sdt.update-site</sdt.update-site.dir>
@@ -229,40 +212,6 @@
                   <resources>
                     <resource>
                       <directory>${zinc.source.feature.dir}/resources</directory>
-                      <filtering>true</filtering>
-                    </resource>
-                  </resources>
-                  <overwrite>true</overwrite>
-                </configuration>
-              </execution>
-              <execution>
-                <id>copy-resources-scala212-feature</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${scala212.feature.dir}</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${scala212.feature.dir}/resources</directory>
-                      <filtering>true</filtering>
-                    </resource>
-                  </resources>
-                  <overwrite>true</overwrite>
-                </configuration>
-              </execution>
-              <execution>
-                <id>copy-resources-scala212-source-feature</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>copy-resources</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${scala212.source.feature.dir}</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${scala212.source.feature.dir}/resources</directory>
                       <filtering>true</filtering>
                     </resource>
                   </resources>
@@ -334,26 +283,6 @@
                           <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
                         </filterset>
                     </copy>
-                    <copy file="${sdt.debug.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
-                        tofile="${sdt.debug.dir}/META-INF/MANIFEST.MF"
-                        overwrite="true">
-                        <filterset>
-                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
-                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
-                        </filterset>
-                    </copy>
-                    <copy file="${sdt.debug.expression.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
-                        tofile="${sdt.debug.expression.dir}/META-INF/MANIFEST.MF"
-                        overwrite="true">
-                        <filterset>
-                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
-                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
-                        </filterset>
-                    </copy>
-                    <copy file="${sdt.update-site.dir}/resources/site-${version.suffix}.xml"
-                        tofile="${sdt.update-site.dir}/site.xml"
-                        overwrite="true" />
-
                     <copy file="${sdt.core.dir}/resources/.classpath"
                         tofile="${sdt.core.dir}/.classpath"
                         overwrite="true">
@@ -374,6 +303,65 @@
                           <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
                         </filterset>
                     </copy>
+                    <copy file="${sdt.core.tests.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
+                        tofile="${sdt.core.tests.dir}/META-INF/MANIFEST.MF"
+                        overwrite="true">
+                        <filterset>
+                          <filter token="MIGLAYOUT_VERSION" value="${miglayout.version}"/>
+                          <filter token="LOG4J_VERSION" value="${log4j.version}"/>
+                          <filter token="JSON_IO_VERSION" value="${json-io.version}"/>
+                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="ZINC_VERSION" value="${zinc.version}"/>
+                          <filter token="SBINARY_VERSION" value="${sbinary.version}"/>
+                          <filter token="SCALARIFORM_VERSION" value="${scalariform.version}"/>
+                          <filter token="SCALA_VERSION" value="${scala.version}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
+                          <filter token="SCALA_IDE_VERSION" value="${version}"/>
+                          <filter token="SCALA_PARALLEL_COLLECTIONS_VERSION" value="${scala-parallel-collections.version}"/>
+                          <filter token="FILE_TREE_VIEWS_VERSION" value="${file-tree-views.version}"/>
+                          <filter token="JNA_VERSION" value="${jna.version}"/>
+                          <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
+                        </filterset>
+                    </copy>
+                    <copy file="${sdt.core.tests.dir}/resources/.classpath"
+                        tofile="${sdt.core.tests.dir}/.classpath"
+                        overwrite="true">
+                        <filterset>
+                          <filter token="MIGLAYOUT_VERSION" value="${miglayout.version}"/>
+                          <filter token="LOG4J_VERSION" value="${log4j.version}"/>
+                          <filter token="JSON_IO_VERSION" value="${json-io.version}"/>
+                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="ZINC_VERSION" value="${zinc.version}"/>
+                          <filter token="SBINARY_VERSION" value="${sbinary.version}"/>
+                          <filter token="SCALARIFORM_VERSION" value="${scalariform.version}"/>
+                          <filter token="SCALA_VERSION" value="${scala.version}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
+                          <filter token="SCALA_IDE_VERSION" value="${version}"/>
+                          <filter token="SCALA_PARALLEL_COLLECTIONS_VERSION" value="${scala-parallel-collections.version}"/>
+                          <filter token="FILE_TREE_VIEWS_VERSION" value="${file-tree-views.version}"/>
+                          <filter token="JNA_VERSION" value="${jna.version}"/>
+                          <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
+                        </filterset>
+                    </copy>
+                    <copy file="${sdt.debug.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
+                        tofile="${sdt.debug.dir}/META-INF/MANIFEST.MF"
+                        overwrite="true">
+                        <filterset>
+                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
+                        </filterset>
+                    </copy>
+                    <copy file="${sdt.debug.expression.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
+                        tofile="${sdt.debug.expression.dir}/META-INF/MANIFEST.MF"
+                        overwrite="true">
+                        <filterset>
+                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
+                        </filterset>
+                    </copy>
+                    <copy file="${sdt.update-site.dir}/resources/site-${version.suffix}.xml"
+                        tofile="${sdt.update-site.dir}/site.xml"
+                        overwrite="true" />
                   </target>
                 </configuration>
                 <goals>
@@ -583,6 +571,20 @@
             <execution>
               <goals>
                 <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>jar-no-fork</goal>
               </goals>
             </execution>
           </executions>

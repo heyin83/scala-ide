@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+        <classpathentry kind="src" path="src"/>
+        <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+        <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+        <classpathentry kind="lib" path="target/lib/mockito-all-1.9.5.jar"/>
+        <classpathentry kind="lib" path="target/lib/log4j-1.2.17.jar"/>
+        <classpathentry kind="lib" path="target/lib/scalariform_@SCALA_MINOR_VERSION@-@SCALARIFORM_VERSION@.jar" sourcepath="target/lib/scalariform_@SCALA_MINOR_VERSION@-@SCALARIFORM_VERSION@-sources.jar"/>
+        <classpathentry kind="lib" path="target/lib/org.scala-refactoring.jar" sourcepath="target/lib/org.scala-refactoring-sources.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

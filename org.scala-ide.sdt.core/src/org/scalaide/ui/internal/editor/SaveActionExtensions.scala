@@ -29,7 +29,6 @@ import org.scalaide.core.text.TextChange
 import org.scalaide.extensions.CompilerSupport
 import org.scalaide.extensions.SaveAction
 import org.scalaide.extensions.SaveActionSetting
-import org.scalaide.extensions.SaveActionSetting
 import org.scalaide.logging.HasLogger
 import org.scalaide.util.eclipse.EclipseUtils
 import org.scalaide.util.eclipse.EditorUtils
@@ -44,7 +43,7 @@ object SaveActionExtensions extends AnyRef with HasLogger {
    */
   private val documentSaveActions = {
     SaveActions.documentSaveActionsData flatMap {
-      case (fqn, setting) ⇒
+      case (fqn, setting) =>
         ExtensionCompiler.savelyLoadExtension[ExtensionCreators.DocumentSaveAction](fqn).map(setting → _)
     }
   }
@@ -55,7 +54,7 @@ object SaveActionExtensions extends AnyRef with HasLogger {
    */
   private val compilerSaveActions = {
     SaveActions.compilerSaveActionsData flatMap {
-      case (fqn, setting) ⇒
+      case (fqn, setting) =>
         ExtensionCompiler.savelyLoadExtension[ExtensionCreators.CompilerSaveAction](fqn).map(setting → _)
     }
   }
@@ -157,9 +156,9 @@ trait SaveActionExtensions extends HasLogger {
     val timeout = saveActionTimeout
 
     def loop(xs: Seq[(SaveActionSetting, ExtensionCreators.CompilerSaveAction)]): Unit = xs match {
-      case Seq() ⇒
+      case Seq() =>
 
-      case (setting, ext) +: xs if isEnabled(setting.id) ⇒
+      case (setting, ext) +: xs if isEnabled(setting.id) =>
         val res = FutureUtils.performWithTimeout(timeout) {
           EclipseUtils.withSafeRunner(s"An error occurred while executing save action '${setting.id}'") {
             createExtensionWithCompilerSupport(ext) map { instance =>
@@ -171,13 +170,13 @@ trait SaveActionExtensions extends HasLogger {
         }
 
         res match {
-          case Success(changes) ⇒
+          case Success(changes) =>
             EclipseUtils.withSafeRunner(s"An error occurred while applying changes of save action '${setting.id}'") {
               applyChanges(setting, changes, udoc)
             }
             loop(xs)
 
-          case Failure(_) ⇒
+          case Failure(_) =>
             eclipseLog.error(s"""|
                |A save action that relies on compiler support didn't complete in a
                | given time, it had $timeout time to complete. Because it is
@@ -191,7 +190,7 @@ trait SaveActionExtensions extends HasLogger {
                |""".stripMargin.replaceAll("\n", ""))
         }
 
-      case _ +: xs ⇒
+      case _ +: xs =>
         loop(xs)
     }
     loop(compilerSaveActions)

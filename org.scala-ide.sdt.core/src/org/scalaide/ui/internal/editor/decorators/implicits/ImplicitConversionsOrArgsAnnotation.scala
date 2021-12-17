@@ -24,7 +24,7 @@ abstract class ImplicitAnnotation(text: String) extends Annotation(ImplicitAnnot
 class ImplicitConversionAnnotation(pos: Position, region: IRegion, text: String) extends ImplicitAnnotation(text) with HasLogger {
 
   def sourceLink(editor: InteractiveCompilationUnitEditor): List[IHyperlink] = {
-    val icu: InteractiveCompilationUnit = editor.getInteractiveCompilationUnit
+    val icu: InteractiveCompilationUnit = editor.getInteractiveCompilationUnit()
 
     icu.withSourceFile { (sourcefile, compiler) =>
       import compiler.ApplyImplicitView

@@ -49,7 +49,7 @@ object EditorUtils {
   def getEditorCompilationUnit(editor: ITextEditor): Option[InteractiveCompilationUnit] = {
     editor match {
       case icuEditor: InteractiveCompilationUnitEditor =>
-        Some(icuEditor.getInteractiveCompilationUnit)
+        Some(icuEditor.getInteractiveCompilationUnit())
       case _ =>
         None
     }
@@ -124,9 +124,9 @@ object EditorUtils {
    * Returns true if `p` is the active editor (the editor that has the focus).
    */
   def isActiveEditor(part: IEditorPart): Boolean = (for {
-    w ← activeWorkbenchWindow
-    p ← activePage(w)
-    e ← activeEditor(p)
+    w <- activeWorkbenchWindow
+    p <- activePage(w)
+    e <- activeEditor(p)
   } yield e == part).getOrElse(false)
 
   /** Type-safe downcast of an [[IEditorPart]] to a [[ISourceViewerEditor]].
@@ -229,7 +229,7 @@ object EditorUtils {
         forceInstall
       }
 
-      val viewer = editor.getViewer
+      val viewer = editor.getViewer()
 
       // by default, an entire symbol is selected when entering linked mode; a nicer
       // behavior when renaming is to leave the cursor/selection as it was, so...

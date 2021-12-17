@@ -120,8 +120,8 @@ class ScalaDocumentProvider
   }
 
   private def getSubProgressMonitor(monitor: IProgressMonitor, ticks: Int): IProgressMonitor = monitor match {
-    case m: NullProgressMonitor ⇒ m
-    case _                      ⇒ SubMonitor.convert(monitor, ticks)
+    case m: NullProgressMonitor => m
+    case _                      => SubMonitor.convert(monitor, ticks)
   }
 
 }

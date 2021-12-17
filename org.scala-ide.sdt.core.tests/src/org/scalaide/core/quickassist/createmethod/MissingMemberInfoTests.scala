@@ -10,7 +10,7 @@ import org.scalaide.core.internal.quickassist.createmethod.MissingMemberInfo
 
 object MissingMemberInfoTests extends TestProjectSetup("quickassist") {
   private lazy val unit = compilationUnit("createmethod/CreateMethod.scala").asInstanceOf[ScalaCompilationUnit]
-  private lazy val source = new String(unit.getContents)
+  private lazy val source = new String(unit.getContents())
   private lazy val ast = ScalariformParser.safeParse(source).get._1
 }
 

@@ -84,7 +84,7 @@ class SemanticHighlightingPositionsTest {
     testCode = code.stripMargin
     val emptyPkg = SDTTestUtils.createSourcePackage("")(project)
     unit = SDTTestUtils.createCompilationUnit(emptyPkg, "A.scala", testCode).asInstanceOf[ScalaCompilationUnit]
-    when(compilationUnitEditor.getInteractiveCompilationUnit).thenReturn(unit)
+    when(compilationUnitEditor.getInteractiveCompilationUnit()).thenReturn(unit)
     document.set(testCode)
   }
 
@@ -162,7 +162,7 @@ class SemanticHighlightingPositionsTest {
     editTestCode(start, length, edit.newText)
 
     // checks edit's postcondition
-    val currentTestCode = unit.getContents.mkString
+    val currentTestCode = unit.getContents().mkString
     if (findAllMarkersIn(currentTestCode).nonEmpty)
       throw new AssertionError("After edition, no marker `%s` should be present in test code:\n%s".format(Marker, currentTestCode))
 

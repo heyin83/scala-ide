@@ -59,7 +59,7 @@ class SyntaxColoringPreferencePage extends BaseSyntaxColoringPreferencePage(
     strikethroughDeprecatedCheckBox.setSelection(overlayStore.getBoolean(STRIKETHROUGH_DEPRECATED))
     strikethroughDeprecatedCheckBox.setEnabled(enableSemanticHighlightingCheckBox.getSelection)
 
-    setUpSelectionListener
+    setUpSelectionListener()
   }
 
   private def setUpSelectionListener() = {

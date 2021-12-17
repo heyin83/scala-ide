@@ -31,7 +31,7 @@ class OutputFoldersTest {
     project.javaProject.setOutputLocation(new Path("/%s/other-bin".format(projectName)), null)
     Assert.assertEquals("Default output directory", Seq(new Path("/%s/other-bin".format(projectName))), project.outputFolders)
 
-    val Seq((srcPath, _)) = project.sourceOutputFolders.toSeq
+    val Seq((srcPath, _)) = project.sourceOutputFolders().toSeq
     Assert.assertEquals("Source path", new Path("/%s/src".format(projectName)), srcPath.getFullPath())
   }
 
@@ -44,7 +44,7 @@ class OutputFoldersTest {
 
     val project = makeDefaultLayoutProject(projectName)
 
-    val sourcesOutputs = project.sourceOutputFolders
+    val sourcesOutputs = project.sourceOutputFolders()
 
     val sources = sourcesOutputs.map(_._1.getFullPath())
     val outputs = sourcesOutputs.map(_._2.getFullPath())
@@ -70,7 +70,7 @@ class OutputFoldersTest {
     Assert.assertEquals("Source CPEs", Seq(srcMain, srcTest), srcEntryPaths.toSeq)
 
     // ... but only the one that exists in the workspace  is passed to Scala compiler classpath
-    val sourcesOutputs = project.sourceOutputFolders
+    val sourcesOutputs = project.sourceOutputFolders()
 
     val sources = sourcesOutputs.map(_._1.getFullPath())
     val outputs = sourcesOutputs.map(_._2.getFullPath())

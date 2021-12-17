@@ -10,9 +10,6 @@ import org.junit.Before
 import org.junit.Test
 import org.scalaide.core.testsetup.SDTTestUtils
 
-import ScalaJavaDepTicket_1000607Test.compilationUnit
-import ScalaJavaDepTicket_1000607Test.project
-
 object ScalaJavaDepTicket_1000607Test extends testsetup.TestProjectSetup("scalajavadepticket1000607")
 
 /**

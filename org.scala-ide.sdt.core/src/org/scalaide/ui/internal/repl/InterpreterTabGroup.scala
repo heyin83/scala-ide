@@ -12,7 +12,6 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup
 import org.eclipse.debug.ui.CommonTab
 import org.eclipse.debug.ui.EnvironmentTab
 import org.eclipse.debug.ui.ILaunchConfigurationDialog
-import org.eclipse.debug.ui.ILaunchConfigurationTab
 import org.eclipse.debug.ui.sourcelookup.SourceLookupTab
 import org.eclipse.jdt.core.IJavaProject
 import org.eclipse.jdt.core.JavaCore
@@ -162,7 +161,7 @@ class InterpreterMainTab extends JavaLaunchTab with HasLogger {
     dialog.setTitle("Select a Scala Project")
     dialog.setMessage("")
     try {
-      val scalaProjects = JavaCore.create(getWorkspaceRoot).getJavaProjects.filter(ScalaProject.isScalaProject).toArray[Object]
+      val scalaProjects = JavaCore.create(getWorkspaceRoot()).getJavaProjects.filter(ScalaProject.isScalaProject).toArray[Object]
       dialog.setElements(scalaProjects)
     } catch {
       case jme: JavaModelException =>

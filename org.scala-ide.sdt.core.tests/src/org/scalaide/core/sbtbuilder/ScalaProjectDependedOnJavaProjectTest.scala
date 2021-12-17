@@ -13,16 +13,10 @@ import org.scalaide.core.IScalaProject
 import org.scalaide.core.SdtConstants
 import org.scalaide.core.testsetup.IProjectHelpers
 import org.scalaide.core.testsetup.IProjectOperations
-import org.scalaide.core.testsetup.SDTTestUtils.addToClasspath
 import org.scalaide.core.testsetup.SDTTestUtils.buildWorkspace
-import org.scalaide.core.testsetup.SDTTestUtils.createJavaProjectInWorkspace
-import org.scalaide.core.testsetup.SDTTestUtils.createProjectInWorkspace
 import org.scalaide.core.testsetup.SDTTestUtils.findProjectProblemMarkers
 import org.scalaide.core.testsetup.SDTTestUtils.markersMessages
 import org.scalaide.util.eclipse.EclipseUtils
-
-import ScalaProjectDependedOnJavaProjectTest.projectJ
-import ScalaProjectDependedOnJavaProjectTest.projectS
 
 object ScalaProjectDependedOnJavaProjectTest extends IProjectOperations {
   import org.scalaide.core.testsetup.SDTTestUtils._

@@ -21,7 +21,7 @@ class CloseStringTest extends AutoEditTests {
   @Test
   def auto_close_nested_opening() = {
     "{[(<" zip "}])>" foreach {
-      case (o, c) ⇒
+      case (o, c) =>
         s"$o^$c" becomes s"""$o"[[]]"^$c""" after stringLit
     }
   }

@@ -144,7 +144,7 @@ private[classifier] trait SafeSymbol extends CompilerAccess with EnrichedTrees {
 
     case _ =>
       if (!hasSourceCodeRepresentation(t) || t.symbol == null) Nil
-      else List(t.symbol → t.namePosition())
+      else List(t.symbol -> t.namePosition())
   }
 
   private def isViewBound(args: List[Tree]): Boolean =

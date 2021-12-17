@@ -41,13 +41,13 @@ class Scala210Compilation {
     when("initialize project") `then` "there is no error in project and zinc creates .cache-main file" in {
       cleanProject()
       val problems = getProblemMarkers
-      val version = project.effectiveScalaInstallation.version match {
+      val version = project.effectiveScalaInstallation().version match {
         case SpecificScalaVersion(major, minor, _, _) => major + "." + minor
         case t => t.unparse
       }
       val root = project.javaProject.getResource.getLocation.makeAbsolute.toFile
       val cacheMain = new File(root.getAbsolutePath + File.separator + ".cache-main")
-      assertTrue("Expected 2.10 scala installation, found: " + project.effectiveScalaInstallation.version.unparse, version == "2.10")
+      assertTrue("Expected 2.10 scala installation, found: " + project.effectiveScalaInstallation().version.unparse, version == "2.10")
       assertTrue("No build errors expected, found: " + markersMessages(problems), problems.isEmpty)
       assertTrue("Expected .cache-main but not found", cacheMain.exists)
     }

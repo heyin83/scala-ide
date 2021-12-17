@@ -19,7 +19,6 @@ import org.eclipse.jface.text.DefaultTextHover
 import org.eclipse.jface.text.IAutoEditStrategy
 import org.eclipse.jface.text.IDocument
 import org.eclipse.jface.text.IInformationControl
-import org.eclipse.jface.text.IInformationControlCreator
 import org.eclipse.jface.text.ITextHover
 import org.eclipse.jface.text.formatter.IContentFormatter
 import org.eclipse.jface.text.formatter.MultiPassContentFormatter
@@ -354,9 +353,9 @@ class ScalaSourceViewerConfiguration(
     super.handlePropertyChangeEvent(event)
     codeHighlightingScanners.values foreach (_ adaptToPreferenceChange event)
     event.getProperty match {
-      case ScalaPreferences.ReconcilerDelayId ⇒
+      case ScalaPreferences.ReconcilerDelayId =>
         reconciler.setDelay(event.getNewValue.toString.toInt)
-      case _ ⇒
+      case _ =>
     }
   }
 

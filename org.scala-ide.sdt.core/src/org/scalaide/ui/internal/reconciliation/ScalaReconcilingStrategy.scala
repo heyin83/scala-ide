@@ -67,8 +67,8 @@ class ScalaReconcilingStrategy(icuEditor: InteractiveCompilationUnitEditor) exte
 
   private def removeInvalidAnnotations(dirtyRegion: DirtyRegion): Unit = {
     dirtyRegion.getType match {
-      case DirtyRegion.INSERT ⇒
-      case DirtyRegion.REMOVE ⇒
+      case DirtyRegion.INSERT =>
+      case DirtyRegion.REMOVE =>
         import org.scalaide.util.eclipse.RegionUtils._
         // when Eclipse gains focus, two regions are created. The first one
         // removes the entire file content, the second one adds it. We don't

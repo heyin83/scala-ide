@@ -32,7 +32,7 @@ trait InputContextMenuAndLineNumbers extends CommandField {
   protected val lineNumberBgColor: Color = JFaceResources.getColorRegistry.get(InterpreterConsoleView.LineNumberBackgroundColor)
   protected val lineNumbersModifyListener: ModifyListener = () => redrawWithLineNumbers()
   protected def onLineNumbersVisibilityUpdated(enabled: Boolean): Unit = {}
-  private val lineNumbersItem: MenuItem = initContextMenuAndReturnLineNumbersItem
+  private val lineNumbersItem: MenuItem = initContextMenuAndReturnLineNumbersItem()
 
   setBackground(JFaceResources.getColorRegistry.get(InterpreterConsoleView.BackgroundColor))
   setForeground(JFaceResources.getColorRegistry.get(InterpreterConsoleView.ForegroundColor))

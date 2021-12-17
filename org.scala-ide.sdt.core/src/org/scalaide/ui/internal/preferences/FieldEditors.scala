@@ -39,15 +39,15 @@ trait FieldEditors extends PropertyPage with IWorkbenchPreferencePage {
 
   def initUnderlyingPreferenceStore(pluginId: String, pluginPrefStore: IPreferenceStore): Unit = {
     setPreferenceStore(getElement match {
-      case project: IProject     ⇒ new PropertyStore(new ProjectScope(project), pluginId)
-      case project: IJavaProject ⇒ new PropertyStore(new ProjectScope(project.getProject), pluginId)
-      case _                     ⇒ pluginPrefStore
+      case project: IProject     => new PropertyStore(new ProjectScope(project), pluginId)
+      case project: IJavaProject => new PropertyStore(new ProjectScope(project.getProject), pluginId)
+      case _                     => pluginPrefStore
     })
   }
 
   def pageId: String
 
-  def addNewFieldEditorWrappedInComposite[T <: FieldEditor](parent: Composite)(f: Composite ⇒ T): T = {
+  def addNewFieldEditorWrappedInComposite[T <: FieldEditor](parent: Composite)(f: Composite => T): T = {
     val composite = new Composite(parent, SWT.NONE)
     val fieldEditor = f(composite)
 
@@ -62,7 +62,7 @@ trait FieldEditors extends PropertyPage with IWorkbenchPreferencePage {
     fieldEditor
   }
 
-  def mkMainControl(parent: Composite)(f: Composite ⇒ Unit): Composite = {
+  def mkMainControl(parent: Composite)(f: Composite => Unit): Composite = {
     val control = new Composite(parent, SWT.NONE)
     val rowConstraints = if (isWorkbenchPage)
       new AC().index(0).grow(0).index(1).grow
@@ -75,7 +75,7 @@ trait FieldEditors extends PropertyPage with IWorkbenchPreferencePage {
       val projectSpecificButton = new Button(control, SWT.CHECK | SWT.WRAP)
       projectSpecificButton.setText("Enable project specific settings")
       projectSpecificButton.setSelection(getPreferenceStore.getBoolean(useProjectSpecifcSettingsKey))
-      projectSpecificButton.addSelectionListener { () ⇒
+      projectSpecificButton.addSelectionListener { () =>
         val enabled = projectSpecificButton.getSelection
         getPreferenceStore.setValue(useProjectSpecifcSettingsKey, enabled)
         allEnableDisableControls foreach { _.setEnabled(enabled) }
@@ -84,7 +84,7 @@ trait FieldEditors extends PropertyPage with IWorkbenchPreferencePage {
 
       val link = new Link(control, SWT.NONE)
       link.setText("<a>"+PreferencesMessages.PropertyAndPreferencePage_useworkspacesettings_change+"</a>")
-      link.addSelectionListener { () ⇒
+      link.addSelectionListener { () =>
         PreferencesUtil.createPreferenceDialogOn(getShell, pageId, Array(pageId), null).open()
       }
       link.setLayoutData(new CC().alignX("right").wrap)

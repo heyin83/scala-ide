@@ -16,7 +16,7 @@ import org.scalaide.core.internal.repl.InterpreterLaunchConstants
  */
 class Factory extends IConsoleFactory {
   override def openConsole() = {
-  val p = Factory.getCurrentProject
+  val p = Factory.getCurrentProject()
 
   p match {
       case Some(project: IProject) =>

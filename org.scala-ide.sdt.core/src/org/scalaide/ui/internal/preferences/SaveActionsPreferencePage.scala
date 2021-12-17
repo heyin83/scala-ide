@@ -74,9 +74,9 @@ class SaveActionsPreferencePage extends PreferencePage with IWorkbenchPreference
             setValid(true)
             setErrorMessage(null)
           }
-          else error
+          else error()
         case util.Failure(_) =>
-          error
+          error()
       }
     }
     mkLabel(timeout, "Timout in milliseconds (this is the time the IDE waits for a result of the save action)")

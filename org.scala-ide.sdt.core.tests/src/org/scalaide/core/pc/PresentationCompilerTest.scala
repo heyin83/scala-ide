@@ -65,7 +65,7 @@ class FreshFile {
     Assert.assertEquals("Unexpected errors", errors, Nil)
 
     unit.getBuffer().setContents(contentsWithErrors)
-    SDTTestUtils.waitUntil(5000)(unit.currentProblems ne Nil)
+    SDTTestUtils.waitUntil(5000)(unit.currentProblems() ne Nil)
     val errors1 = unit.currentProblems()
     Assert.assertNotSame("Unexpected clean source", errors1, Nil)
   }

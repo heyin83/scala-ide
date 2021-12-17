@@ -116,7 +116,7 @@ class Presenter(
     }
 
     private def performSemanticHighlighting(monitor: IProgressMonitor): IStatus = {
-      Option(editor.getInteractiveCompilationUnit).flatMap(_.withSourceFile { (sourceFile, compiler) =>
+      Option(editor.getInteractiveCompilationUnit()).flatMap(_.withSourceFile { (sourceFile, compiler) =>
         logger.debug("performing semantic highlighting on " + sourceFile.file.name)
         positionsTracker.startComputingNewPositions()
         val symbolInfos =

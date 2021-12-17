@@ -53,8 +53,8 @@ trait CompilerSupportTests {
   final def mkScalaCompilationUnit(source: String, force: Boolean = false): ScalaCompilationUnit = {
     val PkgFinder = """(?s).*?package ([\w\.]+).*?""".r
     val pkgName = source match {
-      case PkgFinder(name) ⇒ name
-      case _ ⇒ UniqueNames.scalaPackage()
+      case PkgFinder(name) => name
+      case _ => UniqueNames.scalaPackage()
     }
     val p = SDTTestUtils.createSourcePackage(pkgName)(project)
     SDTTestUtils.createCompilationUnit(p, UniqueNames.scalaFile(), source, force).asInstanceOf[ScalaCompilationUnit]
@@ -80,12 +80,12 @@ trait CompilerSupportTests {
     val PkgFinder = """(?s).*?package ([\w\.]+).*?""".r
     val ClassFinder = """(?s).*?public (?:(?:abstract )?class|interface) ([\w]+).*?""".r
     val pkgName = source match {
-      case PkgFinder(name) ⇒ name
-      case _ ⇒ throw new IllegalArgumentException("No valid package declaration found.")
+      case PkgFinder(name) => name
+      case _ => throw new IllegalArgumentException("No valid package declaration found.")
     }
     val fileName = source match {
-      case ClassFinder(name) ⇒ name
-      case _ ⇒ throw new IllegalArgumentException("No valid class declaration found.")
+      case ClassFinder(name) => name
+      case _ => throw new IllegalArgumentException("No valid class declaration found.")
     }
 
     val r = new IProblemRequestor {

@@ -24,16 +24,17 @@ class SDTTestProject(project : IProject) {
   val location = project.getLocation.toOSString
 
   val javaProject = JavaCore.create(project)
-  addJavaNature
-  addScalaNature
+  addJavaNature()
+  addScalaNature()
   javaProject.setRawClasspath(new Array[IClasspathEntry](0), null)
-  addJavaSystemLibraries
-  addScalaSystemLibraries
-  val sourceFolder = createSourceFolder
-  val binFolder = createBinFolder
+  addJavaSystemLibraries()
+  addScalaSystemLibraries()
+  val sourceFolder = createSourceFolder()
+  val binFolder = createBinFolder()
   createOutputFolder(binFolder)
 
-  def this(remove : Boolean = false, projectName : String = "Project-1") {
+  def this(remove : Boolean = false, projectName : String = "Project-1") =
+  {
     this({
       val root = ResourcesPlugin.getWorkspace.getRoot
       val project = root.getProject(projectName)

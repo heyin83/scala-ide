@@ -1,7 +1,6 @@
 package org.scalaide.ui.internal.editor
 
 import org.eclipse.jface.text.IDocument
-import org.eclipse.jface.text.IDocument
 import org.eclipse.jface.text.IRegion
 import org.eclipse.jface.text.TextPresentation
 import org.eclipse.jface.text.presentation.PresentationReconciler

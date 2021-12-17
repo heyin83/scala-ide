@@ -32,7 +32,6 @@ import org.eclipse.ui.console.IConsoleConstants
 import org.eclipse.ui.internal.console.ConsolePluginImages
 import org.eclipse.ui.internal.console.IInternalConsoleConstants
 import org.eclipse.ui.part.ViewPart
-import org.scalaide.core.internal.repl.EclipseRepl.Exec
 import org.scalaide.core.internal.repl.EclipseRepl
 import org.scalaide.util.ui.DisplayThread
 import org.scalaide.core.internal.project.ScalaInstallation.platformInstallation
@@ -80,14 +79,14 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
           p.println(thrown.getMessage)
           thrown.printStackTrace(p)
           view.displayError(b.toString)
-          if (req.isInstanceOf[Settings]) setStopped
+          if (req.isInstanceOf[Settings]) setStopped()
         }
       }
     })
 
   override def evaluate(text: String): Unit = {
     if (isStopped) {
-      setStarted
+      setStarted()
     }
     repl.exec(text)
   }
@@ -104,7 +103,7 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
       repl.drop()
       // TODO: uncomment to fix #1000816
       //repl.exec(ReplConsoleView.HideBareExit)
-      setStopped
+      setStopped()
     }
   }
 
@@ -130,7 +129,7 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
 
     override def run(): Unit = {
       clearConsoleAction.run
-      setStarted
+      setStarted()
     }
   }
 
@@ -144,7 +143,7 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
     override def run(): Unit = {
       // NOTE: change in behavior - interpreter always reset
       displayError("\n------ Resetting Interpreter and Replaying Command History ------\n")
-      setStarted
+      setStarted()
     }
   }
 
@@ -164,7 +163,7 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
         DisplayThread.asyncExec {
           if (!isStopped) {
             displayError("\n------ Project Rebuilt, Replaying Command History ------\n")
-            setStarted
+            setStarted()
           }
         }
       }
@@ -335,7 +334,7 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
     // Register the interpreter for the project
     scalaProject = IScalaPlugin().getScalaProject(ResourcesPlugin.getWorkspace().getRoot().getProject(projectName))
     stopReplAction.run()
-    setStarted
+    setStarted()
   }
 
   override def setFocus(): Unit = {}

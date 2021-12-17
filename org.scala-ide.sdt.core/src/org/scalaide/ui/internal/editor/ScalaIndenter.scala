@@ -691,7 +691,7 @@ class ScalaIndenter(
       return matchCaseAlignment
     }
 
-    nextToken
+    nextToken()
     // TODO: Remove once SI-6011 is fixed
     (fToken: Any) match {
       // check for an arrow token and increase indentation (handles 'case' and closures)
@@ -749,7 +749,7 @@ class ScalaIndenter(
         val line = fLine
         if (skipScope(Symbols.TokenLPAREN, Symbols.TokenRPAREN)) {
           val scope = fPosition
-          nextToken
+          nextToken()
           if (fToken == Symbols.TokenIF || fToken == Symbols.TokenWHILE || fToken == Symbols.TokenFOR) {
             fIndent = prefSimpleIndent
             return fPosition
@@ -805,7 +805,7 @@ class ScalaIndenter(
     var mayBeMethodBody = NOTHING
     var isTypeBody = false
     while (true) {
-      nextToken
+      nextToken()
 
       if (isInBlock) {
         fToken match {
@@ -919,7 +919,7 @@ class ScalaIndenter(
   }
 
   private def looksLikeArrayInitializerIntro: Boolean = {
-    nextToken
+    nextToken()
     if (fToken == Symbols.TokenEQUAL || skipBrackets) {
       return false // Never return true
     }
@@ -945,7 +945,7 @@ class ScalaIndenter(
    */
   @tailrec
   private def matchCaseAlignment: Int = {
-    nextToken
+    nextToken()
     fToken match {
       // invalid cases: another case label or an LBRACE must come before a case
       // -> bail out with the current position
@@ -994,7 +994,7 @@ class ScalaIndenter(
     val startLine = fLine
     val startPosition = fPosition
     while (true) {
-      nextToken
+      nextToken()
 
       // if any line item comes with its own indentation, adapt to it
       if (fLine < startLine) {
@@ -1058,7 +1058,7 @@ class ScalaIndenter(
       case Symbols.TokenGREATERTHAN =>
         val storedPosition = fPosition
         val storedToken = fToken
-        nextToken
+        nextToken()
 
         var isGenericStarter = false
         if (fToken == Symbols.TokenIDENT) {
@@ -1227,7 +1227,7 @@ class ScalaIndenter(
     Assert.isTrue(fToken == Symbols.TokenELSE)
 
     while (true) {
-      nextToken
+      nextToken()
       fToken match {
         // scopes: skip them
         case Symbols.TokenRPAREN |
@@ -1273,7 +1273,7 @@ class ScalaIndenter(
    */
   private def hasMatchingDo: Boolean = {
     Assert.isTrue(fToken == Symbols.TokenWHILE)
-    nextToken
+    nextToken()
 
     if (fToken == Symbols.TokenRBRACE) {
       skipScope
@@ -1294,7 +1294,7 @@ class ScalaIndenter(
    */
   private def skipBrackets: Boolean = {
     if (fToken == Symbols.TokenRBRACKET) {
-      nextToken
+      nextToken()
       if (fToken == Symbols.TokenLBRACKET) {
         return true
       }
@@ -1350,9 +1350,9 @@ class ScalaIndenter(
      * be empty as well, or not typed in yet - hard to do without an AST...
      */
 
-    nextToken
+    nextToken()
     if (fToken == Symbols.TokenIDENT) { // method name
-      do nextToken
+      do nextToken()
       while (skipBrackets) // optional brackets for array valued return types
 
       return fToken == Symbols.TokenIDENT; // return type name
@@ -1371,14 +1371,14 @@ class ScalaIndenter(
    *         header.
    */
   private def looksLikeAnonymousTypeDecl: Boolean = {
-    nextToken
+    nextToken()
     if (fToken == Symbols.TokenIDENT) { // type name
-      nextToken
+      nextToken()
       while (fToken == Symbols.TokenOTHER) { // dot of qualification
-        nextToken
+        nextToken()
         if (fToken != Symbols.TokenIDENT) // qualificating name
           return false
-        nextToken
+        nextToken()
       }
       return fToken == Symbols.TokenNEW
     }
@@ -1397,7 +1397,7 @@ class ScalaIndenter(
    */
   private def looksLikeMethodCall: Boolean = {
     // TODO [5.0] add awareness for constructor calls with generic types: new ArrayList<String>()
-    nextToken
+    nextToken()
     return fToken == Symbols.TokenIDENT // method name
   }
 
@@ -1414,7 +1414,7 @@ class ScalaIndenter(
     var depth = 1
 
     while (true) {
-      nextToken
+      nextToken()
 
       if (fToken == closeToken) {
         depth += 1

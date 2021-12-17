@@ -116,7 +116,7 @@ trait NewFileWizard extends AnyRef with HasLogger {
     desc.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1))
     desc.setText("""|The wizard uses a template in <a href="org.scalaide.ui.preferences.editor.templates">Scala → Editor → Templates</a> to create the content of a new file.
                     |The corresponding templates start with "wizard_" and can be freely edited.""".stripMargin)
-    desc.addSelectionListener { e: SelectionEvent ⇒
+    desc.addSelectionListener { e: SelectionEvent =>
       PreferencesUtil.createPreferenceDialogOn(c.getShell, e.text, null, null).open()
     }
 

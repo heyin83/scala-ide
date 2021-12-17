@@ -18,7 +18,6 @@ import org.scalaide.ui.internal.preferences.CompilerSettings
 import org.scalaide.core.testsetup.SDTTestUtils
 import org.scalaide.util.eclipse.EclipseUtils.prepareJob
 import org.eclipse.core.runtime.Status
-import org.scalaide.util.internal.SettingConverterUtil
 import org.scalaide.ui.internal.preferences.ScalaPluginSettings
 import org.scalaide.util.internal.SettingConverterUtil
 import org.scalaide.util.internal.CompilerUtils

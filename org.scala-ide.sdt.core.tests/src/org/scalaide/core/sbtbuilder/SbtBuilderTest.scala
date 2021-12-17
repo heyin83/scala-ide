@@ -296,7 +296,7 @@ class SbtBuilderTest {
 
   @Test def checkClosedProject(): Unit = {
     closedProject.closeProject()
-    Assert.assertEquals("exportedDependencies", Nil, closedProject.project.exportedDependencies)
+    Assert.assertEquals("exportedDependencies", Nil, closedProject.project.exportedDependencies())
     Assert.assertEquals("sourceFolders", Nil, closedProject.project.sourceFolders)
     Assert.assertTrue("sourceOutputFolders", closedProject.project.sourceFolders.isEmpty)
   }

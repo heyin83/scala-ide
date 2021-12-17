@@ -3,7 +3,6 @@ package org.scalaide.core.compiler.settings
 import org.scalaide.core.IScalaPlugin
 import org.scalaide.util.internal.SettingConverterUtil
 import org.scalaide.ui.internal.preferences.CompilerSettings
-import org.scalaide.ui.internal.preferences.PropertyStore
 import org.junit.Assert._
 import org.junit.Test
 import org.junit.BeforeClass

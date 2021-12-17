@@ -34,7 +34,7 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
    */
   private val (displayedData, filteredData) = {
     val d = ScalaPlugin().statistics.data.toArray
-    d.partition(fd ⇒ !Set(CharactersSaved, NotSpecified)(fd.feature))
+    d.partition(fd => !Set(CharactersSaved, NotSpecified)(fd.feature))
   }
 
   override def createContents(parent: Composite): Control = {
@@ -62,7 +62,7 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
     val columnFeature = new TableViewerColumn(viewer, SWT.NONE)
     columnFeature.getColumn.setText("Feature")
     columnFeature.onLabelUpdate(_.asInstanceOf[FeatureData].feature.description)
-    columnFeature.getColumn.addSelectionListener { e: SelectionEvent ⇒
+    columnFeature.getColumn.addSelectionListener { e: SelectionEvent =>
       ColumnComparator.doSort(ColumnComparator.Column.Feature)
       viewer.refresh()
     }
@@ -71,7 +71,7 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
     val columnGroup = new TableViewerColumn(viewer, SWT.NONE)
     columnGroup.getColumn.setText("Group")
     columnGroup.onLabelUpdate(_.asInstanceOf[FeatureData].feature.group.description)
-    columnGroup.getColumn.addSelectionListener { e: SelectionEvent ⇒
+    columnGroup.getColumn.addSelectionListener { e: SelectionEvent =>
       ColumnComparator.doSort(ColumnComparator.Column.Group)
       viewer.refresh()
     }
@@ -80,12 +80,12 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
     val columnUsed = new TableViewerColumn(viewer, SWT.NONE)
     columnUsed.getColumn.setText("Used")
     columnUsed.onLabelUpdate(_.asInstanceOf[FeatureData].nrOfUses match {
-      case 0 ⇒ "Never"
-      case 1 ⇒ "Once"
-      case 2 ⇒ "Twice"
-      case n ⇒ s"$n times"
+      case 0 => "Never"
+      case 1 => "Once"
+      case 2 => "Twice"
+      case n => s"$n times"
     })
-    columnUsed.getColumn.addSelectionListener { e: SelectionEvent ⇒
+    columnUsed.getColumn.addSelectionListener { e: SelectionEvent =>
       ColumnComparator.doSort(ColumnComparator.Column.NrOfUses)
       viewer.refresh()
     }
@@ -93,8 +93,8 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
 
     val columnLastUsed = new TableViewerColumn(viewer, SWT.NONE)
     columnLastUsed.getColumn.setText("Last used")
-    columnLastUsed.onLabelUpdate(d ⇒ timeAgo(d.asInstanceOf[FeatureData].lastUsed))
-    columnLastUsed.getColumn.addSelectionListener { e: SelectionEvent ⇒
+    columnLastUsed.onLabelUpdate(d => timeAgo(d.asInstanceOf[FeatureData].lastUsed))
+    columnLastUsed.getColumn.addSelectionListener { e: SelectionEvent =>
       ColumnComparator.doSort(ColumnComparator.Column.LastUsed)
       viewer.refresh()
     }
@@ -116,11 +116,11 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
     import scala.concurrent.duration._
 
     (System.currentTimeMillis - time).millis match {
-      case d if d < 0.nanos   ⇒ "Never"
-      case d if d < 2.minutes ⇒ "Moments ago"
-      case d if d < 1.hour    ⇒ s"${d.toMinutes} minutes ago"
-      case d if d < 1.day     ⇒ s"${d.toHours} hours ago"
-      case d                  ⇒ s"${d.toDays} days ago"
+      case d if d < 0.nanos   => "Never"
+      case d if d < 2.minutes => "Moments ago"
+      case d if d < 1.hour    => s"${d.toMinutes} minutes ago"
+      case d if d < 1.day     => s"${d.toHours} hours ago"
+      case d                  => s"${d.toDays} days ago"
     }
   }
 
@@ -144,11 +144,11 @@ class StatisticsPreferencePage extends PreferencePage with IWorkbenchPreferenceP
 
     override def compare(viewer: Viewer, o1: AnyRef, o2: AnyRef): Int = {
       def cmp = ((o1, o2): @unchecked) match {
-        case (o1: FeatureData, o2: FeatureData) ⇒ sortCol match {
-          case Feature  ⇒ o1.feature.description compareTo o2.feature.description
-          case Group    ⇒ o1.feature.group.description compareTo o2.feature.group.description
-          case NrOfUses ⇒ (o1.nrOfUses-o2.nrOfUses).toInt
-          case LastUsed ⇒ (o1.lastUsed-o2.lastUsed).toInt
+        case (o1: FeatureData, o2: FeatureData) => sortCol match {
+          case Feature  => o1.feature.description compareTo o2.feature.description
+          case Group    => o1.feature.group.description compareTo o2.feature.group.description
+          case NrOfUses => (o1.nrOfUses-o2.nrOfUses).toInt
+          case LastUsed => (o1.lastUsed-o2.lastUsed).toInt
         }
       }
       if (sortDir == Ascending) cmp else -cmp

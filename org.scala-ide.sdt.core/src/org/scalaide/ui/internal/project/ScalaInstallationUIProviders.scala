@@ -14,13 +14,13 @@ trait ScalaInstallationUIProviders {
   def getDecoration(si: IScalaInstallation): String = {
     si match {
         case s: BundledScalaInstallation =>
-          s"$itemTitle: ${s.version.unparse} (${labels(0)})"
+          s"${itemTitle()}: ${s.version.unparse} (${labels(0)})"
         case s: MultiBundleScalaInstallation =>
-          s"$itemTitle: ${s.version.unparse} (${labels(1)})"
+          s"${itemTitle()}: ${s.version.unparse} (${labels(1)})"
         case s: LabeledScalaInstallation =>
           s"${s.getName().getOrElse("")}: ${s.version.unparse}"
         case s: IScalaInstallation =>
-          s"$itemTitle: ${s.version.unparse} (${labels(2)})"
+          s"${itemTitle()}: ${s.version.unparse} (${labels(2)})"
       }
   }
 

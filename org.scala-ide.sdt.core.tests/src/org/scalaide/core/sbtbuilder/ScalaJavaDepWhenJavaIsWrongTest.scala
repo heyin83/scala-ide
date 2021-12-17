@@ -9,14 +9,6 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.scalaide.core.testsetup.SDTTestUtils
 
-import ScalaJavaDepWhenJavaIsWrongTest.cleanProject
-import ScalaJavaDepWhenJavaIsWrongTest.compilationUnit
-import ScalaJavaDepWhenJavaIsWrongTest.project
-import testsetup.SDTTestUtils.changeContentOfFile
-import testsetup.SDTTestUtils.getProblemMarkers
-import testsetup.SDTTestUtils.slurpAndClose
-import testsetup.SDTTestUtils.markersMessages
-
 object ScalaJavaDepWhenJavaIsWrongTest
     extends testsetup.TestProjectSetup("scalajavadepjavaiswrong") {
   @BeforeClass def setup(): Unit = {

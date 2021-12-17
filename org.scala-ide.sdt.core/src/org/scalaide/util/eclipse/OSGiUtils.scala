@@ -1,7 +1,6 @@
 package org.scalaide.util.eclipse
 
 import java.io.FileNotFoundException
-import java.io.IOException
 import java.net.URL
 import org.eclipse.core.runtime.FileLocator
 import org.eclipse.core.runtime.IPath

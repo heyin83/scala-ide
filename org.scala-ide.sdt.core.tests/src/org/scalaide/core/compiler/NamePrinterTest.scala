@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Ignore
 import org.junit.Test
 import org.scalaide.CompilerSupportTests
-import NamePrinterTest.mkScalaCompilationUnit
 import org.scalaide.core.internal.jdt.model.ScalaCompilationUnit
 import org.scalaide.core.FlakyTest
 

@@ -20,7 +20,7 @@ class ResidentCompilerTest {
 
   @Test
   def shouldCompileScalaSource(): Unit = {
-    val scalaSrc = project.allSourceFiles.collectFirst {
+    val scalaSrc = project.allSourceFiles().collectFirst {
       case file if file.getFileExtension == SdtConstants.ScalaFileExtn.drop(Dot) =>
         new File(file.getLocationURI)
     }.get
@@ -39,7 +39,7 @@ class ResidentCompilerTest {
 
   @Test
   def shouldNotCompileJavaSourceBecauseThereIsNoWorkingJavaCompiler(): Unit = {
-    val javaSrc = project.allSourceFiles.collectFirst {
+    val javaSrc = project.allSourceFiles().collectFirst {
       case file if file.getFileExtension == SdtConstants.JavaFileExtn.drop(Dot) =>
         new File(file.getLocationURI)
     }.get

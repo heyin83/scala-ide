@@ -11,6 +11,24 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.scala-ide</groupId>
+      <artifactId>org.scala-ide.sdt.core</artifactId>
+      <version>4.7.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.scalariform</groupId>
+      <artifactId>scalariform_${scala.minor.version}</artifactId>
+      <version>${scalariform.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.scala-ide</groupId>
+      <artifactId>org.scala-refactoring</artifactId>
+      <version>4.7.1-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
     </dependency>
@@ -163,30 +181,49 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- copy the mockito jar, so it can be used in eclipse -->
+        <!-- copy the depending libraries, so they could be used in eclipse -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
         <execution>
-            <id>copy</id>
-            <phase>initialize</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.mockito</groupId>
-                  <artifactId>mockito-all</artifactId>
-                  <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>log4j</groupId>
-                  <artifactId>log4j</artifactId>
-                  <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
+          <id>copy</id>
+          <phase>initialize</phase>
+          <goals>
+            <goal>copy</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+            <artifactItems>
+              <artifactItem>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+              </artifactItem>
+              <artifactItem>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+              </artifactItem>
+              <artifactItem>
+                <groupId>org.scalariform</groupId>
+                <artifactId>scalariform_${scala.minor.version}</artifactId>
+              </artifactItem>
+              <artifactItem>
+                <groupId>org.scalariform</groupId>
+                <artifactId>scalariform_${scala.minor.version}</artifactId>
+                <classifier>sources</classifier>
+              </artifactItem>
+              <artifactItem>
+                <groupId>org.scala-ide</groupId>
+                <artifactId>org.scala-refactoring</artifactId>
+                <destFileName>org.scala-refactoring.jar</destFileName>
+              </artifactItem>
+              <artifactItem>
+                <groupId>org.scala-ide</groupId>
+                <artifactId>org.scala-refactoring</artifactId>
+                <destFileName>org.scala-refactoring-source.jar</destFileName>
+                <classifier>sources</classifier>
+              </artifactItem>
+            </artifactItems>
+          </configuration>
           </execution>
         </executions>
       </plugin>

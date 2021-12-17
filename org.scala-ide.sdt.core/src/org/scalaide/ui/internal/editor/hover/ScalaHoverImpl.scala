@@ -52,7 +52,8 @@ class ScalaHoverImpl extends ITextHover with ITextHoverExtension with ITextHover
 
   private var icuEditor: Option[InteractiveCompilationUnitEditor] = None
 
-  def this(editor: InteractiveCompilationUnitEditor) {
+  def this(editor: InteractiveCompilationUnitEditor) =
+  {
     this()
     icuEditor = Option(editor)
   }

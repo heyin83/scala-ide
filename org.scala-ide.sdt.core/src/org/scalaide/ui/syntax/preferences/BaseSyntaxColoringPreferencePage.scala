@@ -3,9 +3,7 @@ package org.scalaide.ui.syntax.preferences
 import scala.PartialFunction.condOpt
 import org.eclipse.core.runtime.preferences.InstanceScope
 import org.eclipse.jdt.internal.ui.preferences._
-import org.eclipse.jdt.internal.ui.preferences.OverlayPreferenceStore.BOOLEAN
 import org.eclipse.jdt.internal.ui.preferences.OverlayPreferenceStore.OverlayKey
-import org.eclipse.jdt.internal.ui.preferences.OverlayPreferenceStore.STRING
 import org.eclipse.jface.preference._
 import org.eclipse.jface.text.source.SourceViewer
 import org.eclipse.jface.viewers._

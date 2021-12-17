@@ -53,11 +53,11 @@ trait EclipseSettings {
   }
 
   private object SelectionListenerSing extends SelectionAdapter {
-    override def widgetSelected(e: SelectionEvent): Unit = updateApply
+    override def widgetSelected(e: SelectionEvent): Unit = updateApply()
   }
 
   private object ModifyListenerSing extends ModifyListener {
-    def modifyText(e: ModifyEvent) = updateApply
+    def modifyText(e: ModifyEvent) = updateApply()
   }
 
   /** Represents a setting that may by changed within Eclipse.

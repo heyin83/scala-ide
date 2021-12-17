@@ -32,7 +32,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <executions>
+        <!--executions>
           <execution>
             <id>attach-sources</id>
             <phase>verify</phase>
@@ -40,7 +40,7 @@
               <goal>jar-no-fork</goal>
             </goals>
           </execution>
-        </executions>
+        </executions-->
       </plugin>
     </plugins>
   </build>

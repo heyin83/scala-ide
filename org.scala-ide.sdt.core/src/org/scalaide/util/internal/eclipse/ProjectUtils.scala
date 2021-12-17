@@ -44,7 +44,7 @@ object ProjectUtils {
   def resourceOfSelection(): Option[IResource] = {
     val w = Option(PlatformUI.getWorkbench().getActiveWorkbenchWindow())
 
-    w flatMap (w ⇒ w.getSelectionService().getSelection() match {
+    w flatMap (w => w.getSelectionService().getSelection() match {
       case _: ITextSelection =>
         val ei = w.getActivePage().getActiveEditor().getEditorInput()
         Option(ei.getAdapter(classOf[IResource]).asInstanceOf[IResource])

@@ -42,7 +42,7 @@ abstract class DocumentSaveActionTests extends SaveActionTests {
   override def source: String = udoc.get()
 
   case object SaveEvent extends Operation {
-    override def execute: Unit = {
+    override def execute(): Unit = {
       val changes = saveAction(new TextDocument(udoc)).perform()
       applyChanges(udoc, changes)
     }
@@ -65,7 +65,7 @@ abstract class CompilerSaveActionTests extends SaveActionTests with CompilerSupp
   override def source: String = udoc.get()
 
   case object SaveEvent extends Operation {
-    override def execute: Unit = withCompiler { compiler =>
+    override def execute(): Unit = withCompiler { compiler =>
       import compiler._
 
       val unit = mkScalaCompilationUnit(udoc.get())

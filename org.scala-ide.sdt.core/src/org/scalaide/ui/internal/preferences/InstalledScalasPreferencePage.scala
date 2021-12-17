@@ -16,7 +16,6 @@ import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.widgets.DirectoryDialog
 import org.eclipse.ui.IWorkbench
 import org.eclipse.ui.IWorkbenchPreferencePage
-import org.scalaide.core.internal.project.LabeledDirectoryScalaInstallation
 import org.scalaide.core.internal.project.DirectoryScalaInstallation.directoryScalaInstallationFactory
 import org.scalaide.core.internal.project.ScalaInstallation
 import org.scalaide.ui.internal.project.ScalaInstallationUIProviders
@@ -39,7 +38,7 @@ import org.scalaide.core.Publisher
 
 class InstalledScalasPreferencePage extends PreferencePage with IWorkbenchPreferencePage with ScalaInstallationUIProviders with Publisher[ModifiedScalaInstallations] {
 
-  def itemTitle = "Scala"
+  def itemTitle() = "Scala"
   var customInstallations = ScalaInstallation.customInstallations
   // to save installations whenever they are edited
   subscribe(ScalaInstallation.installationsTracker)

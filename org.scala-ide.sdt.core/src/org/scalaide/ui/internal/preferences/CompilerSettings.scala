@@ -379,8 +379,8 @@ class CompilerSettings extends PropertyPage with IWorkbenchPreferencePage with E
   }
 
   override def performDefaults(): Unit = {
-    super.performDefaults
-    additionalParamsWidget.reset
+    super.performDefaults()
+    additionalParamsWidget.reset()
   }
 
   /** This widget should only be used on project property pages. */
@@ -430,7 +430,7 @@ class CompilerSettings extends PropertyPage with IWorkbenchPreferencePage with E
   }
 
   def labeler = new ScalaInstallationUIProviders {
-    def itemTitle = "Fixed Scala Installation"
+    def itemTitle() = "Fixed Scala Installation"
   }
 
   def choicesOfScalaInstallations(): Array[Array[String]] = (

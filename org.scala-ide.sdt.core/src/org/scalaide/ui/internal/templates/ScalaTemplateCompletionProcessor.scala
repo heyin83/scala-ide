@@ -7,7 +7,6 @@ import org.eclipse.jface.text.IRegion
 import org.eclipse.jface.text.ITextViewer
 import org.eclipse.jface.text.templates.Template
 import org.eclipse.jface.text.templates.TemplateCompletionProcessor
-import org.eclipse.jface.text.templates.TemplateContextType
 import org.eclipse.swt.graphics.Image
 import org.eclipse.jface.text.templates.GlobalTemplateVariables
 import org.eclipse.jface.text.templates.TemplateContextType

@@ -79,7 +79,7 @@ object TestValues {
     def byte: Any = (4: Byte)
     def short: Any = (6: Short)
     def int: Any = 1
-    def long: Any = 1l
+    def long: Any = 1L
     def char: Any = 'c'
     def double: Any = 1.1
     def float: Any = 1.1f
@@ -254,8 +254,8 @@ object TestValues {
     val multilist = List(List(1), List(2, 3))
     val intArray = list.toArray
     val * = 1
-    val long = 1l
-    val long2 = 2l
+    val long = 1L
+    val long2 = 2L
   }
 
   object NamedParametersTestCase extends IntegrationTestCaseSettings {

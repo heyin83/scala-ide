@@ -39,7 +39,7 @@ class AutoEditsPreferencePage extends PreferencePage with IWorkbenchPreferencePa
 
   private val prefStore = {
     val ps = IScalaPlugin().getPreferenceStore
-    val keys = settings flatMap { s ⇒
+    val keys = settings flatMap { s =>
       import OverlayPreferenceStore._
       Seq(
         new OverlayKey(BOOLEAN, s.id),
@@ -70,7 +70,7 @@ class AutoEditsPreferencePage extends PreferencePage with IWorkbenchPreferencePa
     viewer = new CheckboxTableViewer(table)
     viewer.setContentProvider(ContentProvider)
     viewer.addSelectionChangedListener { e: SelectionChangedEvent =>
-      table.getSelection.headOption foreach { item ⇒
+      table.getSelection.headOption foreach { item =>
         selectAutoEdit(item.getData().asInstanceOf[AutoEditSetting])
       }
     }
@@ -89,7 +89,7 @@ class AutoEditsPreferencePage extends PreferencePage with IWorkbenchPreferencePa
 
     mkLabel(base, "Configuration:", columnSize = 2)
     configurationArea = mkTextArea(base, lineHeight = 3, columnSize = 2)
-    configurationArea.addModifyListener { e: ModifyEvent ⇒
+    configurationArea.addModifyListener { e: ModifyEvent =>
 
       /*
        * Checks if the following properties are hold:
@@ -99,11 +99,11 @@ class AutoEditsPreferencePage extends PreferencePage with IWorkbenchPreferencePa
        *   the value 'true'
        */
       def isValid(str: String): Boolean = {
-        str.isEmpty() || Commons.split(str, '\n').forall { line ⇒
+        str.isEmpty() || Commons.split(str, '\n').forall { line =>
           Commons.split(line, '=') match {
-            case Seq(k, _) if k.nonEmpty ⇒ true
-            case Seq(k) if k.nonEmpty ⇒ true
-            case _ ⇒ false
+            case Seq(k, _) if k.nonEmpty => true
+            case Seq(k) if k.nonEmpty => true
+            case _ => false
           }
         }
       }
@@ -118,8 +118,8 @@ class AutoEditsPreferencePage extends PreferencePage with IWorkbenchPreferencePa
         setErrorMessage(null)
 
         viewer.getSelection() match {
-          case s: StructuredSelection ⇒
-            Option(s.getFirstElement()).map(_.asInstanceOf[AutoEditSetting]) foreach { aes ⇒
+          case s: StructuredSelection =>
+            Option(s.getFirstElement()).map(_.asInstanceOf[AutoEditSetting]) foreach { aes =>
               prefStore.setValue(aes.configId, text)
             }
         }

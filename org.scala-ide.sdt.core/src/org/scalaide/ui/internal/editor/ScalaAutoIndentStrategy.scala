@@ -692,7 +692,7 @@ class ScalaAutoIndentStrategy(
     if (c.doit == false)
       return
 
-    clearCachedValues
+    clearCachedValues()
 
     if (!fIsSmartMode) {
       super.customizeDocumentCommand(d, c)
@@ -734,7 +734,7 @@ class ScalaAutoIndentStrategy(
   private def closeBrace : Boolean = fCloseBrace
 
   private def clearCachedValues(): Unit = {
-    preferencesProvider.updateCache
+    preferencesProvider.updateCache()
     fIsSmartMode = computeSmartMode
   }
 

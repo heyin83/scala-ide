@@ -46,7 +46,7 @@ class ScalaSpellingEngine extends ISpellingEngine {
       partition <- TextUtilities.computePartitioning(document, JAVA_PARTITIONING, region.getOffset, region.getLength, false)
       if spellCheckablePartitionTypes contains partition.getType
     } {
-      if (monitor != null && monitor.isCanceled || listener.isProblemsThresholdReached)
+      if (monitor != null && monitor.isCanceled || listener.isProblemsThresholdReached())
         return
       checker.execute(listener, new SpellCheckIterator(document, partition, checker.getLocale, monitor))
     }
