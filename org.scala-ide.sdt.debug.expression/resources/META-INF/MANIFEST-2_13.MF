@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Scala Expression Evaluator Plugin
 Bundle-SymbolicName: org.scala-ide.sdt.debug.expression;singleton:=true
-Bundle-Version: 4.7.1.qualifier
+Bundle-Version: 4.21.0.qualifier
 Bundle-Vendor: scala-ide.org
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
@@ -18,7 +18,7 @@ Export-Package: org.scalaide.debug.internal.expression,
  org.scalaide.debug.internal.ui,
  org.scalaide.debug.internal.ui.actions,
  org.scalaide.debug.internal.ui.completion
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

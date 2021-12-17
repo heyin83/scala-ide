@@ -3,7 +3,7 @@ Eclipse-ExtensibleAPI: true
 Bundle-ManifestVersion: 2
 Bundle-Name: Scala Plugin
 Bundle-SymbolicName: org.scala-ide.sdt.core;singleton:=true
-Bundle-Version: 4.7.1.qualifier
+Bundle-Version: 4.21.0.qualifier
 Bundle-Vendor: scala-ide.org
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
@@ -168,7 +168,7 @@ Export-Package: org.scalaide.core,
  org.scalaide.util.internal.eclipse,
  org.scalaide.util.internal.ui,
  org.scalaide.util.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  target/lib/miglayout-@MIGLAYOUT_VERSION@.jar,
  target/lib/log4j-@LOG4J_VERSION@.jar,

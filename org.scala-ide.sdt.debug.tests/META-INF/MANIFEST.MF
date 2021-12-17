@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Scala Debug Plugin (Test)
 Bundle-SymbolicName: org.scala-ide.sdt.debug.tests
-Bundle-Version: 4.7.1.qualifier
+Bundle-Version: 4.21.0.qualifier
 Bundle-Vendor: scala-ide.org
 Fragment-Host: org.scala-ide.sdt.debug
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.scala-lang.scala-library,
  org.eclipse.equinox.weaving.aspectj,
  org.eclipse.pde.launching;bundle-version="[3.6.0,4.0.0)",
