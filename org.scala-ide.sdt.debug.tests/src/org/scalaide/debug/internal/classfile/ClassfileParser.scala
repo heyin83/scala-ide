@@ -11,7 +11,7 @@ import scala.tools.nsc.symtab.classfile.AbstractFileReader
  */
 class ClassfileParser(classFile: File) {
   val file = AbstractFile.getFile(classFile)
-  val reader = new AbstractFileReader(file)
+  val reader = new AbstractFileReader(file.toByteArray)
 
   def parseHeader(): Unit = {
     if (!(reader.nextInt == 0xCAFEBABE))
@@ -88,7 +88,7 @@ class ClassfileParser(classFile: File) {
       val name = pool.getString(reader.nextChar)
       val descr = pool.getString(reader.nextChar)
 
-      name -> MethodDef(name, descr, parseCodeAttribute)
+      name -> MethodDef(name, descr, parseCodeAttribute())
     }).toMap
   }
 }

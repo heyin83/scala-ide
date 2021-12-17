@@ -120,7 +120,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName()", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName()", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -131,7 +131,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "DefaultPackageTypeName.methodName()", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "DefaultPackageTypeName.methodName()", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -142,7 +142,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Boolean)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Boolean)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -153,7 +153,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Byte)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Byte)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -164,7 +164,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Char)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Char)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -175,7 +175,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Double)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Double)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -186,7 +186,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Float)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Float)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -197,7 +197,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Int)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Int)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -208,7 +208,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Long)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Long)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -219,7 +219,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Short)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Short)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -230,7 +230,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(ATypeName)", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(ATypeName)", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -241,7 +241,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Array[SomeTypeName])", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Array[SomeTypeName])", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -252,7 +252,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Array[Int])", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Array[Int])", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -263,7 +263,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.methodName(Boolean, Array[Int], Float, SomeTypeA, Array[Array[SomeTypeB]])", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.methodName(Boolean, Array[Int], Float, SomeTypeA, Array[Array[SomeTypeB]])", scalaStackFrame.getMethodFullName())
   }
 
   @Test
@@ -274,7 +274,7 @@ class ScalaStackFrameTest {
 
     val scalaStackFrame = ScalaStackFrame(scalaThread, jdiStackFrame)
 
-    assertEquals("Bad full method name", "TypeName.:+-?()", scalaStackFrame.getMethodFullName)
+    assertEquals("Bad full method name", "TypeName.:+-?()", scalaStackFrame.getMethodFullName())
   }
 
   @Test

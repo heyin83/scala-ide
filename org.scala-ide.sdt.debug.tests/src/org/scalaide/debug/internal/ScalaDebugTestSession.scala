@@ -107,7 +107,7 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
       val selection = new StructuredSelection(stackFrame)
       ScalaDebugger.updateCurrentThread(selection)
       state = SUSPENDED
-      logger.info("SUSPENDED at: %s:%d".format(stackFrame.getMethodFullName, stackFrame.getLineNumber))
+      logger.info("SUSPENDED at: %s:%d".format(stackFrame.getMethodFullName(), stackFrame.getLineNumber))
       this.notify
     }
   }
@@ -165,13 +165,13 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
     if (state eq NOT_LAUNCHED) {
       launch()
     } else {
-      setActionRequested
+      setActionRequested()
       currentStackFrame.resume
     }
 
     val actionResult = additionalAction()
 
-    waitUntilSuspended
+    waitUntilSuspended()
     removeBreakpoint(breakpoint)
 
     val expectedState = getExpectedState(conditionContext)
@@ -215,10 +215,10 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def stepOver(): Unit = {
     assertEquals("Bad state before stepOver", SUSPENDED, state)
 
-    setActionRequested
+    setActionRequested()
     currentStackFrame.stepOver
 
-    waitUntilSuspended
+    waitUntilSuspended()
 
     assertEquals("Bad state after stepOver", SUSPENDED, state)
   }
@@ -226,10 +226,10 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def stepInto(): Unit = {
     assertEquals("Bad state before stepIn", SUSPENDED, state)
 
-    setActionRequested
+    setActionRequested()
     currentStackFrame.stepInto
 
-    waitUntilSuspended
+    waitUntilSuspended()
 
     assertEquals("Bad state after stepIn", SUSPENDED, state)
   }
@@ -237,10 +237,10 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def stepReturn(): Unit = {
     assertEquals("Bad state before stepReturn", SUSPENDED, state)
 
-    setActionRequested
+    setActionRequested()
     currentStackFrame.stepReturn
 
-    waitUntilSuspended
+    waitUntilSuspended()
 
     assertEquals("Bad state after stepReturn", SUSPENDED, state)
   }
@@ -248,10 +248,10 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def resumeToCompletion(): Unit = {
     assertEquals("Bad state before resumeToCompletion", SUSPENDED, state)
 
-    setActionRequested
+    setActionRequested()
     currentStackFrame.resume
 
-    waitUntilSuspended
+    waitUntilSuspended()
 
     assertEquals("Bad state after resumeToCompletion", TERMINATED, state)
   }
@@ -259,10 +259,10 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def dropToFrame(stackFrame: ScalaStackFrame): Unit = {
     assertEquals("Bad state before dropToFrame", SUSPENDED, state)
 
-    setActionRequested
+    setActionRequested()
     stackFrame.dropToFrame()
 
-    waitUntilSuspended
+    waitUntilSuspended()
 
     assertEquals("Bad state after dropToFrame", SUSPENDED, state)
   }
@@ -270,7 +270,7 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def terminate(): Unit = {
     if ((state ne NOT_LAUNCHED) && (state ne TERMINATED)) {
       debugTarget.terminate()
-      waitUntilTerminated
+      waitUntilTerminated()
       assertEquals("Bad state after terminate", TERMINATED, state)
     }
     DebugPlugin.getDefault().removeDebugEventListener(debugEventListener)
@@ -279,10 +279,10 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def resumeToSuspension(): Unit = {
     assertEquals("Bad state before resumeToSuspension", SUSPENDED, state)
 
-    setActionRequested
+    setActionRequested()
     currentStackFrame.resume
 
-    waitUntilSuspended
+    waitUntilSuspended()
 
     assertEquals("Bad state after resumeToSuspension", SUSPENDED, state)
   }
@@ -290,7 +290,7 @@ class ScalaDebugTestSession private (launchConfiguration: ILaunchConfiguration) 
   def disconnect(): Unit = {
     if ((state ne NOT_LAUNCHED) && (state ne TERMINATED)) {
       debugTarget.disconnect()
-      waitUntilTerminated
+      waitUntilTerminated()
       assertEquals("Bad state after terminate", TERMINATED, state)
     }
   }

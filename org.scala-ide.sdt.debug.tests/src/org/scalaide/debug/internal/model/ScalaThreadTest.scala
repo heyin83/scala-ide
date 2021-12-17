@@ -115,7 +115,7 @@ class ScalaThreadTest {
 
     val thread = createThread(jdiThread)
 
-    thread.terminatedFromScala
+    thread.terminatedFromScala()
     thread.getStackFrames
   }
 

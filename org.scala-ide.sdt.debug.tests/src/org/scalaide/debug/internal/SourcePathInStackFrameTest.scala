@@ -54,7 +54,7 @@ class SourcePathInStackFrameTest {
   def simpleCheckForSourcePathInTopMostStackFrameForClassesWithPkgsWhichDontReflectSourceFoldersStruct(): Unit = {
     session = initDebugSession("SourcePath")
     session.runToLine(BP_TYPENAME, mainBreakpoint)
-    Assert.assertTrue(session.currentStackFrame.getSourcePath == expectedSourcePath)
+    Assert.assertTrue(session.currentStackFrame.getSourcePath() == expectedSourcePath)
 
     val inTopMostClass = session.addLineBreakpoint("test.b.B", 15)
     val inInheritedTrait = session.addLineBreakpoint("test.b.c.C", 19)
@@ -64,16 +64,16 @@ class SourcePathInStackFrameTest {
       session.waitForBreakpointsToBeEnabled(inTopMostClass, inInheritedTrait, inInnerClassAnonFunc, inInnerObject)
 
       session.resumeToSuspension()
-      Assert.assertTrue(session.currentStackFrame.getSourcePath == expectedSourcePath)
+      Assert.assertTrue(session.currentStackFrame.getSourcePath() == expectedSourcePath)
 
       session.resumeToSuspension()
-      Assert.assertTrue(session.currentStackFrame.getSourcePath == expectedSourcePath)
+      Assert.assertTrue(session.currentStackFrame.getSourcePath() == expectedSourcePath)
 
       session.resumeToSuspension()
-      Assert.assertTrue(session.currentStackFrame.getSourcePath == expectedSourcePath)
+      Assert.assertTrue(session.currentStackFrame.getSourcePath() == expectedSourcePath)
 
       session.resumeToSuspension()
-      Assert.assertTrue(session.currentStackFrame.getSourcePath == expectedSourcePath)
+      Assert.assertTrue(session.currentStackFrame.getSourcePath() == expectedSourcePath)
 
       session.resumeToCompletion()
     } finally {

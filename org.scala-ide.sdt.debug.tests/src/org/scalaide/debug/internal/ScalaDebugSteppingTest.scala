@@ -63,7 +63,7 @@ class ScalaDebugSteppingTest {
 
     session.checkStackFrame(TYPENAME_FC_LS + "$", "main([Ljava/lang/String;)V", 13)
 
-    session.checkThreadsState
+    session.checkThreadsState()
   }
 
   @Test
@@ -615,9 +615,9 @@ class ScalaDebugSteppingTest {
   def StepIntoDoesNotSkipForwarder(): Unit = {
     session = initDebugSession("MethodClassifiers")
     session.runToLine("stepping.MethodClassifiers", 64)
-    session.stepInto
+    session.stepInto()
     session.checkStackFrame("stepping.ConcreteClass", "concreteTraitMethod1(I)I", 36)
-    session.stepInto
+    session.stepInto()
     session.checkStackFrame("stepping.BaseTrait", "concreteTraitMethod1(I)I", 12)
   }
 
@@ -625,9 +625,9 @@ class ScalaDebugSteppingTest {
   def StepIntoDoesNotSkipForwarderWithParams(): Unit = {
     session = initDebugSession("MethodClassifiers")
     session.runToLine("stepping.MethodClassifiers", 67)
-    session.stepInto
+    session.stepInto()
     session.checkStackFrame("stepping.ConcreteClass", "concreteTraitMethod4(IDLjava/lang/String;Ljava/lang/Object;)V", 36)
-    session.stepInto
+    session.stepInto()
     session.checkStackFrame("stepping.BaseTrait", "concreteTraitMethod4(IDLjava/lang/String;Ljava/lang/Object;)V", 15)
   }
 
@@ -635,9 +635,9 @@ class ScalaDebugSteppingTest {
   def StepIntoDoesNotSkipForwarderWith22Params(): Unit = {
     session = initDebugSession("MethodClassifiers")
     session.runToLine("stepping.MethodClassifiers", 69)
-    session.stepInto
+    session.stepInto()
     session.checkStackFrame("stepping.MaxArgsC", "manyArgs(DDDDDDDDDDDDDDDDDDDDDD)D", 108)
-    session.stepInto
+    session.stepInto()
     session.checkStackFrame("stepping.MaxArgs", "manyArgs(DDDDDDDDDDDDDDDDDDDDDD)D", 105)
   }
 

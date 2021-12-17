@@ -88,7 +88,7 @@ class StackFrameVariableOfTreeFinderTest {
   def withDebugSession(test: ScalaDebugTestSession => Unit): Unit = {
     val session = ScalaDebugTestSession(file("ValFindingDemo.launch"))
     test(session)
-    session.terminate
+    session.terminate()
   }
 
   def scalaCu(filePath: String) =
@@ -125,7 +125,7 @@ class StackFrameVariableOfTreeFinderTest {
       assertFoundValue(atMarker="similarly named param of a method we are not in", is=None)
       assertFoundValue(atMarker="method-local variable", "when the variable is not yet assigned", is=None)
 
-      session.stepOver
+      session.stepOver()
 
       assertFoundValue(atMarker="method-local variable", "after the variable is assigned", is=Some("local val"))
       assertFoundValue(atMarker="similarly named local var of a method we are not in", is=None)
@@ -249,7 +249,7 @@ class StackFrameVariableOfTreeFinderTest {
           atMarker="local var of closure shadowing local var of enclosing method",
           "before the variable is assigned to", is=None)
 
-      session.stepOver
+      session.stepOver()
 
       assertFoundValue(
           atMarker="local var of closure shadowing local var of enclosing method",
