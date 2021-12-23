@@ -20,59 +20,59 @@ import org.scalaide.util.eclipse.OSGiUtils
 
 class ScalaInstallationTest {
 
-  /**
-   * check the installations of Scala based on a bundle of jars
-   */
-  @Test
-  def bundledInstallationsTest(): Unit = {
-    val bundledInstallations = ScalaInstallation.bundledInstallations
-
-    IScalaPlugin().scalaVersion match {
-      case SpecificScalaVersion(2, 10, _, _) =>
-        assertEquals("Unexpected Scala bundle", 0, bundledInstallations.length)
-      case SpecificScalaVersion(2, 11, _, _) =>
-        assertEquals("Unexpected Scala bundle", 0, bundledInstallations.length)
-      case SpecificScalaVersion(2, 12, _, _) =>
-        assertEquals("Wrong number of Scala bundles", 2, bundledInstallations.length)
-        def version(f: PartialFunction[ScalaVersion, Boolean]) = (installation: LabeledScalaInstallation) =>
-          f.lift(installation.version).getOrElse(false)
-
-        def assertBundle(bundleName: String, f: PartialFunction[ScalaVersion, Boolean], versionShort: String, libs: Seq[String], sources: Seq[String]) = {
-          val scalaInstallationOpt = bundledInstallations.find { version(f) }
-          if (scalaInstallationOpt.isEmpty)
-            fail(s"Not found bundle $bundleName")
-          val scalaInstallation = scalaInstallationOpt.get
-
-          val bundlePath = OSGiUtils.pathInBundle(Platform.getBundle(bundleName), "target").get.removeLastSegments(1)
-
-          assertEquals(s"Wrong $versionShort library jar", bundlePath.append(BundledScalaInstallation.ScalaLibraryPath), scalaInstallation.library.classJar)
-          assertEquals(s"Wrong $versionShort compiler jar", bundlePath.append(BundledScalaInstallation.ScalaCompilerPath), scalaInstallation.compiler.classJar)
-
-          val expectedAllJars = libs.map { lib =>
-            bundlePath.append(lib)
-          }.sortBy(_.toOSString())
-
-          assertEquals(s"Wrong all $versionShort jars", expectedAllJars, scalaInstallation.allJars.map(_.classJar).sortBy(_.toOSString()))
-
-          val expectedAllSourceJars = sources.map { source =>
-            bundlePath.append(source)
-          }.sortBy(_.toOSString())
-
-          assertEquals(s"Wrong all $versionShort source jars", expectedAllSourceJars, scalaInstallation.allJars.flatMap(_.sourceJar).sortBy(_.toOSString()))
-        }
-        assertBundle("org.scala-ide.scala210.jars", { case SpecificScalaVersion(2, 10, _, _) => true }, "2.10",
-          Seq(BundledScalaInstallation.ScalaLibraryPath, BundledScalaInstallation.ScalaCompilerPath, BundledScalaInstallation.ScalaReflectPath, BundledScalaInstallation.ScalaSwingPath),
-          Seq(BundledScalaInstallation.ScalaLibrarySourcesPath, BundledScalaInstallation.ScalaCompilerSourcesPath, BundledScalaInstallation.ScalaReflectSourcesPath, BundledScalaInstallation.ScalaSwingSourcesPath))
-        assertBundle("org.scala-ide.scala211.jars", { case SpecificScalaVersion(2, 11, _, _) => true }, "2.11",
-          Seq(BundledScalaInstallation.ScalaLibraryPath, BundledScalaInstallation.ScalaCompilerPath, BundledScalaInstallation.ScalaReflectPath),
-          Seq(BundledScalaInstallation.ScalaLibrarySourcesPath, BundledScalaInstallation.ScalaCompilerSourcesPath, BundledScalaInstallation.ScalaReflectSourcesPath))
-
-      case SpecificScalaVersion(2, 13, _, _) =>
-        assertEquals("Unexpected Scala bundle", 0, bundledInstallations.length)
-      case v =>
-        fail(s"Unsupported Scala version: $v")
-    }
-  }
+//  /**
+//   * check the installations of Scala based on a bundle of jars
+//   */
+//  @Test
+//  def bundledInstallationsTest(): Unit = {
+//    val bundledInstallations = ScalaInstallation.bundledInstallations
+//
+//    IScalaPlugin().scalaVersion match {
+//      case SpecificScalaVersion(2, 10, _, _) =>
+//        assertEquals("Unexpected Scala bundle", 0, bundledInstallations.length)
+//      case SpecificScalaVersion(2, 11, _, _) =>
+//        assertEquals("Unexpected Scala bundle", 0, bundledInstallations.length)
+//      case SpecificScalaVersion(2, 12, _, _) =>
+//        assertEquals("Wrong number of Scala bundles", 2, bundledInstallations.length)
+//        def version(f: PartialFunction[ScalaVersion, Boolean]) = (installation: LabeledScalaInstallation) =>
+//          f.lift(installation.version).getOrElse(false)
+//
+//        def assertBundle(bundleName: String, f: PartialFunction[ScalaVersion, Boolean], versionShort: String, libs: Seq[String], sources: Seq[String]) = {
+//          val scalaInstallationOpt = bundledInstallations.find { version(f) }
+//          if (scalaInstallationOpt.isEmpty)
+//            fail(s"Not found bundle $bundleName")
+//          val scalaInstallation = scalaInstallationOpt.get
+//
+//          val bundlePath = OSGiUtils.pathInBundle(Platform.getBundle(bundleName), "target").get.removeLastSegments(1)
+//
+//          assertEquals(s"Wrong $versionShort library jar", bundlePath.append(BundledScalaInstallation.ScalaLibraryPath), scalaInstallation.library.classJar)
+//          assertEquals(s"Wrong $versionShort compiler jar", bundlePath.append(BundledScalaInstallation.ScalaCompilerPath), scalaInstallation.compiler.classJar)
+//
+//          val expectedAllJars = libs.map { lib =>
+//            bundlePath.append(lib)
+//          }.sortBy(_.toOSString())
+//
+//          assertEquals(s"Wrong all $versionShort jars", expectedAllJars, scalaInstallation.allJars.map(_.classJar).sortBy(_.toOSString()))
+//
+//          val expectedAllSourceJars = sources.map { source =>
+//            bundlePath.append(source)
+//          }.sortBy(_.toOSString())
+//
+//          assertEquals(s"Wrong all $versionShort source jars", expectedAllSourceJars, scalaInstallation.allJars.flatMap(_.sourceJar).sortBy(_.toOSString()))
+//        }
+//        assertBundle("org.scala-ide.scala210.jars", { case SpecificScalaVersion(2, 10, _, _) => true }, "2.10",
+//          Seq(BundledScalaInstallation.ScalaLibraryPath, BundledScalaInstallation.ScalaCompilerPath, BundledScalaInstallation.ScalaReflectPath, BundledScalaInstallation.ScalaSwingPath),
+//          Seq(BundledScalaInstallation.ScalaLibrarySourcesPath, BundledScalaInstallation.ScalaCompilerSourcesPath, BundledScalaInstallation.ScalaReflectSourcesPath, BundledScalaInstallation.ScalaSwingSourcesPath))
+//        assertBundle("org.scala-ide.scala211.jars", { case SpecificScalaVersion(2, 11, _, _) => true }, "2.11",
+//          Seq(BundledScalaInstallation.ScalaLibraryPath, BundledScalaInstallation.ScalaCompilerPath, BundledScalaInstallation.ScalaReflectPath),
+//          Seq(BundledScalaInstallation.ScalaLibrarySourcesPath, BundledScalaInstallation.ScalaCompilerSourcesPath, BundledScalaInstallation.ScalaReflectSourcesPath))
+//
+//      case SpecificScalaVersion(2, 13, _, _) =>
+//        assertEquals("Unexpected Scala bundle", 0, bundledInstallations.length)
+//      case v =>
+//        fail(s"Unsupported Scala version: $v")
+//    }
+//  }
 
   @Test
   def multiBundleInstallationsTest(): Unit = {
