@@ -425,7 +425,8 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
         setting
       }
 
-      val classpathSettings = List(defaultSettings.javabootclasspath, defaultSettings.javaextdirs, defaultSettings.bootclasspath)
+      //val classpathSettings = List(defaultSettings.javabootclasspath, defaultSettings.javaextdirs, defaultSettings.bootclasspath)
+      val classpathSettings = List(defaultSettings.bootclasspath)
 
       (classpathSettings ++ userSettings) map (_.unparse)
     }

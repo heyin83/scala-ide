@@ -25,7 +25,6 @@ import org.scalaide.core.pc.DeclarationPrinterTest
 import org.scalaide.core.pc.PresentationCompilerDocTest
 import org.scalaide.core.pc.PresentationCompilerRefreshTest
 import org.scalaide.core.pc.PresentationCompilerTest
-import org.scalaide.core.project.DirectoryScalaInstallationTest
 import org.scalaide.core.project.ScalaInstallationTest
 import org.scalaide.core.sbtbuilder.BuildScopeUnitsTest
 import org.scalaide.core.sbtbuilder.DeprecationWarningsTests
@@ -113,7 +112,6 @@ import org.scalaide.core.internal.jdt.model.ScalaClassFileDescriberTest
     classOf[ScalaWordFinderTest],
     classOf[ScalaInstallationTest],
     classOf[MultiScalaVersionTest],
-    classOf[DirectoryScalaInstallationTest],
     classOf[CompletionTestSuite],
     classOf[WizardTests],
     classOf[TextTestSuite],

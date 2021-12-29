@@ -6,6 +6,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.Map
 import scala.Left
 import scala.Right
 import scala.collection.mutable.Set
@@ -82,24 +83,24 @@ trait ScalaInstallation extends IScalaInstallation {
   /** The version of Scala */
   def version: ScalaVersion
 
-  def compiler: ScalaModule
+  def compilerModules: Seq[ScalaModule]
 
-  def library: ScalaModule
+  def libraryModules: Seq[ScalaModule]
 
-  def extraJars: Seq[ScalaModule]
+  def extraModules: Seq[ScalaModule]
 
   /**
    * All jars provided by Scala (including the compiler)
    *  @see The note in [[MultiBundleScalaInstallation]] below
    */
-  def allJars: Seq[ScalaModule] =
-    library +: compiler +: extraJars
+  def allModules: Seq[ScalaModule] =
+    libraryModules ++ compilerModules ++ extraModules
 
   override def toString() =
-    s"Scala $version: \n\t${allJars.mkString("\n\t")})"
+    s"Scala $version: \n\t${allModules.mkString("\n\t")})"
 
   def isValid(): Boolean = {
-    allJars forall (_.isValid())
+    allModules forall (_.isValid())
   }
 
 }
@@ -112,11 +113,11 @@ trait LabeledScalaInstallation extends ScalaInstallation {
   // to recover bundle-less Bundle values from de-serialized Scala Installations
   // this should be relaxed for bundles : our bundles are safe, having one with just the same version should be enough
   def similar(that: LabeledScalaInstallation): Boolean =
-    this.label == that.label && this.compiler == that.compiler && this.library == that.library && this.extraJars.toSet == that.extraJars.toSet
+    this.label == that.label && this.compilerModules.toSet == that.compilerModules.toSet && this.libraryModules.toSet == that.libraryModules.toSet && this.extraModules.toSet == that.extraModules.toSet
 
   def getName(): Option[String] = PartialFunction.condOpt(label) { case CustomScalaInstallationLabel(tag) => tag }
   def hashString: String = {
-    val jarSeq = allJars map (_.hashString)
+    val jarSeq = allModules map (_.hashString)
     getName().fold(jarSeq)(str => str +: jarSeq).mkString
   }
 
@@ -150,11 +151,12 @@ object ScalaModule {
  * Represent a version of Scala installed as a bundle containing the necessary jars.
  */
 case class BundledScalaInstallation(
-    override val version: ScalaVersion,
-    bundle: Bundle,
-    override val library: ScalaModule,
-    override val compiler: ScalaModule,
-    override val extraJars: Seq[ScalaModule]) extends LabeledScalaInstallation {
+  override val version: ScalaVersion,
+  bundle: Bundle,
+  override val libraryModules: Seq[ScalaModule],
+  override val compilerModules: Seq[ScalaModule],
+  override val extraModules: Seq[ScalaModule],
+  override val compilerBridge: Option[IScalaModule] = None) extends LabeledScalaInstallation {
 
   override val label = BundledScalaInstallationLabel()
   def osgiVersion = bundle.getVersion()
@@ -164,62 +166,69 @@ object BundledScalaInstallation {
 
   private val ScalaBundleRegex = "org\\.scala-ide\\.scala-sdk\\.scala-[0-9]{1,2}\\.[0-9]{1,2}(\\.[0-9]{1,2})?".r
   private val ScalaLibraryRegex = "scala-library-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
-  private val ScalaLibrarySourcesRegex = "scala-library-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}-sources\\.jar".r
   private val ScalaCompilerRegex = "scala-compiler-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
-  private val ScalaCompilerSourcesRegex = "scala-compiler-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}-sources\\.jar".r
+
+  private val Scala3LibraryRegex = "scala3-library_3-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
+  private val Scala3CompilerRegex = "scala3-compiler_3-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
+  private val Scala3InterfacesRegex = "scala3-interfaces-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
+  private val Scala3CompilerBridgeRegex = "scala3-sbt-bridge-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
+  private val Scala3TastyCoreRegex = "tasty-core_3-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
+  private val Scala3CompilerInterfaceRegex = "compiler-interface-[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.jar".r
 
   def apply(bundle: Bundle): Option[BundledScalaInstallation] = {
-    
+
     def urlToPath(url: URL): IPath = Path.fromOSString(FileLocator.toFileURL(url).getPath)
 
-    if (!OSGiUtils.getBundlePath(bundle).fold(false)(_.toFile().isDirectory())){
-      return None
-    }
-    
     val sourcesSuffix = "-sources.jar"
-    var scalaLibrary: IPath = null
-    var scalaLibrarySources: Option[IPath] = None
-    var scalaCompiler: IPath = null
-    var scalaCompilerSources: Option[IPath] = None
-    val extraJars = new ListBuffer[IPath]
-    val extraSources = new ListBuffer[IPath]
-
     val version = ScalaVersion(bundle.getVersion().toString())
+
     val bundleJars = bundle.findEntries("./", "*.jar", false)
+    var binariesMap = Map.empty[String, IPath]
+    var sourcesMap = Map.empty[String, IPath]
     while (bundleJars.hasMoreElements()) {
       val modulePath = urlToPath(bundleJars.nextElement());
       val moduleName = modulePath.lastSegment();
-      if (ScalaLibraryRegex.matches(moduleName)) {
-        scalaLibrary = modulePath
-      } else if (ScalaLibrarySourcesRegex.matches(moduleName)) {
-        scalaLibrarySources = Some(modulePath)
-      } else if (ScalaCompilerRegex.matches(moduleName)) {
-        scalaCompiler = modulePath
-      } else if (ScalaCompilerSourcesRegex.matches(moduleName)) {
-        scalaCompilerSources = Some(modulePath)
+      if (moduleName.endsWith(sourcesSuffix)) {
+        sourcesMap += (moduleName -> modulePath)
       } else {
-        if (moduleName.endsWith(sourcesSuffix)) {
-          extraSources += modulePath
-        } else {
-          extraJars += modulePath
-        }
+        binariesMap += (moduleName -> modulePath)
       }
     }
 
-    if (scalaLibrary == null || scalaCompiler == null) {
+    val libraryModules = new ListBuffer[ScalaModule]
+    val compilerModules = new ListBuffer[ScalaModule]
+    val extraModules = new ListBuffer[ScalaModule]
+    var compilerBridgeModule: ScalaModule = null
+    for ((moduleName, modulePath) <- binariesMap) {
+      if (ScalaLibraryRegex.matches(moduleName) || Scala3LibraryRegex.matches(moduleName)) {
+        libraryModules += ScalaModule(
+          modulePath,
+          sourcesMap.get(moduleName.substring(0, moduleName.length() - 4) + sourcesSuffix))
+      } else if (ScalaCompilerRegex.matches(moduleName) || Scala3CompilerRegex.matches(moduleName)
+          || Scala3InterfacesRegex.matches(moduleName) || Scala3TastyCoreRegex.matches(moduleName)
+          || Scala3CompilerInterfaceRegex.matches(moduleName)) {
+        compilerModules += ScalaModule(
+          modulePath,
+          sourcesMap.get(moduleName.substring(0, moduleName.length() - 4) + sourcesSuffix))
+      } else if (Scala3CompilerBridgeRegex.matches(moduleName)) {
+        compilerBridgeModule = ScalaModule(modulePath, None)
+      } else {
+        extraModules += ScalaModule(
+          modulePath,
+          sourcesMap.get(moduleName.substring(0, moduleName.length() - 4) + sourcesSuffix))
+      }
+    }
+
+    if (libraryModules.isEmpty || compilerModules.isEmpty) {
       None
     } else {
-      val extraModules = extraJars.map(binaryJarPath => {
-        val binaryJarName = binaryJarPath.lastSegment()
-        val sourcesJarName = binaryJarName.substring(0, binaryJarName.length() - 4) + sourcesSuffix
-        ScalaModule(binaryJarPath, extraSources.find(_.lastSegment() == sourcesJarName))
-      })
-      Some(BundledScalaInstallation(
+      Some(new BundledScalaInstallation(
         version,
         bundle,
-        ScalaModule(scalaLibrary, scalaLibrarySources),
-        ScalaModule(scalaCompiler, scalaCompilerSources),
-        extraModules.toList))
+        libraryModules.toList,
+        compilerModules.toList,
+        extraModules.toList,
+        Option(compilerBridgeModule)))
     }
   }
 
@@ -229,7 +238,7 @@ object BundledScalaInstallation {
   def detectBundledInstallations(): List[BundledScalaInstallation] = {
     val matchingBundles =
       ScalaPlugin().getBundle().getBundleContext().getBundles()
-        .filter { b => ScalaBundleRegex.unapplySeq(b.getSymbolicName()).isDefined }
+        .filter { b => ScalaBundleRegex.matches(b.getSymbolicName()) && OSGiUtils.getBundlePath(b).fold(false)(_.toFile().isDirectory()) }
         .toList
     matchingBundles.flatMap(BundledScalaInstallation(_))
   }
@@ -247,17 +256,17 @@ object BundledScalaInstallation {
  *        See ticket #1002175
  */
 case class MultiBundleScalaInstallation(
-    override val version: ScalaVersion,
-    libraryBundleVersion: Version,
-    override val library: ScalaModule,
-    override val compiler: ScalaModule) extends LabeledScalaInstallation {
+  override val version: ScalaVersion,
+  libraryBundleVersion: Version,
+  override val libraryModules: Seq[ScalaModule],
+  override val compilerModules: Seq[ScalaModule]) extends LabeledScalaInstallation {
 
-  import MultiBundleScalaInstallation._
-
+  override val compilerBridge: Option[IScalaModule] = None
   override val label = MultiBundleScalaInstallationLabel()
   def osgiVersion = libraryBundleVersion
 
-  override lazy val extraJars = Seq(
+  import MultiBundleScalaInstallation._
+  override lazy val extraModules = Seq(
     findLibraryForBundle(ScalaReflectBundleId, libraryBundleVersion),
     findLibraryForBundle(ScalaSwingBundleId, libraryBundleVersion)).flatten
 }
@@ -302,8 +311,8 @@ object MultiBundleScalaInstallation {
     } yield MultiBundleScalaInstallation(
       version,
       libraryBundleVersion,
-      ScalaModule(bundlePath(libraryBundle), EclipseUtils.computeSourcePath(ScalaLibraryBundleId, library)),
-      compiler)
+      List(ScalaModule(bundlePath(libraryBundle), EclipseUtils.computeSourcePath(ScalaLibraryBundleId, library))),
+      Seq(compiler))
   }
 
   def detectInstallations(): List[MultiBundleScalaInstallation] = {
@@ -329,10 +338,11 @@ object ScalaInstallation {
     case CustomScalaInstallationLabel(_) => install
     case BundledScalaInstallationLabel() | MultiBundleScalaInstallationLabel() => new LabeledScalaInstallation() {
       override def label = new CustomScalaInstallationLabel(s"Scala (legacy with hash ${ScalaInstallationChoice(install).toString()})")
-      override def compiler = install.compiler
-      override def library = install.library
-      override def extraJars = install.extraJars
+      override def compilerModules = install.compilerModules
+      override def libraryModules = install.libraryModules
+      override def extraModules = install.extraModules
       override def version = install.version
+      override def compilerBridge = install.compilerBridge
     }
   }
 
@@ -340,21 +350,29 @@ object ScalaInstallation {
     val store = ScalaPlugin().classLoaderStore
 
     // TODO: upgrade to zinc 1.6 It compiles bridge, but additional work is necessary to make sure it is correct
-    val scalaLoader: ClassLoader = store.getOrUpdate(si)(new URLClassLoader(si.allJars.map(_.classJar.toFile.toURI.toURL).toArray, ClassLoader.getSystemClassLoader))
-    val loaderCompilerOnly = new URLClassLoader(Array[java.net.URL](
-          si.compiler.classJar.toFile.toURI.toURL,
-          si.library.classJar.toFile.toURI.toURL),
-        ClassLoader.getSystemClassLoader)
-    val loaderLibraryOnly = new URLClassLoader(Array[java.net.URL](si.library.classJar.toFile.toURI.toURL), ClassLoader.getSystemClassLoader)
+    val libraryModules = si.libraryModules.map(_.classJar.toFile).toArray
+    val compilerModules = libraryModules ++ si.compilerModules.map(_.classJar.toFile).toArray
+    val extraModules = si.extraModules.map(_.classJar.toFile).toArray
+
+    //TODO consider extracting everything related to sbt/zinc to separate bundle.
+    // We give this class loader to prevent loading of different version of xsbti/AnalysisCallback from
+    // compiler-interface.jar used in dotty compiler.
+    val parentLoader = this.getClass.getClassLoader
+    val scalaLoader: ClassLoader = store.getOrUpdate(si)(new URLClassLoader(si.allModules.map(_.classJar.toFile.toURI.toURL).toArray, parentLoader))
+    //    val loaderCompilerOnly = new URLClassLoader(Array[java.net.URL](
+    //          si.compiler.classJar.toFile.toURI.toURL,
+    //          si.libraryModules.classJar.toFile.toURI.toURL),
+    //        ClassLoader.getSystemClassLoader)
+    val loaderLibraryOnly = new URLClassLoader(libraryModules.map(_.toURI.toURL), ClassLoader.getSystemClassLoader)
 
     new ScalaInstance(
       si.version.unparse,
       scalaLoader,
       scalaLoader,
-      loaderLibraryOnly,
-      Array[java.io.File](si.library.classJar.toFile),
-      Array[java.io.File](si.compiler.classJar.toFile),
-      si.extraJars.map(_.classJar.toFile).toArray,
+      scalaLoader,
+      compilerModules,
+      compilerModules,
+      extraModules,
       None)
   }
 
@@ -373,8 +391,8 @@ object ScalaInstallation {
   def availableBundledInstallations: List[LabeledScalaInstallation] = {
     //TODO disable multiBundle installations for now
     //perhaps it makes sence to get rid of them at all
-    /*multiBundleInstallations ++ */
-    bundledInstallations
+    multiBundleInstallations ++
+      bundledInstallations
   }
 
   def availableInstallations: List[LabeledScalaInstallation] = {

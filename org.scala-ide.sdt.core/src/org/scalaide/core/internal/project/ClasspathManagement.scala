@@ -57,7 +57,7 @@ import org.scalaide.util.internal.SettingConverterUtil
  */
 case class ScalaClasspath(
     override val jdkPaths: Seq[IPath],
-    override val scalaLibrary: Option[IPath],
+    override val scalaLibrary: Seq[IPath],
     override val userCp: Seq[IPath],
     override val scalaVersionString: Option[String]) extends IScalaClasspath {
 
@@ -68,9 +68,6 @@ case class ScalaClasspath(
     |scalaVersion: $scalaVersionString
     |""".stripMargin
 
-  lazy val scalaLibraryFile: Option[File] =
-    scalaLibrary.map(_.toFile.getAbsoluteFile)
-
   private def toPath(ps: Seq[IPath]): Seq[File] = ps map (_.toFile.getAbsoluteFile)
 
   /** Return the full classpath of this project.
@@ -78,7 +75,7 @@ case class ScalaClasspath(
    *  It puts the JDK and the Scala library in front of the user classpath.
    */
   override lazy val fullClasspath: Seq[File] =
-    toPath(jdkPaths) ++ scalaLibraryFile.toSeq ++ toPath(userCp)
+    toPath(jdkPaths) ++ toPath(scalaLibrary) ++ toPath(userCp)
 }
 
 /** A Scala library definition.
@@ -135,12 +132,15 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
   def scalaClasspath: ScalaClasspath = {
     val jdkEntries = jdkPaths
     val cp = javaClasspath.filterNot(jdkEntries.toSet)
-
-    scalaLibraries match {
+    val libraries = scalaLibraries
+    libraries  match {
       case Seq(ScalaLibrary(pf, version, _), _*) =>
-        new ScalaClasspath(jdkEntries, Some(pf), cp.filterNot(_ == pf), version.map(_.unparse))
+        new ScalaClasspath(jdkEntries, libraries.map(_.location),
+            //cp.filterNot(_ == pf),
+            cp,
+            version.map(_.unparse))
       case _ =>
-        new ScalaClasspath(jdkEntries, None, cp, None)
+        new ScalaClasspath(jdkEntries, Seq.empty, cp, None)
     }
   }
 
@@ -276,25 +276,27 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
    */
   private def scalaLibraries: Seq[ScalaLibrary] = {
     val pathToPredef = new Path("scala/Predef.class")
+    val pathToMain = new Path("scala/main.class")
 
     def isZipFileScalaLib(p: IPath): Boolean = {
       // catch any JavaModelException and pretend it's not the scala library
       Exception.failAsValue(classOf[JavaModelException], classOf[IOException])(false) {
         val jarFile = JavaModelManager.getJavaModelManager().getZipFile(p)
-        jarFile.getEntry("scala/Predef.class") ne null
+        (jarFile.getEntry("scala/Predef.class") ne null) || (jarFile.getEntry("scala/main.class") ne null)
       }
     }
 
     // look for all package fragment roots containing instances of scala.Predef
     val fragmentRoots = new mutable.ListBuffer[ScalaLibrary]
 
-    for (fragmentRoot <- javaProject.getAllPackageFragmentRoots() if fragmentRoot.getPackageFragment("scala").exists) {
+    val roots = javaProject.getAllPackageFragmentRoots()
+    for (fragmentRoot <- roots  if fragmentRoot.getPackageFragment("scala").exists) {
       fragmentRoot.getKind() match {
         case IPackageFragmentRoot.K_BINARY =>
           val resource = fragmentRoot.getUnderlyingResource
 
           val foundIt: Boolean = resource match {
-            case folder: IFolder => folder.findMember(pathToPredef) ne null
+            case folder: IFolder => (folder.findMember(pathToPredef) ne null) || (folder.findMember(pathToMain) ne null)
             case file: IFile     => isZipFileScalaLib(file.getFullPath)
             case _ =>
               val file = fragmentRoot.getPath.toFile
@@ -361,7 +363,7 @@ trait ClasspathManagement extends HasLogger { self: ScalaProject =>
   }
 
   private def isBundledPath(library: IPath): Boolean = {
-    ScalaInstallation.bundledInstallations.map(_.library.classJar) contains library
+    ScalaInstallation.bundledInstallations.flatMap(_.libraryModules.map(_.classJar)) contains library
   }
 
   private def validateScalaLibrary(fragmentRoots: Seq[ScalaLibrary], canFixInstallationFromScalaLib: Boolean): Seq[ClasspathErrorMarker] = {

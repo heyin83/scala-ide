@@ -61,11 +61,11 @@ abstract class ScalaClasspathContainerInitializer(desc: String) extends Classpat
 }
 
 class ScalaLibraryClasspathContainerInitializer extends ScalaClasspathContainerInitializer(SdtConstants.ScalaLibContName) {
-  override def entries = (platformInstallation.library +: platformInstallation.extraJars).map {_.libraryEntries()}.toArray
+  override def entries = (platformInstallation.libraryModules ++ platformInstallation.extraModules).map {_.libraryEntries()}.toArray
 }
 
 class ScalaCompilerClasspathContainerInitializer extends ScalaClasspathContainerInitializer(SdtConstants.ScalaCompilerContName) {
-  override def entries = Array[IClasspathEntry](platformInstallation.compiler.libraryEntries())
+  override def entries = (platformInstallation.compilerModules.map(_.libraryEntries())).toArray
 }
 
 abstract class ScalaClasspathContainerPage(containerPath: IPath, name: String, override val itemTitle: String, desc: String) extends NewElementWizardPage(name)

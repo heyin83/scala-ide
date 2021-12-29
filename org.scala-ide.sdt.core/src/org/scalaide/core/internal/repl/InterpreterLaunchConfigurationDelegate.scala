@@ -125,6 +125,6 @@ class InterpreterLaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 
   /** Retrieves the extra classpath needed for the interpreter*/
   def toolClassPath = {
-    platformInstallation.allJars.map(_.classJar.toOSString())
+    platformInstallation.allModules.map(_.classJar.toOSString())
   }
 }

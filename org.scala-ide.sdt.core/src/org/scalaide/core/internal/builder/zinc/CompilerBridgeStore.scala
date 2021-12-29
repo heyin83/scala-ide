@@ -84,7 +84,7 @@ class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
     s"scala-${installation.version.unparse}"
 
   private def bridgeJar(installation: IScalaInstallation): IPath = {
-    cacheDir(installation) / compilerBridgeName
+    installation.compilerBridge.fold(cacheDir(installation) / compilerBridgeName)(_.classJar)
   }
 
   /** Build the compiler-bridge for the given Scala installation

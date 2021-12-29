@@ -39,19 +39,25 @@ trait IScalaInstallation {
   /**
    *  The compiler module itself.
    */
-  def compiler: IScalaModule
+  def compilerModules: Seq[IScalaModule]
   /**
    * The library module for this installation.
    */
-  def library: IScalaModule
+  def libraryModules: Seq[IScalaModule]
   /**
    * Extra modules, e.g. reflect, swing, actors, xml.
    */
-  def extraJars: Seq[IScalaModule]
+  def extraModules: Seq[IScalaModule]
   /**
    * Returns the whole set of all jars included in this installation.
    */
-  def allJars: Seq[IScalaModule]
+  def allModules: Seq[IScalaModule]
+
+  /**
+   * The binary of the compiler bridge if available
+   */
+  def compilerBridge: Option[IScalaModule]
+
   /**
    * Are the registered components of this installation available on the file system ?
    */

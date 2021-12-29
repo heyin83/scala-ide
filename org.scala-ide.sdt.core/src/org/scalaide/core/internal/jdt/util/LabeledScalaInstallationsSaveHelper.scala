@@ -18,6 +18,7 @@ import java.io.ObjectStreamClass
 import scala.util.Try
 import scala.util.Success
 import scala.util.Failure
+import org.scalaide.core.IScalaModule
 
 class ContextualizedObjectInputStream(in: InputStream) extends ObjectInputStream(in) {
 
@@ -77,14 +78,21 @@ object LabeledScalaInstallationsSaveHelper {
   /** A ScalaInstallation replacement used for object serialization
    */
   @SerialVersionUID(3901667379327078799L)
-  class LabeledScalaInstallationReplace(val name: ScalaInstallationLabel, val compilerMod: ScalaModule, val libraryMod: ScalaModule, val extraJarsMods: Seq[ScalaModule]) extends Serializable {
-    def this(ins: LabeledScalaInstallation) = this(ins.label, ins.compiler, ins.library, ins.extraJars)
+  class LabeledScalaInstallationReplace(
+      val name: ScalaInstallationLabel,
+      val compilerMods: Seq[ScalaModule],
+      val libraryMods: Seq[ScalaModule],
+      val extraJarsMods: Seq[ScalaModule]) extends Serializable {
+    def this(ins: LabeledScalaInstallation) = this(ins.label, ins.compilerModules, ins.libraryModules, ins.extraModules)
     def getLabeledScalaInstallation() = new LabeledScalaInstallation() {
       override def label = name
-      override def compiler = compilerMod
-      override def library = libraryMod
-      override def extraJars = extraJarsMods
-      override def version = ScalaInstallation.extractVersion(library.classJar).getOrElse(NoScalaVersion)
+      override def compilerModules = compilerMods
+      override def libraryModules = libraryMods
+      override def extraModules = extraJarsMods
+      //TODO Fix version calculation
+      override def version = ScalaInstallation.extractVersion(libraryModules(0).classJar).getOrElse(NoScalaVersion)
+      //TODO Fix bridge initialization
+      override val compilerBridge: Option[IScalaModule] = None
     }
   }
 

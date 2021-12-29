@@ -1,6 +1,8 @@
 package org.scalaide.core.internal.builder.zinc
 
 import java.io.File
+import java.util.Optional
+import java.nio.file.Path;
 
 import xsbti.compile.MultipleOutput
 import xsbti.compile.OutputGroup
@@ -16,4 +18,15 @@ class EclipseMultipleOutput(val srcOuts: Seq[(File, File)]) extends MultipleOutp
       override def getOutputDirectory = out
     }
   }.toArray
+
+  //TODO provide correct implementation. Scala3 CompilerBridgeDriver requires SingleOutput
+  override def getSingleOutputAsPath() : Optional[Path]  = {
+    val groups = getOutputGroups()
+    if (groups.isEmpty) {
+      Optional.empty();
+    } else {
+      Optional.of(groups(0).getOutputDirectoryAsPath())
+    }
+  }
+
 }

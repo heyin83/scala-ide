@@ -141,22 +141,24 @@ class ScalaInstallationTest {
     val binaryPathBuilder = bundlePathBuilder(false)
     val sourcePathBuilder = bundlePathBuilder(true)
 
-    assertEquals("Wrong library jar", binaryPathBuilder(MultiBundleScalaInstallation.ScalaLibraryBundleId), scalaInstallation.library.classJar)
-    assertEquals("Wrong compiler jar", binaryPathBuilder(MultiBundleScalaInstallation.ScalaCompilerBundleId), scalaInstallation.compiler.classJar)
+    //TODO get correct library module
+    assertEquals("Wrong library jar", binaryPathBuilder(MultiBundleScalaInstallation.ScalaLibraryBundleId), scalaInstallation.libraryModules(0).classJar)
+    //TODO get correct compiler module
+    assertEquals("Wrong compiler jar", binaryPathBuilder(MultiBundleScalaInstallation.ScalaCompilerBundleId), scalaInstallation.compilerModules(0).classJar)
 
     val expectedAllJars = Seq(
       binaryPathBuilder(MultiBundleScalaInstallation.ScalaLibraryBundleId),
       binaryPathBuilder(MultiBundleScalaInstallation.ScalaCompilerBundleId),
       binaryPathBuilder(MultiBundleScalaInstallation.ScalaReflectBundleId)).sortBy(_.toOSString())
 
-    assertEquals("Wrong all jars", expectedAllJars, scalaInstallation.allJars.map(_.classJar).sortBy(_.toOSString()))
+    assertEquals("Wrong all jars", expectedAllJars, scalaInstallation.allModules.map(_.classJar).sortBy(_.toOSString()))
 
     val expectedAllSourceJars = Seq(
       sourcePathBuilder(MultiBundleScalaInstallation.ScalaLibraryBundleId),
       sourcePathBuilder(MultiBundleScalaInstallation.ScalaCompilerBundleId),
       sourcePathBuilder(MultiBundleScalaInstallation.ScalaReflectBundleId)).sortBy(_.toOSString())
 
-    assertEquals("Wrong all sources jars", expectedAllSourceJars, scalaInstallation.allJars.flatMap(_.sourceJar).sortBy(_.toOSString()))
+    assertEquals("Wrong all sources jars", expectedAllSourceJars, scalaInstallation.allModules.flatMap(_.sourceJar).sortBy(_.toOSString()))
   }
 
 }

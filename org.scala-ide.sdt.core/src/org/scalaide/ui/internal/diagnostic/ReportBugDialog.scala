@@ -2,7 +2,7 @@ package org.scalaide.ui.internal.diagnostic
 
 import org.eclipse.jface.dialogs.Dialog
 import org.eclipse.jface.dialogs.IDialogConstants
-import org.eclipse.swt.widgets._
+import org.eclipse.swt.widgets.{List => _, _}
 import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.layout.GridData
 import org.eclipse.swt.SWT
@@ -38,7 +38,8 @@ class ReportBugDialog(shell: Shell) extends Dialog(shell) {
     messageField.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL))
 
     val cacheEntries = ScalaPlugin().classLoaderStore.entries
-    val entries = cacheEntries.map(e => s"Compiler v. ${e._1.version.unparse}(${e._1.compiler.classJar})")
+    //val entries = cacheEntries.map(e => s"Compiler v. ${e._1.version.unparse}(${compilerModulesToString(e._1.compilerModules.map(_.classJar).mkString(","))})")
+    val entries = List("TODO")
 
     messageField.setText(
         s"""|Scala IDE version:

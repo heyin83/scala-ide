@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.Path
 import org.scalaide.util.internal.CompilerUtils.isBinarySame
 import org.scalaide.core.internal.project.ScalaInstallation.extractVersion
 import scala.util.Try
+import org.scalaide.core.IScalaModule
 
 /**
  * This class tries to collect a valid scala installation (library, compiler jars) from a directory.
@@ -112,13 +113,14 @@ class DirectoryScalaInstallation(val directory: IPath) extends ScalaInstallation
   // TODO : this hard-coded hook will need changing
   if (versionCandidate.isDefined && versionCandidate.get < ScalaVersion("2.10.0")) throw new IllegalArgumentException("This Scala version is too old for the presentation compiler to use. Please provide a 2.10 scala (or later).")
 
-  override lazy val extraJars = findScalaJars(List(scalaReflectPrefix,
+  override lazy val extraModules = findScalaJars(List(scalaReflectPrefix,
       scalaSwingPrefix), presumedLibraryVersionString).filter {
     module => versionCandidate forall (looksBinaryCompatible(_, module))
     }
-  override lazy val compiler = compilerCandidate.get
-  override lazy val library = libraryCandidate.get
+  override lazy val compilerModules = Seq(compilerCandidate.get)
+  override lazy val libraryModules = Seq(libraryCandidate.get)
   override lazy val version = versionCandidate.get
+  override val compilerBridge: Option[IScalaModule] = None
 
 }
 

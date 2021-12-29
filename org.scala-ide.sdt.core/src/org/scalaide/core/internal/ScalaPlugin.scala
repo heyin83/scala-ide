@@ -103,7 +103,8 @@ class ScalaPlugin extends IScalaPlugin with PluginLogConfigurator with IResource
     }
     ResourcesPlugin.getWorkspace.addResourceChangeListener(this, IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.POST_CHANGE)
     JavaCore.addElementChangedListener(this)
-    logger.info("Scala compiler bundle: " + platformInstallation.compiler.classJar.toOSString())
+    //TODO get correct compiler module
+    logger.info("Scala compiler bundle: " + platformInstallation.compilerModules(0).classJar.toOSString())
 
     // force creation of statistics tracker
     statistics

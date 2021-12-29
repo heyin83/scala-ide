@@ -86,7 +86,7 @@ package object zinc {
       val scalaInstance = scalaInstanceForInstallation(installation)
       val store = ScalaPlugin().compilerBridgeStore
 
-      store.compilerBridgeFor(installation)(javaMonitor.newChild(10)).right.map {
+      store.compilerBridgeFor(installation)(javaMonitor.newChild(10)).map {
         compilerBridge =>
           // prevent zinc from adding things to the (boot)classpath
           val cpOptions = ClasspathOptions.create(false, false, false, /* autoBoot = */ false, /* filterLibrary = */ false)

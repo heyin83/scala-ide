@@ -175,10 +175,10 @@ class ReplConsoleView extends ViewPart with InterpreterConsoleView {
     scalaProject.initializeCompilerSettings(settings, _ => true)
     // TODO ? move into ScalaPlugin.getScalaProject or ScalaProject.classpath
     var cp = settings.classpath.value
-    val extraJars = platformInstallation.extraJars
-    val classJar = platformInstallation.library.classJar
+    val extraJars = platformInstallation.extraModules
+    val classJar = platformInstallation.libraryModules
     for {
-      path <- extraJars.map(_.classJar) :+ classJar
+      path <- classJar.map(_.classJar).appendedAll(extraJars.map(_.classJar))
       pathString = path.toOSString()
       if !cp.contains(pathString)
     } cp = pathString + java.io.File.pathSeparator + cp

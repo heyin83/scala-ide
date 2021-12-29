@@ -178,7 +178,7 @@ object ExtensionCompiler extends AnyRef with HasLogger {
     s.usejavacp.value = true
 
     val install = ScalaInstallation.platformInstallation
-    s.bootclasspath.value = install.allJars.map(_.classJar).mkString(File.pathSeparator)
+    s.bootclasspath.value = install.allModules.map(_.classJar).mkString(File.pathSeparator)
     s.source.value = vScala
 
     val bundles = IScalaPlugin().getBundle.getBundleContext.getBundles

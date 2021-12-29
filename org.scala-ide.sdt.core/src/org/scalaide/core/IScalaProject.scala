@@ -40,7 +40,7 @@ trait IScalaClasspath {
   /**
    * The scala standard library.
    */
-  val scalaLibrary: Option[IPath]
+  val scalaLibrary: Seq[IPath]
   /**
    * User libraries that should figure on classpath.
    */

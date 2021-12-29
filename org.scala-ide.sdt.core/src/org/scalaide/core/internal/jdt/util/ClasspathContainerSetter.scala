@@ -24,9 +24,9 @@ trait ScalaClasspathContainerHandler extends HasLogger {
   def getAndUpdateScalaClasspathContainerEntry(containerPath: IPath, desc: String, versionString: String, project: IJavaProject, si:IScalaInstallation, existingEntries: Array[IClasspathEntry]): IClasspathEntry = {
     val classpathEntriesOfScalaInstallation : Array[IClasspathEntry]=
       if (containerPath.toPortableString() startsWith(SdtConstants.ScalaLibContId))
-        (si.library +: si.extraJars).map(_.libraryEntries()).toArray
+        (si.libraryModules ++ si.extraModules).map(_.libraryEntries()).toArray
       else if (containerPath.toPortableString() startsWith(SdtConstants.ScalaCompilerContId))
-        Array((si.compiler).libraryEntries())
+        si.compilerModules.map(_.libraryEntries()).toArray
       else Array()
 
     val customContainer : IClasspathContainer = new IClasspathContainer() {

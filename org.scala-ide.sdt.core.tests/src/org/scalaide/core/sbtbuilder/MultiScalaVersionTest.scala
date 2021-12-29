@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IMarker
 import org.scalaide.core.internal.project.ScalaInstallationChoice
 import org.scalaide.core.internal.project.LabeledScalaInstallation
 import org.scalaide.core.SdtConstants
+import org.scalaide.core.internal.project.ScalaModule
 
 class MultiScalaVersionTest {
   // this was deprecated in 2.10, and invalid in 2.11
@@ -34,7 +35,7 @@ class MultiScalaVersionTest {
       val choice = ScalaInstallationChoice(installation)
       projectSpecificStorage.setValue(SettingConverterUtil.SCALA_DESIRED_INSTALLATION, choice.toString())
       Assert.assertEquals(s"Expected to see the desired choice, found ${p.desiredinstallationChoice()}", choice, p.desiredinstallationChoice())
-      setScalaLibrary(p, installation.library.classJar)
+      setScalaLibrary(p, installation.libraryModules)
       val ShortScalaVersion(major, minor) = installation.version
       projectSpecificStorage.setValue(CompilerSettings.ADDITIONAL_PARAMS, s"-Xsource:$major.$minor")
 
@@ -53,8 +54,9 @@ class MultiScalaVersionTest {
     }
   }
 
-  private def setScalaLibrary(p: IScalaProject, lib: IPath): Unit = {
+  private def setScalaLibrary(p: IScalaProject, lib: Seq[ScalaModule]): Unit = {
     val baseClasspath = p.javaProject.getRawClasspath().filter(_.getPath().toPortableString() != SdtConstants.ScalaLibContId)
-    p.javaProject.setRawClasspath(baseClasspath :+ JavaCore.newLibraryEntry(lib, null, null), null)
+    val additionalEntries = lib.map(_.libraryEntries())
+    p.javaProject.setRawClasspath(baseClasspath :++ additionalEntries , null)
   }
 }
