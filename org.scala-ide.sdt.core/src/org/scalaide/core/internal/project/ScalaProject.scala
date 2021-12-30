@@ -42,8 +42,8 @@ import org.scalaide.core.IScalaProject
 import org.scalaide.core.IScalaProjectEvent
 import org.scalaide.core.Publisher
 import org.scalaide.core.SdtConstants
+import org.scalaide.core.builder.EclipseBuildManager
 import org.scalaide.core.compiler.IScalaPresentationCompiler
-import org.scalaide.core.internal.builder.EclipseBuildManager
 import org.scalaide.core.internal.compiler.PresentationCompilerActivityListener
 import org.scalaide.core.internal.compiler.PresentationCompilerProxy
 import org.scalaide.core.internal.compiler.ScalaPresentationCompiler
@@ -153,11 +153,6 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
   private var hasBeenBuilt = false
 
   private val worbenchPartListener: IPartListener = new ScalaProject.ProjectPartListener(this)
-
-  @deprecated("Don't use or depend on this because it will be removed soon.", since = "4.0.0")
-  case class InvalidCompilerSettings() extends RuntimeException(
-    "Scala compiler cannot initialize for project: " + underlying.getName +
-      ". Please check that your classpath contains the standard Scala library.")
 
   override val presentationCompiler = new PresentationCompilerProxy(underlying.getName, prepareCompilerSettings _)
   private val watchdog = new PresentationCompilerActivityListener(underlying.getName, ScalaEditor.projectHasOpenEditors(this), presentationCompiler.shutdown _)
@@ -537,28 +532,6 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
    */
   def storage: IPreferenceStore = {
     if (usesProjectSettings) projectSpecificStorage else IScalaPlugin().getPreferenceStore()
-  }
-
-  @deprecated("This method is not called from anywhere, consider removing in the next release", "4.0.0")
-  def isStandardSource(file: IFile, qualifiedName: String): Boolean = {
-    val pathString = file.getLocation.toString
-    val suffix = qualifiedName.replace(".", "/") + ".scala"
-    pathString.endsWith(suffix) && {
-      val suffixPath = new Path(suffix)
-      val sourceFolderPath = file.getLocation.removeLastSegments(suffixPath.segmentCount)
-      sourceFolders.exists(_ == sourceFolderPath)
-    }
-  }
-
-  @deprecated("Don't use or depend on this because it will be removed soon.", since = "4.0.0")
-  def defaultOrElse[T]: T = {
-    throw InvalidCompilerSettings()
-  }
-
-  @deprecated("Use `presentationCompiler.askRestart()` instead", since = "4.0.0")
-  def resetPresentationCompiler(): Boolean = {
-    presentationCompiler.askRestart()
-    true
   }
 
   def buildManager(): EclipseBuildManager = {

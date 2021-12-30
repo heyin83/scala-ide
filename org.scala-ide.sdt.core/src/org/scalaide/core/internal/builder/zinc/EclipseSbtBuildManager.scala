@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicReference
 import scala.collection.mutable
 import scala.tools.nsc.Settings
 
+import org.scalaide.core.builder.EclipseBuildManager
 import org.eclipse.core.resources.IContainer
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IMarker
@@ -21,7 +22,6 @@ import org.eclipse.core.runtime.SubMonitor
 import org.scalaide.core.IScalaInstallation
 import org.scalaide.core.IScalaProject
 import org.scalaide.core.internal.builder.BuildProblemMarker
-import org.scalaide.core.internal.builder.EclipseBuildManager
 import org.scalaide.core.internal.builder.TaskManager
 import org.scalaide.logging.HasLogger
 import org.scalaide.util.eclipse.FileUtils
@@ -148,7 +148,10 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
         case _: CompileFailed | CompilerBridgeFailed => None
       }
     analysis foreach setCached
-    createAdditionalMarkers(analysis.getOrElse(latestAnalysis), progress.actualCompiledFiles)
+    
+    // TODO implement when refactoring is done
+    analysis.foreach(createAdditionalMarkers(_, progress.actualCompiledFiles))
+    //createAdditionalMarkers(analysis.getOrElse(latestAnalysis), progress.actualCompiledFiles)
   }
 
   /**
@@ -191,8 +194,9 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
     Option(cached.get) foreach (ref => ref.clear)
   }
 
-  override def latestAnalysis: Analysis =
-    Option(cached.get) flatMap (ref => Option(ref.get)) getOrElse setCached(SbtUtils.readAnalysis(cacheFile))
+    // TODO implement when refactoring is done 
+//  override def latestAnalysis: Analysis =
+//    Option(cached.get) flatMap (ref => Option(ref.get)) getOrElse setCached(SbtUtils.readAnalysis(cacheFile))
 
   /**
    * Knows nothing about output files.

@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.IJavaModelMarker
 import org.scalaide.core.IScalaPlugin
 import org.scalaide.core.IScalaProject
 import org.scalaide.core.SdtConstants
+import org.scalaide.core.builder.EclipseBuildManager
 import org.scalaide.core.internal.builder.BuildProblemMarker
-import org.scalaide.core.internal.builder.EclipseBuildManager
 import org.scalaide.core.internal.project.scopes.BuildScopeUnit
 import org.scalaide.ui.internal.preferences.ScalaPluginSettings
 import org.scalaide.util.internal.SettingConverterUtil
@@ -106,9 +106,10 @@ class SbtScopesBuildManager(val owningProject: IScalaProject, managerSettings: S
     }
   }
 
-  override def latestAnalysis: Analysis = buildScopeUnits.foldLeft(Analysis.Empty) { (analysis, unit) =>
-    analysis ++ unit.latestAnalysis
-  }
+    // TODO implement when refactoring is done 
+//  override def latestAnalysis: Analysis = buildScopeUnits.foldLeft(Analysis.Empty) { (analysis, unit) =>
+//    analysis ++ unit.latestAnalysis
+//  }
 
   override def buildManagerOf(outputFile: File): Option[EclipseBuildManager] =
     buildScopeUnits.find { _.buildManagerOf(outputFile).nonEmpty }

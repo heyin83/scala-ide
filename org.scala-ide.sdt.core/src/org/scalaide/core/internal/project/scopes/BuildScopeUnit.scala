@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.SubMonitor
 import org.eclipse.jdt.core.IJavaModelMarker
 import org.scalaide.core.IScalaProject
 import org.scalaide.core.SdtConstants
-import org.scalaide.core.internal.builder.EclipseBuildManager
+import org.scalaide.core.builder.EclipseBuildManager
 import org.scalaide.core.internal.builder.zinc.EclipseSbtBuildManager
 import org.scalaide.core.internal.project.CompileScope
 import org.scalaide.ui.internal.preferences.ScalaPluginSettings
@@ -91,8 +91,10 @@ class BuildScopeUnit(val scope: CompileScope, val owningProject: IScalaProject, 
 
   override def canTrackDependencies: Boolean = delegate.canTrackDependencies
   override def invalidateAfterLoad: Boolean = delegate.invalidateAfterLoad
-  override def latestAnalysis: Analysis =
-    delegate.latestAnalysis
+
+  // TODO implement when refactoring is done 
+//  override def latestAnalysis: Analysis =
+//    delegate.latestAnalysis
 
   override def buildManagerOf(outputFile: File): Option[EclipseBuildManager] =
     owningProject.sourceOutputFolders() collectFirst {

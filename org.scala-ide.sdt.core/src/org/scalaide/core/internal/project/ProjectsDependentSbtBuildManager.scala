@@ -9,9 +9,9 @@ import org.eclipse.core.resources.IResource
 import org.eclipse.core.runtime.SubMonitor
 import org.scalaide.core.IScalaPlugin
 import org.scalaide.core.IScalaProject
+import org.scalaide.core.builder.EclipseBuildManager
 import org.scalaide.core.SdtConstants
 import org.scalaide.core.internal.builder.BuildProblemMarker
-import org.scalaide.core.internal.builder.EclipseBuildManager
 import org.scalaide.core.internal.builder.zinc.EclipseSbtBuildManager
 import org.scalaide.ui.internal.preferences.ScalaPluginSettings
 import org.scalaide.util.internal.SettingConverterUtil

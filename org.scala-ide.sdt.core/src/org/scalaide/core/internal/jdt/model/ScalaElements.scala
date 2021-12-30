@@ -50,7 +50,7 @@ trait ScalaElement extends JavaElement with IScalaElement {
     if (ancestor != null)
       ancestor
     else if (ancestorType == IJavaElement.COMPILATION_UNIT)
-      new CompilationUnitAdapter(getClassFile().asInstanceOf[ScalaClassFile])
+      new CompilationUnitAdapter(getParent().asInstanceOf[ScalaClassFile])
     else
       null
   }

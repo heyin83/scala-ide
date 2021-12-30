@@ -5,7 +5,7 @@ import org.eclipse.jdt.core.IJavaProject
 import org.eclipse.core.resources.IContainer
 import org.eclipse.core.resources.IFile
 import scala.tools.nsc.Settings
-import org.scalaide.core.internal.builder.EclipseBuildManager
+import org.scalaide.core.builder.EclipseBuildManager
 import org.eclipse.jface.preference.IPreferenceStore
 import org.eclipse.core.runtime.SubMonitor
 import org.eclipse.core.runtime.IProgressMonitor
@@ -175,7 +175,7 @@ trait IScalaProject extends Publisher[IScalaProjectEvent] {
 
   /* Classpath Management */
 
-  /** The ScalaClasspath Instance valid for tihs project */
+  /** The ScalaClasspath Instance valid for this project */
   def scalaClasspath: IScalaClasspath
 
   /** The result of validation checks performed on classpath */

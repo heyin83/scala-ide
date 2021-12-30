@@ -1,8 +1,6 @@
 package org.scalaide.core.internal.project
 
 import org.scalaide.core.IScalaProject
-import org.scalaide.core.IScalaPlugin
-import sbt.internal.inc.Analysis
 
 trait SourcePathFinder {
   private def sourceFolders(project: IScalaProject): Seq[String] = project.sourceFolders.map {
@@ -10,28 +8,29 @@ trait SourcePathFinder {
   }
 
   def apply(project: IScalaProject, className: String): Option[String] = {
-    import org.scalaide.core.internal.builder.zinc.`package`.fileConverter
-    val analyses = (project.buildManager().latestAnalysis, sourceFolders(project)) ::
-      project.transitiveDependencies.toList.collect {
-        case project if IScalaPlugin().asScalaProject(project).isDefined =>
-          val sproject = IScalaPlugin().getScalaProject(project)
-          (sproject.buildManager().latestAnalysis, sourceFolders(sproject))
-      }
-    //TODO upgrade to scala 2.12.15
-    analyses.collect {
-      case (a: Analysis, sourceFolders) =>
-        a.relations.definesClass(className)
-          .flatMap { foundRelativeSrc =>
-            val path = fileConverter.toPath(foundRelativeSrc).toString()
-            sourceFolders.collect {
-              case sf if path.startsWith(sf) =>
-                path.substring(sf.length)
-            }
-          }
-    }.collectFirst {
-      case files if files.nonEmpty =>
-        files
-    }.flatMap { _.headOption }
+    // TODO implement when refactoring is done 
+//    import org.scalaide.core.internal.builder.zinc.`package`.fileConverter
+//    val analyses = (project.buildManager().latestAnalysis, sourceFolders(project)) ::
+//      project.transitiveDependencies.toList.collect {
+//        case project if IScalaPlugin().asScalaProject(project).isDefined =>
+//          val sproject = IScalaPlugin().getScalaProject(project)
+//          (sproject.buildManager().latestAnalysis, sourceFolders(sproject))
+//      }
+//    //TODO upgrade to scala 2.12.15
+//    analyses.collect {
+//      case (a: Analysis, sourceFolders) =>
+//        a.relations.definesClass(className)
+//          .flatMap { foundRelativeSrc =>
+//            val path = fileConverter.toPath(foundRelativeSrc).toString()
+//            sourceFolders.collect {
+//              case sf if path.startsWith(sf) =>
+//                path.substring(sf.length)
+//            }
+//          }
+//    }.collectFirst {
+//      case files if files.nonEmpty =>
+//        files
+//    }.flatMap { _.headOption }
     None
   }
 }

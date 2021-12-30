@@ -42,18 +42,20 @@ class SbtInputs(
   private val allProjects = project +: project.transitiveDependencies.flatMap(ScalaPlugin().asScalaProject)
 
   def analysisMap(f0: VirtualFile): Optional[CompileAnalysis] = {
-    val f = fileConverter.toPath(f0).toFile
-    if (f.isFile)
-      Optional.empty[CompileAnalysis]
-    else {
-      val analysis = allProjects.collectFirst {
-        case project if project.buildManager().buildManagerOf(f).nonEmpty =>
-          project.buildManager().buildManagerOf(f).get.latestAnalysis
-      }
-      analysis.map { analysis =>
-        Optional.ofNullable(analysis)
-      }.getOrElse(Optional.empty[CompileAnalysis])
-    }
+    Optional.empty[CompileAnalysis]
+    // TODO implement when refactoring is done 
+//    val f = fileConverter.toPath(f0).toFile
+//    if (f.isFile)
+//      Optional.empty[CompileAnalysis]
+//    else {
+//      val analysis = allProjects.collectFirst {
+//        case project if project.buildManager().buildManagerOf(f).nonEmpty =>
+//          project.buildManager().buildManagerOf(f).get.latestAnalysis
+//      }
+//      analysis.map { analysis =>
+//        Optional.ofNullable(analysis)
+//      }.getOrElse(Optional.empty[CompileAnalysis])
+//    }
   }
 
   def progress = Optional.ofNullable(scalaProgress)
