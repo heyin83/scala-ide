@@ -8,7 +8,7 @@ trait SourcePathFinder {
   }
 
   def apply(project: IScalaProject, className: String): Option[String] = {
-    // TODO implement when refactoring is done 
+    // TODO implement when refactoring is done
 //    import org.scalaide.core.internal.builder.zinc.`package`.fileConverter
 //    val analyses = (project.buildManager().latestAnalysis, sourceFolders(project)) ::
 //      project.transitiveDependencies.toList.collect {

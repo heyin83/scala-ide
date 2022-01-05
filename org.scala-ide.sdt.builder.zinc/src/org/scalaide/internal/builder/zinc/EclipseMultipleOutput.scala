@@ -1,4 +1,4 @@
-package org.scalaide.core.internal.builder.zinc
+package org.scalaide.internal.builder.zinc
 
 import java.io.File
 import java.util.Optional

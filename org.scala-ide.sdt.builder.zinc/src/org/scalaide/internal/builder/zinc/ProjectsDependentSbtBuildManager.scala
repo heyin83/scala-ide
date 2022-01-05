@@ -1,9 +1,7 @@
-package org.scalaide.core.internal.project
+package org.scalaide.internal.builder.zinc
 
 import java.io.File
-
 import scala.tools.nsc.Settings
-
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IResource
 import org.eclipse.core.runtime.SubMonitor
@@ -11,16 +9,15 @@ import org.scalaide.core.IScalaPlugin
 import org.scalaide.core.IScalaProject
 import org.scalaide.core.builder.EclipseBuildManager
 import org.scalaide.core.SdtConstants
-import org.scalaide.core.internal.builder.BuildProblemMarker
-import org.scalaide.core.internal.builder.zinc.EclipseSbtBuildManager
 import org.scalaide.ui.internal.preferences.ScalaPluginSettings
 import org.scalaide.util.internal.SettingConverterUtil
+import org.scalaide.core.internal.builder.BuildProblemMarker
 
 /**
  * Build manager which compiles sources without dividing on scopes.
  *  Refer to [[CompileScope]]
  */
-class ProjectsDependentSbtBuildManager(project: IScalaProject, settings: Settings)
+abstract class ProjectsDependentSbtBuildManager(project: IScalaProject, settings: Settings)
     extends EclipseSbtBuildManager(project, settings) {
   private def areTransitiveDependenciesBuilt = {
     val projectsInError =

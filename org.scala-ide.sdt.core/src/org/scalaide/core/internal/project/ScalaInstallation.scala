@@ -1,6 +1,5 @@
 package org.scalaide.core.internal.project
 
-import java.net.URLClassLoader
 import java.util.Properties
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -32,7 +31,6 @@ import org.scalaide.util.eclipse.OSGiUtils
 import org.scalaide.util.internal.CompilerUtils.isBinarySame
 import org.scalaide.util.internal.CompilerUtils.shortString
 
-import sbt.internal.inc.ScalaInstance
 import java.net.URL
 
 sealed trait ScalaInstallationLabel extends Serializable
@@ -344,36 +342,6 @@ object ScalaInstallation {
       override def version = install.version
       override def compilerBridge = install.compilerBridge
     }
-  }
-
-  def scalaInstanceForInstallation(si: IScalaInstallation): ScalaInstance = {
-    val store = ScalaPlugin().classLoaderStore
-
-    // TODO: upgrade to zinc 1.6 It compiles bridge, but additional work is necessary to make sure it is correct
-    val libraryModules = si.libraryModules.map(_.classJar.toFile).toArray
-    val compilerModules = libraryModules ++ si.compilerModules.map(_.classJar.toFile).toArray
-    val extraModules = si.extraModules.map(_.classJar.toFile).toArray
-
-    //TODO consider extracting everything related to sbt/zinc to separate bundle.
-    // We give this class loader to prevent loading of different version of xsbti/AnalysisCallback from
-    // compiler-interface.jar used in dotty compiler.
-    val parentLoader = this.getClass.getClassLoader
-    val scalaLoader: ClassLoader = store.getOrUpdate(si)(new URLClassLoader(si.allModules.map(_.classJar.toFile.toURI.toURL).toArray, parentLoader))
-    //    val loaderCompilerOnly = new URLClassLoader(Array[java.net.URL](
-    //          si.compiler.classJar.toFile.toURI.toURL,
-    //          si.libraryModules.classJar.toFile.toURI.toURL),
-    //        ClassLoader.getSystemClassLoader)
-    val loaderLibraryOnly = new URLClassLoader(libraryModules.map(_.toURI.toURL), ClassLoader.getSystemClassLoader)
-
-    new ScalaInstance(
-      si.version.unparse,
-      scalaLoader,
-      scalaLoader,
-      scalaLoader,
-      compilerModules,
-      compilerModules,
-      extraModules,
-      None)
   }
 
   lazy val customInstallations: Set[LabeledScalaInstallation] = initialScalaInstallations.view.map(customize(_)).to(Set)

@@ -121,10 +121,6 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
     } yield icu
   }
 
-  /** Ask to reload all units managed by this presentation compiler */
-  @deprecated("use askReloadManagedUnits instead", "4.0.0")
-  def reconcileOpenUnits() = askReloadManagedUnits()
-
   def askReloadManagedUnits(): Unit = {
     askReload(compilationUnits)
   }
@@ -221,9 +217,6 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
 
   def problemsOf(scu: InteractiveCompilationUnit): List[ScalaCompilationProblem] = problemsOf(scu.file)
 
-  @deprecated("Use loadedType instead.", "4.0.0")
-  def body(sourceFile: SourceFile, keepLoaded: Boolean = false): Either[Tree, Throwable] = loadedType(sourceFile, keepLoaded)
-
   def loadedType(sourceFile: SourceFile, keepLoaded: Boolean = false): Either[Tree, Throwable] = {
     if (self.onCompilerThread)
       throw ScalaPresentationCompiler.InvalidThread("Tried to execute `askLoadedType` while inside `ask`")
@@ -237,16 +230,6 @@ class ScalaPresentationCompiler(private[compiler] val name: String, _settings: S
    */
   def asyncExec[A](op: => A): Response[A] = {
     askForResponse(() => op)
-  }
-
-  /** Ask with a default timeout. Keep around for compatibility with the m2 release. */
-  @deprecated("Use asyncExec instead", "4.0.0")
-  def askOption[A](op: () => A): Option[A] = askOption(op, 10000)
-
-  @deprecated("Use asyncExec instead", "4.0.0")
-  def askOption[A](op: () => A, timeout: Int): Option[A] = {
-    import scala.concurrent.duration._
-    asyncExec(op()).getOption(timeout.millis)
   }
 
   /** Returns a `Response` containing doc comment information for a given symbol.

@@ -1,4 +1,4 @@
-package org.scalaide.core.internal.builder.zinc
+package org.scalaide.internal.builder.zinc.scala2
 
 import java.util.function.Supplier
 
@@ -8,20 +8,18 @@ import scala.util.Properties
 import org.eclipse.core.runtime.IPath
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.SubMonitor
-import org.scalaide.core.IScalaInstallation
-import org.scalaide.core.internal.ScalaPlugin
-import org.scalaide.core.internal.project.ScalaInstallation.scalaInstanceForInstallation
 import org.scalaide.logging.HasLogger
 import org.scalaide.util.eclipse.EclipseUtils.RichPath
 import org.scalaide.util.eclipse.FileUtils
-import org.scalaide.util.eclipse.OSGiUtils
 
 import sbt.internal.inc.AnalyzingCompiler
 import sbt.internal.inc.RawCompiler
+import xsbti.compile.ScalaInstance
 import xsbti.Logger
 import xsbti.compile.ClasspathOptionsUtil
 
-/** This class manages a store of compiler-bridge jars (as consumed by zinc). Each specific
+/**
+ * This class manages a store of compiler-bridge jars (as consumed by zinc). Each specific
  *  version of Scala needs a compiler-bridge jar compiled against that version.
  *
  *  `base` is used to store compiler-bridges on disk. The cache is based on the Zinc version included in IDE and
@@ -31,8 +29,8 @@ import xsbti.compile.ClasspathOptionsUtil
  *
  *  This class is thread safe.
  */
-class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
-  private val compilerBridgeName = "compiler-bridge.jar"
+class CompilerBridgeStore(base: IPath, compilerBridgeSrc: IPath, compilerBridgeVersion: String, zincFullJar: IPath) extends HasLogger {
+  private val compilerBridgeName = "compiler-bridge1.jar"
   private val compilerBridgesDir = base / "compiler-bridges"
 
   private val lockObject = new Object
@@ -40,18 +38,16 @@ class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
   // raw stats
   private var hits, misses = 0
 
-  private lazy val compilerBridgeSrc = OSGiUtils.getBundlePath(plugin.zincCompilerBridgeBundle)
-  private lazy val zincFullJar = OSGiUtils.getBundlePath(plugin.zincCompilerBundle)
-
-  /** Return the location of a compiler-bridge.jar
+  /**
+   * Return the location of a compiler-bridge.jar
    *
    *  This method will attempt to reuse bridges for a given Scala version. It
    *  may be long running the first time for a given version (it needs to compile the bridge)
    *
    *  @return An instance of Right(path) if successful, an error message inside `Left` otherwise.
    */
-  def compilerBridgeFor(installation: IScalaInstallation)(implicit pm: IProgressMonitor): Either[String, IPath] = {
-    val targetJar = bridgeJar(installation)
+  def compilerBridgeFor(scalaVersion: String, instance: ScalaInstance)(implicit pm: IProgressMonitor): Either[String, IPath] = {
+    val targetJar = bridgeJar(scalaVersion)
 
     lockObject synchronized {
       if (targetJar.toFile.exists()) {
@@ -59,12 +55,13 @@ class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
         Right(targetJar)
       } else {
         misses += 1
-        buildInterface(installation)
+        buildInterface(scalaVersion, instance)
       }
     }
   }
 
-  /** Delete all cached compiler bridges and reset the stats.
+  /**
+   * Delete all cached compiler bridges and reset the stats.
    */
   def purgeCache(): Unit = {
     lockObject synchronized {
@@ -77,48 +74,46 @@ class CompilerBridgeStore(base: IPath, plugin: ScalaPlugin) extends HasLogger {
   /** Return the number of hits and misses in the store. */
   def getStats: (Int, Int) = (hits, misses)
 
-  private def cacheDir(installation: IScalaInstallation): IPath =
+  private def cacheDir(scalaVersion: String): IPath =
     compilerBridgesDir /
-    s"jdk-${Properties.javaVersion}" /
-    s"zinc-${plugin.zincCompilerBridgeBundle.getVersion}" /
-    s"scala-${installation.version.unparse}"
+      s"jdk-${Properties.javaVersion}" /
+      s"zinc-${compilerBridgeVersion}" /
+      s"scala-${scalaVersion}"
 
-  private def bridgeJar(installation: IScalaInstallation): IPath = {
-    installation.compilerBridge.fold(cacheDir(installation) / compilerBridgeName)(_.classJar)
+  private def bridgeJar(scalaVersion: String): IPath = {
+    cacheDir(scalaVersion) / compilerBridgeName
   }
 
-  /** Build the compiler-bridge for the given Scala installation
+  /**
+   * Build the compiler-bridge for the given Scala installation
    *
    *  @return a right-biased `Either`, carrying either the path to the resulting compiler-bridge jar, or
    *          a String with the error message.
    */
-  private def buildInterface(installation: IScalaInstallation)(implicit pm: IProgressMonitor): Either[String, IPath] = {
-    val name = s"Compiling compiler-bridge for ${installation.version.unparse}"
+  private def buildInterface(scalaVersion: String, instance: ScalaInstance)(implicit pm: IProgressMonitor): Either[String, IPath] = {
+    val name = s"Compiling compiler-bridge for ${scalaVersion}"
     val monitor = SubMonitor.convert(pm, name, 2)
     monitor.subTask(name)
 
-    (compilerBridgeSrc, zincFullJar) match {
-      case (Some(compilerBridge), Some(zincInterface)) =>
-        val log = new SbtLogger
-        cacheDir(installation).toFile.mkdirs()
-        val targetJar = bridgeJar(installation)
-        monitor.worked(1)
+    val log = new SbtLogger
+    cacheDir(scalaVersion).toFile.mkdirs()
+    val targetJar = bridgeJar(scalaVersion)
+    monitor.worked(1)
 
-        val label = installation.version.unparse
-        val raw = new RawCompiler(scalaInstanceForInstallation(installation), ClasspathOptionsUtil.auto, log)
-        AnalyzingCompiler.compileSources(List(compilerBridge.toFile.toPath), targetJar.toFile.toPath, List(zincInterface.toFile.toPath), label, raw, log)
+    val label = scalaVersion
+    val raw = new RawCompiler(instance, ClasspathOptionsUtil.auto, log)
+    AnalyzingCompiler.compileSources(
+        List(compilerBridgeSrc.toFile.toPath),
+        targetJar.toFile.toPath,
+        List(zincFullJar.toFile.toPath), label, raw, log)
 
-        monitor.worked(1)
+    monitor.worked(1)
 
-        log.errorMessages match {
-          case Seq() => Right(targetJar)
-          case errs  => Left(s"Error building compiler-bridge.jar for ${installation.version.unparse}: ${errs.mkString("\n")}")
-        }
-
-      case _ =>
-        monitor.worked(2)
-        Left("Could not find compiler-bridge bundle")
+    log.errorMessages match {
+      case Seq() => Right(targetJar)
+      case errs => Left(s"Error building compiler-bridge.jar for ${scalaVersion}: ${errs.mkString("\n")}")
     }
+
   }
 
   private class SbtLogger extends Logger {

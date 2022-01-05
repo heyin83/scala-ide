@@ -1,4 +1,4 @@
-package org.scalaide.core.internal.builder.zinc
+package org.scalaide.internal.builder.zinc
 
 import java.io.File
 import java.util.Optional
@@ -43,7 +43,7 @@ class SbtInputs(
 
   def analysisMap(f0: VirtualFile): Optional[CompileAnalysis] = {
     Optional.empty[CompileAnalysis]
-    // TODO implement when refactoring is done 
+    // TODO implement when refactoring is done
 //    val f = fileConverter.toPath(f0).toFile
 //    if (f.isFile)
 //      Optional.empty[CompileAnalysis]
@@ -120,14 +120,4 @@ class SbtInputs(
     case "ScalaThenJava" => ScalaThenJava
     case _ => Mixed
   }
-
-  /**
-   * @return Right-biased instance of Either (error message in Left, value in Right)
-   */
-  import org.scalaide.core.internal.builder.zinc.{ compilers => zincCompilers }
-  def compilers: Either[String, Compilers] =
-    zincCompilers(
-      installation,
-      javaMonitor,
-      () => new JavaEclipseCompiler(project.underlying, javaMonitor))
 }

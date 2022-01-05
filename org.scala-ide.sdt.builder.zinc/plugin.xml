@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+
+<plugin>
+
+  <extension point="org.scala-ide.sdt.core.buildManagerFactory">
+    <factory
+      class="org.scalaide.internal.builder.zinc.scala2.ScalaTwoSbtBuilderManagerFactory"
+      scalaVersion="2">
+    </factory>
+    <factory
+      class="org.scalaide.internal.builder.zinc.scala3.ScalaThreeSbtBuilderManagerFactory"
+      scalaVersion="3">
+    </factory>
+  </extension>
+</plugin>

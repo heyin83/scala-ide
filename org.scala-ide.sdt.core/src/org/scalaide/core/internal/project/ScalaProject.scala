@@ -60,6 +60,7 @@ import org.scalaide.util.eclipse.EclipseUtils
 import org.scalaide.util.eclipse.FileUtils
 import org.scalaide.util.eclipse.SWTUtils
 import org.scalaide.util.internal.SettingConverterUtil
+import org.scalaide.core.internal.builder.EclipseBuildManagerFactory
 
 object ScalaProject {
   def apply(underlying: IProject): ScalaProject = {
@@ -117,7 +118,7 @@ object ScalaProject {
       project != null && project.isOpen && project.hasNature(SdtConstants.NatureId)
     } catch {
       case _:
-      CoreException => false
+        CoreException => false
     }
 
   private def dependenciesForProject(project: IProject): Set[IPath] = {
@@ -147,7 +148,7 @@ object ScalaProject {
   }
 }
 
-class ScalaProject private(val underlying: IProject) extends ClasspathManagement with InstallationManagement with Publisher[IScalaProjectEvent] with HasLogger with IScalaProject {
+class ScalaProject private (val underlying: IProject) extends ClasspathManagement with InstallationManagement with Publisher[IScalaProjectEvent] with HasLogger with IScalaProject {
 
   private var buildManager0: EclipseBuildManager = null
   private var hasBeenBuilt = false
@@ -157,7 +158,8 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
   override val presentationCompiler = new PresentationCompilerProxy(underlying.getName, prepareCompilerSettings _)
   private val watchdog = new PresentationCompilerActivityListener(underlying.getName, ScalaEditor.projectHasOpenEditors(this), presentationCompiler.shutdown _)
 
-  /** To avoid letting 'this' reference escape during initialization, this method is called right after a
+  /**
+   * To avoid letting 'this' reference escape during initialization, this method is called right after a
    *  [[ScalaPlugin]] instance has been fully initialized.
    */
   private def init(): Unit = {
@@ -244,7 +246,8 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
 
   protected def isUnderlyingValid = (underlying.exists() && underlying.isOpen)
 
-  /** This function checks that the underlying project is closed, if not, return the classpath, otherwise return Nil,
+  /**
+   * This function checks that the underlying project is closed, if not, return the classpath, otherwise return Nil,
    *  so avoids throwing an exceptions.
    *  @return the classpath or Nil, if the underlying project is closed.
    */
@@ -278,7 +281,7 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
       else {
         val prefixPath = entry.getPath().removeTrailingSeparator();
         for (pattern <- patterns)
-        yield prefixPath.append(pattern).toString().toCharArray();
+          yield prefixPath.append(pattern).toString().toCharArray();
       }
     }
 
@@ -439,11 +442,13 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
   private def isPCSetting(settings: Settings): Set[Settings#Setting] = {
     import settings.{ plugin => pluginSetting, _ }
 
-    val compilerPluginSettings: Set[Settings#Setting] = Set(pluginOptions,
+    val compilerPluginSettings: Set[Settings#Setting] = Set(
+      pluginOptions,
       pluginSetting,
       pluginsDir)
 
-    val generalSettings: Set[Settings#Setting] = Set(deprecation,
+    val generalSettings: Set[Settings#Setting] = Set(
+      deprecation,
       unchecked,
       verbose,
       Xexperimental,
@@ -503,7 +508,8 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
     scalaCp.scalaLibrary.foreach(scalaLib => settings.bootclasspath.value = scalaLib.toOSString)
   }
 
-  /** Return a the project-specific preference store. This does not take into account the
+  /**
+   * Return a the project-specific preference store. This does not take into account the
    *  user-preference whether to use project-specific compiler settings or not.
    *
    *  @see  #1001241.
@@ -526,7 +532,8 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
     p
   }
 
-  /** Return the current project preference store.
+  /**
+   * Return the current project preference store.
    *
    *  @see  #1001241.
    */
@@ -550,10 +557,12 @@ class ScalaProject private(val underlying: IProject) extends ClasspathManagement
 
       buildManager0 = {
         val useScopeCompilerProperty = SettingConverterUtil.convertNameToProperty(ScalaPluginSettings.useScopesCompiler.name)
-        if (storage.getBoolean(useScopeCompilerProperty))
-          new SbtScopesBuildManager(this, settings)
-        else new ProjectsDependentSbtBuildManager(this, settings)
-      }
+        if (storage.getBoolean(useScopeCompilerProperty)){
+          EclipseBuildManagerFactory.getScopesBuildManager(this, settings)
+        } else {
+          EclipseBuildManagerFactory.getProjectsDependentBuildManager(this, settings)
+        }
+      }.getOrElse(null)
     }
     buildManager0
   }

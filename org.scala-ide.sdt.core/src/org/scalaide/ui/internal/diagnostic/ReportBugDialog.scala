@@ -37,8 +37,9 @@ class ReportBugDialog(shell: Shell) extends Dialog(shell) {
     val messageField = new Text(group1, SWT.READ_ONLY | SWT.MULTI | SWT.BORDER)
     messageField.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL))
 
-    val cacheEntries = ScalaPlugin().classLoaderStore.entries
+    //val cacheEntries = ScalaPlugin().classLoaderStore.entries
     //val entries = cacheEntries.map(e => s"Compiler v. ${e._1.version.unparse}(${compilerModulesToString(e._1.compilerModules.map(_.classJar).mkString(","))})")
+    val cacheEntries  = List("TODO")
     val entries = List("TODO")
 
     messageField.setText(

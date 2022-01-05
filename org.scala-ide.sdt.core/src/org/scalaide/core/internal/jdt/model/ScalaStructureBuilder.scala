@@ -139,7 +139,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
             else
               false
 
-          /**
+          /*
            * List of parents shared by both class and module, so we don't add forwarders
            *  for methods defined there - bug #1804
            */
@@ -155,7 +155,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
           def conflictsInCommonParent(name: Name) =
             commonParents exists { cp => name startsWith (cp.name + "$") }
 
-          /** Should method `m' get a forwarder in the mirror class? */
+          /* Should method `m' get a forwarder in the mirror class? */
           def shouldForward(m: Symbol): Boolean =
             m.isMethod &&
               !m.isConstructor &&
@@ -678,7 +678,7 @@ trait ScalaStructureBuilder extends ScalaAnnotationHelper { pc: ScalaPresentatio
           if (javaSig.isDefined) javaSig.paramsTypeSig
           else fps.map(s => mapParamTypeSignature(s.info)).toArray
 
-        /**
+        /*
          * Return the parameter names. Make sure that parameter names and the
          *  parameter types have the same length. A mismatch here will crash the JDT later.
          */

@@ -1,10 +1,8 @@
-package org.scalaide.core.internal.builder.zinc
+package org.scalaide.internal.builder.zinc
 
 import java.io.File
 import java.nio.file.Path
 import java.util.Optional
-
-import org.scalaide.util.internal.SbtUtils
 
 import sbt.internal.inc.Analysis
 import sbt.internal.inc.IncrementalCompilerImpl

@@ -27,7 +27,6 @@ import org.scalaide.core.IScalaInstallation
 import org.scalaide.core.IScalaPlugin
 import org.scalaide.core.ScalaIdeDataStore
 import org.scalaide.core.SdtConstants
-import org.scalaide.core.internal.builder.zinc.CompilerBridgeStore
 import org.scalaide.core.internal.jdt.model.ScalaClassFile
 import org.scalaide.core.internal.jdt.model.ScalaCompilationUnit
 import org.scalaide.core.internal.jdt.model.ScalaSourceFile
@@ -71,10 +70,6 @@ class ScalaPlugin extends IScalaPlugin with PluginLogConfigurator with IResource
     case Subsequent =>
       isBinarySubsequent(ScalaVersion.current, version)
   }
-
-  lazy val zincCompilerBundle = Platform.getBundle(SdtConstants.ZincPluginId)
-  lazy val zincCompilerBridgeBundle = Platform.getBundle(SdtConstants.ZincCompilerBridgePluginId)
-  lazy val zincCompilerBridge = OSGiUtils.pathInBundle(zincCompilerBridgeBundle, "/")
 
   lazy val templateManager = new ScalaTemplateManager()
 
@@ -121,12 +116,6 @@ class ScalaPlugin extends IScalaPlugin with PluginLogConfigurator with IResource
     super.stop(context)
     ScalaPlugin.plugin = null
   }
-
-  /** The compiler-bridge store, located in user data area */
-  lazy val compilerBridgeStore: CompilerBridgeStore = new CompilerBridgeStore(new Path(ScalaIdeDataStore.dataStoreLocation), this)
-
-  /** A LRU cache of class loaders for Scala builders */
-  lazy val classLoaderStore: FixedSizeCache[IScalaInstallation,ClassLoader] = new FixedSizeCache(initSize = 2, maxSize = 3)
 
   // TODO: eventually scala plugin should have its own image description registry
   lazy val imageDescriptorRegistry = JavaPlugin.getImageDescriptorRegistry

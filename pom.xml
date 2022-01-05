@@ -36,7 +36,7 @@
     <zero-allocation-hashing.version>0.10.1</zero-allocation-hashing.version>
     
     <!-- sbt related libraries versions -->
-    <zinc.version>1.6.0-M1</zinc.version>
+    <zinc.version>1.6.0</zinc.version>
     <sbinary.version>0.5.1</sbinary.version>
     <scala-refactoring.version>0.14.0-SNAPSHOT</scala-refactoring.version>
     <scalariform.version>0.2.10</scalariform.version>
@@ -155,6 +155,7 @@
         <scala213.feature.dir>org.scala-ide.scala213.build/org.scala-ide.scala213.feature</scala213.feature.dir>
         <scala213.source.feature.dir>org.scala-ide.scala213.build/org.scala-ide.scala213.source.feature</scala213.source.feature.dir>
         <sdt.core.dir>org.scala-ide.sdt.core</sdt.core.dir>
+        <sdt.builder.zink.dir>org.scala-ide.sdt.builder.zinc</sdt.builder.zink.dir>
         <sdt.core.tests.dir>org.scala-ide.sdt.core.tests</sdt.core.tests.dir>
         <sdt.debug.dir>org.scala-ide.sdt.debug</sdt.debug.dir>
         <sdt.debug.expression.dir>org.scala-ide.sdt.debug.expression</sdt.debug.expression.dir>
@@ -285,6 +286,46 @@
                     </copy>
                     <copy file="${sdt.core.dir}/resources/.classpath"
                         tofile="${sdt.core.dir}/.classpath"
+                        overwrite="true">
+                        <filterset>
+                          <filter token="MIGLAYOUT_VERSION" value="${miglayout.version}"/>
+                          <filter token="LOG4J_VERSION" value="${log4j.version}"/>
+                          <filter token="JSON_IO_VERSION" value="${json-io.version}"/>
+                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="ZINC_VERSION" value="${zinc.version}"/>
+                          <filter token="SBINARY_VERSION" value="${sbinary.version}"/>
+                          <filter token="SCALARIFORM_VERSION" value="${scalariform.version}"/>
+                          <filter token="SCALA_VERSION" value="${scala.version}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
+                          <filter token="SCALA_IDE_VERSION" value="${version}"/>
+                          <filter token="SCALA_PARALLEL_COLLECTIONS_VERSION" value="${scala-parallel-collections.version}"/>
+                          <filter token="FILE_TREE_VIEWS_VERSION" value="${file-tree-views.version}"/>
+                          <filter token="JNA_VERSION" value="${jna.version}"/>
+                          <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
+                        </filterset>
+                    </copy>
+                    <copy file="${sdt.builder.zink.dir}/resources/META-INF/MANIFEST-${version.suffix}.MF"
+                        tofile="${sdt.builder.zink.dir}/META-INF/MANIFEST.MF"
+                        overwrite="true">
+                        <filterset>
+                          <filter token="MIGLAYOUT_VERSION" value="${miglayout.version}"/>
+                          <filter token="LOG4J_VERSION" value="${log4j.version}"/>
+                          <filter token="JSON_IO_VERSION" value="${json-io.version}"/>
+                          <filter token="JDTCORE_RANGE" value="${jdt.core.version.range}"/>
+                          <filter token="ZINC_VERSION" value="${zinc.version}"/>
+                          <filter token="SBINARY_VERSION" value="${sbinary.version}"/>
+                          <filter token="SCALARIFORM_VERSION" value="${scalariform.version}"/>
+                          <filter token="SCALA_VERSION" value="${scala.version}"/>
+                          <filter token="SCALA_MINOR_VERSION" value="${scala.minor.version}"/>
+                          <filter token="SCALA_IDE_VERSION" value="${version}"/>
+                          <filter token="SCALA_PARALLEL_COLLECTIONS_VERSION" value="${scala-parallel-collections.version}"/>
+                          <filter token="FILE_TREE_VIEWS_VERSION" value="${file-tree-views.version}"/>
+                          <filter token="JNA_VERSION" value="${jna.version}"/>
+                          <filter token="ZERO_ALLOCATION_VERSION" value="${zero-allocation-hashing.version}"/>
+                        </filterset>
+                    </copy>
+                    <copy file="${sdt.builder.zink.dir}/resources/.classpath"
+                        tofile="${sdt.builder.zink.dir}/.classpath"
                         overwrite="true">
                         <filterset>
                           <filter token="MIGLAYOUT_VERSION" value="${miglayout.version}"/>

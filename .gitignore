@@ -3,6 +3,8 @@
 target/
 org.scala-ide.sdt.core/.classpath
 org.scala-ide.sdt.core/META-INF/MANIFEST.MF
+org.scala-ide.sdt.builder.zinc/.classpath
+org.scala-ide.sdt.builder.zinc/META-INF/MANIFEST.MF
 org.scala-ide.sdt.core.tests/.classpath
 org.scala-ide.sdt.core.tests/META-INF/MANIFEST.MF
 org.scala-ide.sdt.debug/META-INF/MANIFEST.MF

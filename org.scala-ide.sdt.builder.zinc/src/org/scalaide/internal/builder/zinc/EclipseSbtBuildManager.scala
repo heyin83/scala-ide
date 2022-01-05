@@ -1,5 +1,4 @@
-package org.scalaide.core.internal.builder
-package zinc
+package org.scalaide.internal.builder.zinc
 
 import java.io.File
 import java.lang.ref.SoftReference
@@ -25,15 +24,24 @@ import org.scalaide.core.internal.builder.BuildProblemMarker
 import org.scalaide.core.internal.builder.TaskManager
 import org.scalaide.logging.HasLogger
 import org.scalaide.util.eclipse.FileUtils
-import org.scalaide.util.internal.SbtUtils
 
 import sbt.internal.inc.Analysis
 import sbt.util.InterfaceUtil.problem
+import xsbti.compile.ScalaInstance
 import xsbti.CompileFailed
 import xsbti.Logger
 import xsbti.VirtualFileRef
 import xsbti.compile.CompileProgress
 import xsbti.compile.analysis.SourceInfo
+import xsbti.VirtualFile
+import xsbti.compile.Output
+import xsbti.compile.IncToolOptions
+import xsbti.Reporter
+import sbt.internal.inc.AnalyzingCompiler
+import xsbti.compile.CompilerBridgeProvider
+import xsbti.compile.ClasspathOptions
+import xsbti.compile.JavaCompiler
+import java.net.URLClassLoader
 
 /**
  * An Eclipse builder using the Sbt engine.
@@ -45,9 +53,13 @@ import xsbti.compile.analysis.SourceInfo
  *
  *  It uses the configured ScalaInstallation, meaning it can build with different versions of Scala.
  */
-class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, analysisCache: Option[IFile] = None,
-  addToClasspath: Seq[IPath] = Seq.empty, srcOutputs: Seq[(IContainer, IContainer)] = Seq.empty)
-    extends EclipseBuildManager with HasLogger {
+abstract class EclipseSbtBuildManager(
+  val project: IScalaProject,
+  settings: Settings,
+  analysisCache: Option[IFile] = None,
+  addToClasspath: Seq[IPath] = Seq.empty,
+  srcOutputs: Seq[(IContainer, IContainer)] = Seq.empty)
+  extends EclipseBuildManager with HasScalaProject with HasLogger {
 
   /** Initialized in `build`, used by the SbtProgress. */
   private var monitor: SubMonitor = _
@@ -88,8 +100,7 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
           "compile",
           SbtUtils.NoPosition,
           "SBT builder crashed while compiling. The error message is '" + e.getMessage() + "'. Check Error Log for details.",
-          xsbti.Severity.Error
-        ))
+          xsbti.Severity.Error))
     } finally {
       ProductExposer.showJavaCompilationProducts(project.underlying)
     }
@@ -108,6 +119,62 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
   override def canTrackDependencies: Boolean = true
 
   def findInstallation(project: IScalaProject): IScalaInstallation = project.effectiveScalaInstallation()
+
+  private var scalaInstance: ScalaInstance = null
+  protected def getScalaInstance(): ScalaInstance = {
+    if (scalaInstance == null) {
+      scalaInstance = createScalaInstance()
+    }
+    scalaInstance
+  }
+  protected def createScalaInstance(): ScalaInstance = {
+    import sbt.internal.inc.{ScalaInstance =>ScalaInstanceImplementation}
+    // TODO: upgrade to zinc 1.6 It compiles bridge, but additional work is necessary to make sure it is correct
+    val si = project.effectiveScalaInstallation()
+    val libraryModules = si.libraryModules.map(_.classJar.toFile).toArray
+    val compilerModules = libraryModules ++ si.compilerModules.map(_.classJar.toFile).toArray
+    val extraModules = si.extraModules.map(_.classJar.toFile).toArray
+
+    //TODO Find solution for class loader problem
+    // dotty compiler loads some classes like of xsbti/AnalysisCallback from compiler-interface.jar
+    // When we provide this jar to the zinc compiler via compilerModules it results in conflict
+    // with class already loaded by this bundle loader
+    val parentLoader = org.scalaide.internal.builder.zinc.`package`.getClass().getClassLoader()
+    val scalaLoader = new URLClassLoader(si.allModules.map(_.classJar.toFile.toURI.toURL).toArray, parentLoader)
+    //    val loaderCompilerOnly = new URLClassLoader(Array[java.net.URL](
+    //          si.compiler.classJar.toFile.toURI.toURL,
+    //          si.libraryModules.classJar.toFile.toURI.toURL),
+    //        ClassLoader.getSystemClassLoader)
+    //val loaderLibraryOnly = new URLClassLoader(libraryModules.map(_.toURI.toURL), ClassLoader.getSystemClassLoader)
+
+//    try {
+//      val dc = xsbti.api.DependencyContext.DependencyByInheritance
+//      val x = parentLoader.loadClass("xsbti.api.DependencyContext")
+//    } catch {
+//        case e: Exception => {
+//          println("xxx")
+//        }
+//    }
+    new ScalaInstanceImplementation (
+      si.version.unparse,
+      scalaLoader,
+      scalaLoader,
+      scalaLoader,
+      compilerModules,
+      compilerModules,
+      extraModules,
+      None)
+  }
+
+  private var compilerBridgeFile: File = null
+  protected def getCompilerBridgeFile(monitor: IProgressMonitor): File = {
+    if (compilerBridgeFile == null) {
+      compilerBridgeFile = createCompilerBridge(monitor)
+    }
+    compilerBridgeFile
+  }
+
+  protected def createCompilerBridge(monitor: IProgressMonitor): File
 
   /** Remove the given files from the managed build process. */
   private def removeFiles(files: scala.collection.Set[IFile]): Unit = {
@@ -140,7 +207,7 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
     logger.info(s"Running compiler using $scalaInstall")
     val progress = new SbtProgress
 
-    val inputs = new SbtInputs(scalaInstall, sources, project, monitor, progress, tempDirFile, sbtLogger,addToClasspath, srcOutputs)
+    val inputs = new SbtInputs(scalaInstall, sources, project, monitor, progress, tempDirFile, sbtLogger, addToClasspath, srcOutputs)
     val analysis =
       try
         Some(aggressiveCompile(inputs, sbtLogger))
@@ -148,7 +215,7 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
         case _: CompileFailed | CompilerBridgeFailed => None
       }
     analysis foreach setCached
-    
+
     // TODO implement when refactoring is done
     analysis.foreach(createAdditionalMarkers(_, progress.actualCompiledFiles))
     //createAdditionalMarkers(analysis.getOrElse(latestAnalysis), progress.actualCompiledFiles)
@@ -194,9 +261,9 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
     Option(cached.get) foreach (ref => ref.clear)
   }
 
-    // TODO implement when refactoring is done 
-//  override def latestAnalysis: Analysis =
-//    Option(cached.get) flatMap (ref => Option(ref.get)) getOrElse setCached(SbtUtils.readAnalysis(cacheFile))
+  // TODO implement when refactoring is done
+  //  override def latestAnalysis: Analysis =
+  //    Option(cached.get) flatMap (ref => Option(ref.get)) getOrElse setCached(SbtUtils.readAnalysis(cacheFile))
 
   /**
    * Knows nothing about output files.
@@ -208,7 +275,8 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
    */
   override def buildErrors: Set[IMarker] = Set.empty
 
-  /** Inspired by IC.compile
+  /**
+   * Inspired by IC.compile
    *
    *  We need to duplicate IC.compile (by inlining insde this
    *  private method) because the Java interface it has as a
@@ -218,7 +286,7 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
    *  need a richer (IncOptions) parameter type, here.
    */
   private def aggressiveCompile(in: SbtInputs, log: Logger): Analysis = {
-    in.compilers match {
+    getCompilers() match {
       case Right(comps) =>
         CachingCompiler(cacheFile, sbtReporter, log).compile(in, comps)
       case Left(errors) =>
@@ -226,13 +294,49 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
           "compile",
           SbtUtils.NoPosition,
           errors,
-          xsbti.Severity.Error
-        ))
+          xsbti.Severity.Error))
         throw CompilerBridgeFailed
     }
   }
 
   private object CompilerBridgeFailed extends RuntimeException
+
+  private object unimplementedJavaCompiler extends JavaCompiler {
+    override def run(srcs: Array[VirtualFile], opts: Array[String], output: Output, incOpts: IncToolOptions, reporter: Reporter, logger: Logger) =
+      throw new NotImplementedError("expects to be not called")
+  }
+
+  private def getCompilers(): Either[String, Compilers] = {
+    val bridge = getCompilerBridgeFile(monitor)
+    val scalaInstance = getScalaInstance()
+
+    // prevent zinc from adding things to the (boot)classpath
+    val cpOptions = ClasspathOptions.create(false, false, false, /* autoBoot = */ false, /* filterLibrary = */ false)
+
+    Right(Compilers(
+      new AnalyzingCompiler(
+        scalaInstance,
+        new CompilerBridgeProvider {
+          def fetchCompiledBridge(si: ScalaInstance, logger: Logger) = {
+            if (si.version == scalaInstance.version) {
+              bridge
+            } else {
+              throw new IllegalStateException(s"${scalaInstance.version} does not match requested one ${si.version}")
+            }
+          }
+          def fetchScalaInstance(scalaVersion: String, logger: Logger) = {
+            if (scalaVersion == scalaInstance.version) {
+              scalaInstance
+            } else {
+              throw new IllegalStateException(s"${scalaInstance.version} does not match requested one ${scalaVersion}")
+            }
+          }
+        },
+        cpOptions,
+        _ => (),
+        None),
+      unimplementedJavaCompiler))
+  }
 
   private class SbtProgress extends CompileProgress {
     private var lastWorked = 0
@@ -269,7 +373,7 @@ class EclipseSbtBuildManager(val project: IScalaProject, settings: Settings, ana
       }
     }
 
-    override def advance(current: Int, total: Int, prevPhase: String , nextPhase: String ): Boolean =
+    override def advance(current: Int, total: Int, prevPhase: String, nextPhase: String): Boolean =
       if (monitor.isCanceled) {
         throw new OperationCanceledException
       } else {

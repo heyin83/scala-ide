@@ -9,7 +9,6 @@ import org.scalaide.core.classpath.DesiredScalaInstallationTests
 import org.scalaide.core.compiler.NamePrinterTest
 import org.scalaide.core.compiler.PresentationCompilerActivityListenerTest
 import org.scalaide.core.compiler.settings.CompilerSettingsTest
-import org.scalaide.core.completion.CompletionTests
 import org.scalaide.core.completion.ScalaJavaCompletionTests
 import org.scalaide.core.findreferences.FindReferencesTests
 import org.scalaide.core.hyperlink.HyperlinkDetectorTests
@@ -63,11 +62,9 @@ import org.scalaide.ui.internal.editor.decorators.bynameparams.CallByNameParamAt
 import org.scalaide.ui.wizards.WizardTests
 import org.scalaide.util.eclipse.RegionUtilsTest
 import org.scalaide.util.internal.eclipse.TextSelectionTest
-import org.scalaide.core.sbtbuilder.CompilerBridgeStoreTest
 import org.scalaide.ui.internal.preferences.StringListMapperTest
 import org.scalaide.core.sbtbuilder.SourcePathFinderTest
 import org.scalaide.core.scalaelements.ScalaElementsNameTest
-import org.scalaide.core.compiler.ResidentCompilerTest
 import org.scalaide.core.internal.jdt.model.ScalaClassFileDescriberTest
 
 @RunWith(classOf[Suite])
@@ -78,7 +75,6 @@ import org.scalaide.core.internal.jdt.model.ScalaClassFileDescriberTest
     classOf[ClasspathTests],
     classOf[ClasspathContainersTests],
     classOf[CompilerSettingsTest],
-    classOf[CompletionTests],
     classOf[DesiredScalaInstallationTests],
     classOf[RunAsTest],
     classOf[ScalaJavaCompletionTests],
@@ -133,12 +129,10 @@ import org.scalaide.core.internal.jdt.model.ScalaClassFileDescriberTest
     classOf[OutlineModelTest],
     classOf[StringListMapperTest],
     classOf[NonScalaSourceErrorMarkersTest],
-    classOf[CompilerBridgeStoreTest],
     classOf[ScalacNotUnderstandJavaTest],
     classOf[ScalaJavaDepTwoScopesTest],
     classOf[SourcePathFinderTest],
     classOf[ScalaElementsNameTest],
-    classOf[ResidentCompilerTest],
     classOf[ScalaClassFileDescriberTest]
 ))
 class TestsSuite
